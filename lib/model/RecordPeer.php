@@ -7,6 +7,6 @@
  *
  * @package lib.model
  */ 
-class RecordPeer extends BaseRecordsPeer
+class RecordPeer extends BaseRecordPeer
 {
 }

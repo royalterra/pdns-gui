@@ -1,7 +1,7 @@
 <?php
 
 
-abstract class BaseSupermasters extends BaseObject  implements Persistent {
+abstract class BaseSuperMaster extends BaseObject  implements Persistent {
 
 
 	
@@ -69,7 +69,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 
 		if ($this->ip !== $v) {
 			$this->ip = $v;
-			$this->modifiedColumns[] = SupermastersPeer::IP;
+			$this->modifiedColumns[] = SuperMasterPeer::IP;
 		}
 
 	} 
@@ -85,7 +85,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 
 		if ($this->nameserver !== $v) {
 			$this->nameserver = $v;
-			$this->modifiedColumns[] = SupermastersPeer::NAMESERVER;
+			$this->modifiedColumns[] = SuperMasterPeer::NAMESERVER;
 		}
 
 	} 
@@ -101,7 +101,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 
 		if ($this->account !== $v) {
 			$this->account = $v;
-			$this->modifiedColumns[] = SupermastersPeer::ACCOUNT;
+			$this->modifiedColumns[] = SuperMasterPeer::ACCOUNT;
 		}
 
 	} 
@@ -117,7 +117,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = SupermastersPeer::ID;
+			$this->modifiedColumns[] = SuperMasterPeer::ID;
 		}
 
 	} 
@@ -140,7 +140,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 
 						return $startcol + 4; 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Supermasters object", $e);
+			throw new PropelException("Error populating SuperMaster object", $e);
 		}
 	}
 
@@ -152,12 +152,12 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SupermastersPeer::DATABASE_NAME);
+			$con = Propel::getConnection(SuperMasterPeer::DATABASE_NAME);
 		}
 
 		try {
 			$con->begin();
-			SupermastersPeer::doDelete($this, $con);
+			SuperMasterPeer::doDelete($this, $con);
 			$this->setDeleted(true);
 			$con->commit();
 		} catch (PropelException $e) {
@@ -174,7 +174,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SupermastersPeer::DATABASE_NAME);
+			$con = Propel::getConnection(SuperMasterPeer::DATABASE_NAME);
 		}
 
 		try {
@@ -197,12 +197,12 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 
 						if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = SupermastersPeer::doInsert($this, $con);
+					$pk = SuperMasterPeer::doInsert($this, $con);
 					$affectedRows += 1; 										 										 
 					$this->setId($pk);  
 					$this->setNew(false);
 				} else {
-					$affectedRows += SupermastersPeer::doUpdate($this, $con);
+					$affectedRows += SuperMasterPeer::doUpdate($this, $con);
 				}
 				$this->resetModified(); 			}
 
@@ -242,7 +242,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 			$failureMap = array();
 
 
-			if (($retval = SupermastersPeer::doValidate($this, $columns)) !== true) {
+			if (($retval = SuperMasterPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
@@ -257,7 +257,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 	
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = SupermastersPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = SuperMasterPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->getByPosition($pos);
 	}
 
@@ -285,7 +285,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 	
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = SupermastersPeer::getFieldNames($keyType);
+		$keys = SuperMasterPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getIp(),
 			$keys[1] => $this->getNameserver(),
@@ -298,7 +298,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 	
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = SupermastersPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = SuperMasterPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -323,7 +323,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 	
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = SupermastersPeer::getFieldNames($keyType);
+		$keys = SuperMasterPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setIp($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setNameserver($arr[$keys[1]]);
@@ -334,12 +334,12 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 	
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(SupermastersPeer::DATABASE_NAME);
+		$criteria = new Criteria(SuperMasterPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(SupermastersPeer::IP)) $criteria->add(SupermastersPeer::IP, $this->ip);
-		if ($this->isColumnModified(SupermastersPeer::NAMESERVER)) $criteria->add(SupermastersPeer::NAMESERVER, $this->nameserver);
-		if ($this->isColumnModified(SupermastersPeer::ACCOUNT)) $criteria->add(SupermastersPeer::ACCOUNT, $this->account);
-		if ($this->isColumnModified(SupermastersPeer::ID)) $criteria->add(SupermastersPeer::ID, $this->id);
+		if ($this->isColumnModified(SuperMasterPeer::IP)) $criteria->add(SuperMasterPeer::IP, $this->ip);
+		if ($this->isColumnModified(SuperMasterPeer::NAMESERVER)) $criteria->add(SuperMasterPeer::NAMESERVER, $this->nameserver);
+		if ($this->isColumnModified(SuperMasterPeer::ACCOUNT)) $criteria->add(SuperMasterPeer::ACCOUNT, $this->account);
+		if ($this->isColumnModified(SuperMasterPeer::ID)) $criteria->add(SuperMasterPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -347,9 +347,9 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 	
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(SupermastersPeer::DATABASE_NAME);
+		$criteria = new Criteria(SuperMasterPeer::DATABASE_NAME);
 
-		$criteria->add(SupermastersPeer::ID, $this->id);
+		$criteria->add(SuperMasterPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -395,7 +395,7 @@ abstract class BaseSupermasters extends BaseObject  implements Persistent {
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new SupermastersPeer();
+			self::$peer = new SuperMasterPeer();
 		}
 		return self::$peer;
 	}

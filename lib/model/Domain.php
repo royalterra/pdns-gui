@@ -7,6 +7,6 @@
  *
  * @package lib.model
  */ 
-class Domain extends BaseDomains
+class Domain extends BaseDomain
 {
 }

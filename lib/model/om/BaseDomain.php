@@ -1,7 +1,7 @@
 <?php
 
 
-abstract class BaseDomains extends BaseObject  implements Persistent {
+abstract class BaseDomain extends BaseObject  implements Persistent {
 
 
 	
@@ -102,7 +102,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = DomainsPeer::ID;
+			$this->modifiedColumns[] = DomainPeer::ID;
 		}
 
 	} 
@@ -118,7 +118,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 		if ($this->name !== $v) {
 			$this->name = $v;
-			$this->modifiedColumns[] = DomainsPeer::NAME;
+			$this->modifiedColumns[] = DomainPeer::NAME;
 		}
 
 	} 
@@ -134,7 +134,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 		if ($this->master !== $v) {
 			$this->master = $v;
-			$this->modifiedColumns[] = DomainsPeer::MASTER;
+			$this->modifiedColumns[] = DomainPeer::MASTER;
 		}
 
 	} 
@@ -150,7 +150,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 		if ($this->last_check !== $v) {
 			$this->last_check = $v;
-			$this->modifiedColumns[] = DomainsPeer::LAST_CHECK;
+			$this->modifiedColumns[] = DomainPeer::LAST_CHECK;
 		}
 
 	} 
@@ -166,7 +166,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 		if ($this->type !== $v) {
 			$this->type = $v;
-			$this->modifiedColumns[] = DomainsPeer::TYPE;
+			$this->modifiedColumns[] = DomainPeer::TYPE;
 		}
 
 	} 
@@ -182,7 +182,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 		if ($this->notified_serial !== $v) {
 			$this->notified_serial = $v;
-			$this->modifiedColumns[] = DomainsPeer::NOTIFIED_SERIAL;
+			$this->modifiedColumns[] = DomainPeer::NOTIFIED_SERIAL;
 		}
 
 	} 
@@ -198,7 +198,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 		if ($this->account !== $v) {
 			$this->account = $v;
-			$this->modifiedColumns[] = DomainsPeer::ACCOUNT;
+			$this->modifiedColumns[] = DomainPeer::ACCOUNT;
 		}
 
 	} 
@@ -227,7 +227,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 						return $startcol + 7; 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Domains object", $e);
+			throw new PropelException("Error populating Domain object", $e);
 		}
 	}
 
@@ -239,12 +239,12 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(DomainsPeer::DATABASE_NAME);
+			$con = Propel::getConnection(DomainPeer::DATABASE_NAME);
 		}
 
 		try {
 			$con->begin();
-			DomainsPeer::doDelete($this, $con);
+			DomainPeer::doDelete($this, $con);
 			$this->setDeleted(true);
 			$con->commit();
 		} catch (PropelException $e) {
@@ -261,7 +261,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(DomainsPeer::DATABASE_NAME);
+			$con = Propel::getConnection(DomainPeer::DATABASE_NAME);
 		}
 
 		try {
@@ -284,12 +284,12 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 
 						if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = DomainsPeer::doInsert($this, $con);
+					$pk = DomainPeer::doInsert($this, $con);
 					$affectedRows += 1; 										 										 
 					$this->setId($pk);  
 					$this->setNew(false);
 				} else {
-					$affectedRows += DomainsPeer::doUpdate($this, $con);
+					$affectedRows += DomainPeer::doUpdate($this, $con);
 				}
 				$this->resetModified(); 			}
 
@@ -329,7 +329,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 			$failureMap = array();
 
 
-			if (($retval = DomainsPeer::doValidate($this, $columns)) !== true) {
+			if (($retval = DomainPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
@@ -344,7 +344,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 	
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = DomainsPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = DomainPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->getByPosition($pos);
 	}
 
@@ -381,7 +381,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 	
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = DomainsPeer::getFieldNames($keyType);
+		$keys = DomainPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
@@ -397,7 +397,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 	
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = DomainsPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = DomainPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -431,7 +431,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 	
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = DomainsPeer::getFieldNames($keyType);
+		$keys = DomainPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
@@ -445,15 +445,15 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 	
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(DomainsPeer::DATABASE_NAME);
+		$criteria = new Criteria(DomainPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(DomainsPeer::ID)) $criteria->add(DomainsPeer::ID, $this->id);
-		if ($this->isColumnModified(DomainsPeer::NAME)) $criteria->add(DomainsPeer::NAME, $this->name);
-		if ($this->isColumnModified(DomainsPeer::MASTER)) $criteria->add(DomainsPeer::MASTER, $this->master);
-		if ($this->isColumnModified(DomainsPeer::LAST_CHECK)) $criteria->add(DomainsPeer::LAST_CHECK, $this->last_check);
-		if ($this->isColumnModified(DomainsPeer::TYPE)) $criteria->add(DomainsPeer::TYPE, $this->type);
-		if ($this->isColumnModified(DomainsPeer::NOTIFIED_SERIAL)) $criteria->add(DomainsPeer::NOTIFIED_SERIAL, $this->notified_serial);
-		if ($this->isColumnModified(DomainsPeer::ACCOUNT)) $criteria->add(DomainsPeer::ACCOUNT, $this->account);
+		if ($this->isColumnModified(DomainPeer::ID)) $criteria->add(DomainPeer::ID, $this->id);
+		if ($this->isColumnModified(DomainPeer::NAME)) $criteria->add(DomainPeer::NAME, $this->name);
+		if ($this->isColumnModified(DomainPeer::MASTER)) $criteria->add(DomainPeer::MASTER, $this->master);
+		if ($this->isColumnModified(DomainPeer::LAST_CHECK)) $criteria->add(DomainPeer::LAST_CHECK, $this->last_check);
+		if ($this->isColumnModified(DomainPeer::TYPE)) $criteria->add(DomainPeer::TYPE, $this->type);
+		if ($this->isColumnModified(DomainPeer::NOTIFIED_SERIAL)) $criteria->add(DomainPeer::NOTIFIED_SERIAL, $this->notified_serial);
+		if ($this->isColumnModified(DomainPeer::ACCOUNT)) $criteria->add(DomainPeer::ACCOUNT, $this->account);
 
 		return $criteria;
 	}
@@ -461,9 +461,9 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 	
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(DomainsPeer::DATABASE_NAME);
+		$criteria = new Criteria(DomainPeer::DATABASE_NAME);
 
-		$criteria->add(DomainsPeer::ID, $this->id);
+		$criteria->add(DomainPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -515,7 +515,7 @@ abstract class BaseDomains extends BaseObject  implements Persistent {
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new DomainsPeer();
+			self::$peer = new DomainPeer();
 		}
 		return self::$peer;
 	}

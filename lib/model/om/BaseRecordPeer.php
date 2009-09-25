@@ -1,7 +1,7 @@
 <?php
 
 
-abstract class BaseRecordsPeer {
+abstract class BaseRecordPeer {
 
 	
 	const DATABASE_NAME = 'propel';
@@ -10,7 +10,7 @@ abstract class BaseRecordsPeer {
 	const TABLE_NAME = 'records';
 
 	
-	const CLASS_DEFAULT = 'lib.model.Records';
+	const CLASS_DEFAULT = 'lib.model.Record';
 
 	
 	const NUM_COLUMNS = 8;
@@ -50,7 +50,7 @@ abstract class BaseRecordsPeer {
 	
 	private static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'DomainId', 'Name', 'Type', 'Content', 'Ttl', 'Prio', 'ChangeDate', ),
-		BasePeer::TYPE_COLNAME => array (RecordsPeer::ID, RecordsPeer::DOMAIN_ID, RecordsPeer::NAME, RecordsPeer::TYPE, RecordsPeer::CONTENT, RecordsPeer::TTL, RecordsPeer::PRIO, RecordsPeer::CHANGE_DATE, ),
+		BasePeer::TYPE_COLNAME => array (RecordPeer::ID, RecordPeer::DOMAIN_ID, RecordPeer::NAME, RecordPeer::TYPE, RecordPeer::CONTENT, RecordPeer::TTL, RecordPeer::PRIO, RecordPeer::CHANGE_DATE, ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'domain_id', 'name', 'type', 'content', 'ttl', 'prio', 'change_date', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
@@ -58,7 +58,7 @@ abstract class BaseRecordsPeer {
 	
 	private static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'DomainId' => 1, 'Name' => 2, 'Type' => 3, 'Content' => 4, 'Ttl' => 5, 'Prio' => 6, 'ChangeDate' => 7, ),
-		BasePeer::TYPE_COLNAME => array (RecordsPeer::ID => 0, RecordsPeer::DOMAIN_ID => 1, RecordsPeer::NAME => 2, RecordsPeer::TYPE => 3, RecordsPeer::CONTENT => 4, RecordsPeer::TTL => 5, RecordsPeer::PRIO => 6, RecordsPeer::CHANGE_DATE => 7, ),
+		BasePeer::TYPE_COLNAME => array (RecordPeer::ID => 0, RecordPeer::DOMAIN_ID => 1, RecordPeer::NAME => 2, RecordPeer::TYPE => 3, RecordPeer::CONTENT => 4, RecordPeer::TTL => 5, RecordPeer::PRIO => 6, RecordPeer::CHANGE_DATE => 7, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'domain_id' => 1, 'name' => 2, 'type' => 3, 'content' => 4, 'ttl' => 5, 'prio' => 6, 'change_date' => 7, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
@@ -66,14 +66,14 @@ abstract class BaseRecordsPeer {
 	
 	public static function getMapBuilder()
 	{
-		include_once 'lib/model/map/RecordsMapBuilder.php';
-		return BasePeer::getMapBuilder('lib.model.map.RecordsMapBuilder');
+		include_once 'lib/model/map/RecordMapBuilder.php';
+		return BasePeer::getMapBuilder('lib.model.map.RecordMapBuilder');
 	}
 	
 	public static function getPhpNameMap()
 	{
 		if (self::$phpNameMap === null) {
-			$map = RecordsPeer::getTableMap();
+			$map = RecordPeer::getTableMap();
 			$columns = $map->getColumns();
 			$nameMap = array();
 			foreach ($columns as $column) {
@@ -107,28 +107,28 @@ abstract class BaseRecordsPeer {
 	
 	public static function alias($alias, $column)
 	{
-		return str_replace(RecordsPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(RecordPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	
 	public static function addSelectColumns(Criteria $criteria)
 	{
 
-		$criteria->addSelectColumn(RecordsPeer::ID);
+		$criteria->addSelectColumn(RecordPeer::ID);
 
-		$criteria->addSelectColumn(RecordsPeer::DOMAIN_ID);
+		$criteria->addSelectColumn(RecordPeer::DOMAIN_ID);
 
-		$criteria->addSelectColumn(RecordsPeer::NAME);
+		$criteria->addSelectColumn(RecordPeer::NAME);
 
-		$criteria->addSelectColumn(RecordsPeer::TYPE);
+		$criteria->addSelectColumn(RecordPeer::TYPE);
 
-		$criteria->addSelectColumn(RecordsPeer::CONTENT);
+		$criteria->addSelectColumn(RecordPeer::CONTENT);
 
-		$criteria->addSelectColumn(RecordsPeer::TTL);
+		$criteria->addSelectColumn(RecordPeer::TTL);
 
-		$criteria->addSelectColumn(RecordsPeer::PRIO);
+		$criteria->addSelectColumn(RecordPeer::PRIO);
 
-		$criteria->addSelectColumn(RecordsPeer::CHANGE_DATE);
+		$criteria->addSelectColumn(RecordPeer::CHANGE_DATE);
 
 	}
 
@@ -142,9 +142,9 @@ abstract class BaseRecordsPeer {
 
 				$criteria->clearSelectColumns()->clearOrderByColumns();
 		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->addSelectColumn(RecordsPeer::COUNT_DISTINCT);
+			$criteria->addSelectColumn(RecordPeer::COUNT_DISTINCT);
 		} else {
-			$criteria->addSelectColumn(RecordsPeer::COUNT);
+			$criteria->addSelectColumn(RecordPeer::COUNT);
 		}
 
 				foreach($criteria->getGroupByColumns() as $column)
@@ -152,7 +152,7 @@ abstract class BaseRecordsPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$rs = RecordsPeer::doSelectRS($criteria, $con);
+		$rs = RecordPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
 		} else {
@@ -164,7 +164,7 @@ abstract class BaseRecordsPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = RecordsPeer::doSelect($critcopy, $con);
+		$objects = RecordPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -173,7 +173,7 @@ abstract class BaseRecordsPeer {
 	
 	public static function doSelect(Criteria $criteria, $con = null)
 	{
-		return RecordsPeer::populateObjects(RecordsPeer::doSelectRS($criteria, $con));
+		return RecordPeer::populateObjects(RecordPeer::doSelectRS($criteria, $con));
 	}
 	
 	public static function doSelectRS(Criteria $criteria, $con = null)
@@ -184,7 +184,7 @@ abstract class BaseRecordsPeer {
 
 		if (!$criteria->getSelectColumns()) {
 			$criteria = clone $criteria;
-			RecordsPeer::addSelectColumns($criteria);
+			RecordPeer::addSelectColumns($criteria);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -196,7 +196,7 @@ abstract class BaseRecordsPeer {
 	{
 		$results = array();
 	
-				$cls = RecordsPeer::getOMClass();
+				$cls = RecordPeer::getOMClass();
 		$cls = Propel::import($cls);
 				while($rs->next()) {
 		
@@ -216,7 +216,7 @@ abstract class BaseRecordsPeer {
 	
 	public static function getOMClass()
 	{
-		return RecordsPeer::CLASS_DEFAULT;
+		return RecordPeer::CLASS_DEFAULT;
 	}
 
 	
@@ -230,7 +230,7 @@ abstract class BaseRecordsPeer {
 			$criteria = clone $values; 		} else {
 			$criteria = $values->buildCriteria(); 		}
 
-		$criteria->remove(RecordsPeer::ID); 
+		$criteria->remove(RecordPeer::ID); 
 
 				$criteria->setDbName(self::DATABASE_NAME);
 
@@ -257,8 +257,8 @@ abstract class BaseRecordsPeer {
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; 
-			$comparison = $criteria->getComparison(RecordsPeer::ID);
-			$selectCriteria->add(RecordsPeer::ID, $criteria->remove(RecordsPeer::ID), $comparison);
+			$comparison = $criteria->getComparison(RecordPeer::ID);
+			$selectCriteria->add(RecordPeer::ID, $criteria->remove(RecordPeer::ID), $comparison);
 
 		} else { 			$criteria = $values->buildCriteria(); 			$selectCriteria = $values->buildPkeyCriteria(); 		}
 
@@ -275,7 +275,7 @@ abstract class BaseRecordsPeer {
 		}
 		$affectedRows = 0; 		try {
 									$con->begin();
-			$affectedRows += BasePeer::doDeleteAll(RecordsPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(RecordPeer::TABLE_NAME, $con);
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -288,16 +288,16 @@ abstract class BaseRecordsPeer {
 	 public static function doDelete($values, $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(RecordsPeer::DATABASE_NAME);
+			$con = Propel::getConnection(RecordPeer::DATABASE_NAME);
 		}
 
 		if ($values instanceof Criteria) {
-			$criteria = clone $values; 		} elseif ($values instanceof Records) {
+			$criteria = clone $values; 		} elseif ($values instanceof Record) {
 
 			$criteria = $values->buildPkeyCriteria();
 		} else {
 						$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(RecordsPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(RecordPeer::ID, (array) $values, Criteria::IN);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -316,13 +316,13 @@ abstract class BaseRecordsPeer {
 	}
 
 	
-	public static function doValidate(Records $obj, $cols = null)
+	public static function doValidate(Record $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(RecordsPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(RecordsPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(RecordPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(RecordPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -338,11 +338,11 @@ abstract class BaseRecordsPeer {
 
 		}
 
-		$res =  BasePeer::doValidate(RecordsPeer::DATABASE_NAME, RecordsPeer::TABLE_NAME, $columns);
+		$res =  BasePeer::doValidate(RecordPeer::DATABASE_NAME, RecordPeer::TABLE_NAME, $columns);
     if ($res !== true) {
         $request = sfContext::getInstance()->getRequest();
         foreach ($res as $failed) {
-            $col = RecordsPeer::translateFieldname($failed->getColumn(), BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
+            $col = RecordPeer::translateFieldname($failed->getColumn(), BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
             $request->setError($col, $failed->getMessage());
         }
     }
@@ -357,12 +357,12 @@ abstract class BaseRecordsPeer {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 
-		$criteria = new Criteria(RecordsPeer::DATABASE_NAME);
+		$criteria = new Criteria(RecordPeer::DATABASE_NAME);
 
-		$criteria->add(RecordsPeer::ID, $pk);
+		$criteria->add(RecordPeer::ID, $pk);
 
 
-		$v = RecordsPeer::doSelect($criteria, $con);
+		$v = RecordPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -379,8 +379,8 @@ abstract class BaseRecordsPeer {
 			$objs = array();
 		} else {
 			$criteria = new Criteria();
-			$criteria->add(RecordsPeer::ID, $pks, Criteria::IN);
-			$objs = RecordsPeer::doSelect($criteria, $con);
+			$criteria->add(RecordPeer::ID, $pks, Criteria::IN);
+			$objs = RecordPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
@@ -388,11 +388,11 @@ abstract class BaseRecordsPeer {
 } 
 if (Propel::isInit()) {
 			try {
-		BaseRecordsPeer::getMapBuilder();
+		BaseRecordPeer::getMapBuilder();
 	} catch (Exception $e) {
 		Propel::log('Could not initialize Peer: ' . $e->getMessage(), Propel::LOG_ERR);
 	}
 } else {
-			require_once 'lib/model/map/RecordsMapBuilder.php';
-	Propel::registerMapBuilder('lib.model.map.RecordsMapBuilder');
+			require_once 'lib/model/map/RecordMapBuilder.php';
+	Propel::registerMapBuilder('lib.model.map.RecordMapBuilder');
 }

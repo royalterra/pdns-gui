@@ -2,10 +2,10 @@
 
 
 
-class RecordsMapBuilder {
+class RecordMapBuilder {
 
 	
-	const CLASS_NAME = 'lib.model.map.RecordsMapBuilder';
+	const CLASS_NAME = 'lib.model.map.RecordMapBuilder';
 
 	
 	private $dbMap;
@@ -28,7 +28,7 @@ class RecordsMapBuilder {
 		$this->dbMap = Propel::getDatabaseMap('propel');
 
 		$tMap = $this->dbMap->addTable('records');
-		$tMap->setPhpName('Records');
+		$tMap->setPhpName('Record');
 
 		$tMap->setUseIdGenerator(true);
 

@@ -2,10 +2,10 @@
 
 
 
-class DomainsMapBuilder {
+class DomainMapBuilder {
 
 	
-	const CLASS_NAME = 'lib.model.map.DomainsMapBuilder';
+	const CLASS_NAME = 'lib.model.map.DomainMapBuilder';
 
 	
 	private $dbMap;
@@ -28,7 +28,7 @@ class DomainsMapBuilder {
 		$this->dbMap = Propel::getDatabaseMap('propel');
 
 		$tMap = $this->dbMap->addTable('domains');
-		$tMap->setPhpName('Domains');
+		$tMap->setPhpName('Domain');
 
 		$tMap->setUseIdGenerator(true);
 

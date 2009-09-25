@@ -7,6 +7,6 @@
  *
  * @package lib.model
  */ 
-class Record extends BaseRecords
+class Record extends BaseRecord
 {
 }

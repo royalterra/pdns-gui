@@ -7,6 +7,6 @@
  *
  * @package lib.model
  */ 
-class DomainPeer extends BaseDomainsPeer
+class DomainPeer extends BaseDomainPeer
 {
 }

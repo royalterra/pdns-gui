@@ -7,6 +7,6 @@
  *
  * @package lib.model
  */ 
-class Supermaster extends BaseSupermasters
+class SuperMaster extends BaseSuperMaster
 {
 }

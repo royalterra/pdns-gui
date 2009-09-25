@@ -1,7 +1,7 @@
 <?php
 
 
-abstract class BaseRecords extends BaseObject  implements Persistent {
+abstract class BaseRecord extends BaseObject  implements Persistent {
 
 
 	
@@ -113,7 +113,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = RecordsPeer::ID;
+			$this->modifiedColumns[] = RecordPeer::ID;
 		}
 
 	} 
@@ -129,7 +129,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->domain_id !== $v) {
 			$this->domain_id = $v;
-			$this->modifiedColumns[] = RecordsPeer::DOMAIN_ID;
+			$this->modifiedColumns[] = RecordPeer::DOMAIN_ID;
 		}
 
 	} 
@@ -145,7 +145,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->name !== $v) {
 			$this->name = $v;
-			$this->modifiedColumns[] = RecordsPeer::NAME;
+			$this->modifiedColumns[] = RecordPeer::NAME;
 		}
 
 	} 
@@ -161,7 +161,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->type !== $v) {
 			$this->type = $v;
-			$this->modifiedColumns[] = RecordsPeer::TYPE;
+			$this->modifiedColumns[] = RecordPeer::TYPE;
 		}
 
 	} 
@@ -177,7 +177,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->content !== $v) {
 			$this->content = $v;
-			$this->modifiedColumns[] = RecordsPeer::CONTENT;
+			$this->modifiedColumns[] = RecordPeer::CONTENT;
 		}
 
 	} 
@@ -193,7 +193,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->ttl !== $v) {
 			$this->ttl = $v;
-			$this->modifiedColumns[] = RecordsPeer::TTL;
+			$this->modifiedColumns[] = RecordPeer::TTL;
 		}
 
 	} 
@@ -209,7 +209,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->prio !== $v) {
 			$this->prio = $v;
-			$this->modifiedColumns[] = RecordsPeer::PRIO;
+			$this->modifiedColumns[] = RecordPeer::PRIO;
 		}
 
 	} 
@@ -225,7 +225,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 		if ($this->change_date !== $v) {
 			$this->change_date = $v;
-			$this->modifiedColumns[] = RecordsPeer::CHANGE_DATE;
+			$this->modifiedColumns[] = RecordPeer::CHANGE_DATE;
 		}
 
 	} 
@@ -256,7 +256,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 						return $startcol + 8; 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Records object", $e);
+			throw new PropelException("Error populating Record object", $e);
 		}
 	}
 
@@ -268,12 +268,12 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(RecordsPeer::DATABASE_NAME);
+			$con = Propel::getConnection(RecordPeer::DATABASE_NAME);
 		}
 
 		try {
 			$con->begin();
-			RecordsPeer::doDelete($this, $con);
+			RecordPeer::doDelete($this, $con);
 			$this->setDeleted(true);
 			$con->commit();
 		} catch (PropelException $e) {
@@ -290,7 +290,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(RecordsPeer::DATABASE_NAME);
+			$con = Propel::getConnection(RecordPeer::DATABASE_NAME);
 		}
 
 		try {
@@ -313,12 +313,12 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 
 						if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = RecordsPeer::doInsert($this, $con);
+					$pk = RecordPeer::doInsert($this, $con);
 					$affectedRows += 1; 										 										 
 					$this->setId($pk);  
 					$this->setNew(false);
 				} else {
-					$affectedRows += RecordsPeer::doUpdate($this, $con);
+					$affectedRows += RecordPeer::doUpdate($this, $con);
 				}
 				$this->resetModified(); 			}
 
@@ -358,7 +358,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 			$failureMap = array();
 
 
-			if (($retval = RecordsPeer::doValidate($this, $columns)) !== true) {
+			if (($retval = RecordPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
@@ -373,7 +373,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 	
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = RecordsPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = RecordPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->getByPosition($pos);
 	}
 
@@ -413,7 +413,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 	
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = RecordsPeer::getFieldNames($keyType);
+		$keys = RecordPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getDomainId(),
@@ -430,7 +430,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 	
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = RecordsPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = RecordPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -467,7 +467,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 	
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = RecordsPeer::getFieldNames($keyType);
+		$keys = RecordPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setDomainId($arr[$keys[1]]);
@@ -482,16 +482,16 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 	
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(RecordsPeer::DATABASE_NAME);
+		$criteria = new Criteria(RecordPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(RecordsPeer::ID)) $criteria->add(RecordsPeer::ID, $this->id);
-		if ($this->isColumnModified(RecordsPeer::DOMAIN_ID)) $criteria->add(RecordsPeer::DOMAIN_ID, $this->domain_id);
-		if ($this->isColumnModified(RecordsPeer::NAME)) $criteria->add(RecordsPeer::NAME, $this->name);
-		if ($this->isColumnModified(RecordsPeer::TYPE)) $criteria->add(RecordsPeer::TYPE, $this->type);
-		if ($this->isColumnModified(RecordsPeer::CONTENT)) $criteria->add(RecordsPeer::CONTENT, $this->content);
-		if ($this->isColumnModified(RecordsPeer::TTL)) $criteria->add(RecordsPeer::TTL, $this->ttl);
-		if ($this->isColumnModified(RecordsPeer::PRIO)) $criteria->add(RecordsPeer::PRIO, $this->prio);
-		if ($this->isColumnModified(RecordsPeer::CHANGE_DATE)) $criteria->add(RecordsPeer::CHANGE_DATE, $this->change_date);
+		if ($this->isColumnModified(RecordPeer::ID)) $criteria->add(RecordPeer::ID, $this->id);
+		if ($this->isColumnModified(RecordPeer::DOMAIN_ID)) $criteria->add(RecordPeer::DOMAIN_ID, $this->domain_id);
+		if ($this->isColumnModified(RecordPeer::NAME)) $criteria->add(RecordPeer::NAME, $this->name);
+		if ($this->isColumnModified(RecordPeer::TYPE)) $criteria->add(RecordPeer::TYPE, $this->type);
+		if ($this->isColumnModified(RecordPeer::CONTENT)) $criteria->add(RecordPeer::CONTENT, $this->content);
+		if ($this->isColumnModified(RecordPeer::TTL)) $criteria->add(RecordPeer::TTL, $this->ttl);
+		if ($this->isColumnModified(RecordPeer::PRIO)) $criteria->add(RecordPeer::PRIO, $this->prio);
+		if ($this->isColumnModified(RecordPeer::CHANGE_DATE)) $criteria->add(RecordPeer::CHANGE_DATE, $this->change_date);
 
 		return $criteria;
 	}
@@ -499,9 +499,9 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 	
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(RecordsPeer::DATABASE_NAME);
+		$criteria = new Criteria(RecordPeer::DATABASE_NAME);
 
-		$criteria->add(RecordsPeer::ID, $this->id);
+		$criteria->add(RecordPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -555,7 +555,7 @@ abstract class BaseRecords extends BaseObject  implements Persistent {
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new RecordsPeer();
+			self::$peer = new RecordPeer();
 		}
 		return self::$peer;
 	}

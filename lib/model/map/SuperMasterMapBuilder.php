@@ -2,10 +2,10 @@
 
 
 
-class SupermastersMapBuilder {
+class SuperMasterMapBuilder {
 
 	
-	const CLASS_NAME = 'lib.model.map.SupermastersMapBuilder';
+	const CLASS_NAME = 'lib.model.map.SuperMasterMapBuilder';
 
 	
 	private $dbMap;
@@ -28,7 +28,7 @@ class SupermastersMapBuilder {
 		$this->dbMap = Propel::getDatabaseMap('propel');
 
 		$tMap = $this->dbMap->addTable('supermasters');
-		$tMap->setPhpName('Supermasters');
+		$tMap->setPhpName('SuperMaster');
 
 		$tMap->setUseIdGenerator(true);
 

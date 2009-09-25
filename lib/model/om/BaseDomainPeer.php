@@ -1,35 +1,44 @@
 <?php
 
 
-abstract class BaseSupermastersPeer {
+abstract class BaseDomainPeer {
 
 	
 	const DATABASE_NAME = 'propel';
 
 	
-	const TABLE_NAME = 'supermasters';
+	const TABLE_NAME = 'domains';
 
 	
-	const CLASS_DEFAULT = 'lib.model.Supermasters';
+	const CLASS_DEFAULT = 'lib.model.Domain';
 
 	
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 7;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 
 	
-	const IP = 'supermasters.IP';
+	const ID = 'domains.ID';
 
 	
-	const NAMESERVER = 'supermasters.NAMESERVER';
+	const NAME = 'domains.NAME';
 
 	
-	const ACCOUNT = 'supermasters.ACCOUNT';
+	const MASTER = 'domains.MASTER';
 
 	
-	const ID = 'supermasters.ID';
+	const LAST_CHECK = 'domains.LAST_CHECK';
+
+	
+	const TYPE = 'domains.TYPE';
+
+	
+	const NOTIFIED_SERIAL = 'domains.NOTIFIED_SERIAL';
+
+	
+	const ACCOUNT = 'domains.ACCOUNT';
 
 	
 	private static $phpNameMap = null;
@@ -37,31 +46,31 @@ abstract class BaseSupermastersPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Ip', 'Nameserver', 'Account', 'Id', ),
-		BasePeer::TYPE_COLNAME => array (SupermastersPeer::IP, SupermastersPeer::NAMESERVER, SupermastersPeer::ACCOUNT, SupermastersPeer::ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('ip', 'nameserver', 'account', 'id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Master', 'LastCheck', 'Type', 'NotifiedSerial', 'Account', ),
+		BasePeer::TYPE_COLNAME => array (DomainPeer::ID, DomainPeer::NAME, DomainPeer::MASTER, DomainPeer::LAST_CHECK, DomainPeer::TYPE, DomainPeer::NOTIFIED_SERIAL, DomainPeer::ACCOUNT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'master', 'last_check', 'type', 'notified_serial', 'account', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Ip' => 0, 'Nameserver' => 1, 'Account' => 2, 'Id' => 3, ),
-		BasePeer::TYPE_COLNAME => array (SupermastersPeer::IP => 0, SupermastersPeer::NAMESERVER => 1, SupermastersPeer::ACCOUNT => 2, SupermastersPeer::ID => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('ip' => 0, 'nameserver' => 1, 'account' => 2, 'id' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Master' => 2, 'LastCheck' => 3, 'Type' => 4, 'NotifiedSerial' => 5, 'Account' => 6, ),
+		BasePeer::TYPE_COLNAME => array (DomainPeer::ID => 0, DomainPeer::NAME => 1, DomainPeer::MASTER => 2, DomainPeer::LAST_CHECK => 3, DomainPeer::TYPE => 4, DomainPeer::NOTIFIED_SERIAL => 5, DomainPeer::ACCOUNT => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'master' => 2, 'last_check' => 3, 'type' => 4, 'notified_serial' => 5, 'account' => 6, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
 	public static function getMapBuilder()
 	{
-		include_once 'lib/model/map/SupermastersMapBuilder.php';
-		return BasePeer::getMapBuilder('lib.model.map.SupermastersMapBuilder');
+		include_once 'lib/model/map/DomainMapBuilder.php';
+		return BasePeer::getMapBuilder('lib.model.map.DomainMapBuilder');
 	}
 	
 	public static function getPhpNameMap()
 	{
 		if (self::$phpNameMap === null) {
-			$map = SupermastersPeer::getTableMap();
+			$map = DomainPeer::getTableMap();
 			$columns = $map->getColumns();
 			$nameMap = array();
 			foreach ($columns as $column) {
@@ -95,25 +104,31 @@ abstract class BaseSupermastersPeer {
 	
 	public static function alias($alias, $column)
 	{
-		return str_replace(SupermastersPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(DomainPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	
 	public static function addSelectColumns(Criteria $criteria)
 	{
 
-		$criteria->addSelectColumn(SupermastersPeer::IP);
+		$criteria->addSelectColumn(DomainPeer::ID);
 
-		$criteria->addSelectColumn(SupermastersPeer::NAMESERVER);
+		$criteria->addSelectColumn(DomainPeer::NAME);
 
-		$criteria->addSelectColumn(SupermastersPeer::ACCOUNT);
+		$criteria->addSelectColumn(DomainPeer::MASTER);
 
-		$criteria->addSelectColumn(SupermastersPeer::ID);
+		$criteria->addSelectColumn(DomainPeer::LAST_CHECK);
+
+		$criteria->addSelectColumn(DomainPeer::TYPE);
+
+		$criteria->addSelectColumn(DomainPeer::NOTIFIED_SERIAL);
+
+		$criteria->addSelectColumn(DomainPeer::ACCOUNT);
 
 	}
 
-	const COUNT = 'COUNT(supermasters.ID)';
-	const COUNT_DISTINCT = 'COUNT(DISTINCT supermasters.ID)';
+	const COUNT = 'COUNT(domains.ID)';
+	const COUNT_DISTINCT = 'COUNT(DISTINCT domains.ID)';
 
 	
 	public static function doCount(Criteria $criteria, $distinct = false, $con = null)
@@ -122,9 +137,9 @@ abstract class BaseSupermastersPeer {
 
 				$criteria->clearSelectColumns()->clearOrderByColumns();
 		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->addSelectColumn(SupermastersPeer::COUNT_DISTINCT);
+			$criteria->addSelectColumn(DomainPeer::COUNT_DISTINCT);
 		} else {
-			$criteria->addSelectColumn(SupermastersPeer::COUNT);
+			$criteria->addSelectColumn(DomainPeer::COUNT);
 		}
 
 				foreach($criteria->getGroupByColumns() as $column)
@@ -132,7 +147,7 @@ abstract class BaseSupermastersPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$rs = SupermastersPeer::doSelectRS($criteria, $con);
+		$rs = DomainPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
 		} else {
@@ -144,7 +159,7 @@ abstract class BaseSupermastersPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = SupermastersPeer::doSelect($critcopy, $con);
+		$objects = DomainPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -153,7 +168,7 @@ abstract class BaseSupermastersPeer {
 	
 	public static function doSelect(Criteria $criteria, $con = null)
 	{
-		return SupermastersPeer::populateObjects(SupermastersPeer::doSelectRS($criteria, $con));
+		return DomainPeer::populateObjects(DomainPeer::doSelectRS($criteria, $con));
 	}
 	
 	public static function doSelectRS(Criteria $criteria, $con = null)
@@ -164,7 +179,7 @@ abstract class BaseSupermastersPeer {
 
 		if (!$criteria->getSelectColumns()) {
 			$criteria = clone $criteria;
-			SupermastersPeer::addSelectColumns($criteria);
+			DomainPeer::addSelectColumns($criteria);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -176,7 +191,7 @@ abstract class BaseSupermastersPeer {
 	{
 		$results = array();
 	
-				$cls = SupermastersPeer::getOMClass();
+				$cls = DomainPeer::getOMClass();
 		$cls = Propel::import($cls);
 				while($rs->next()) {
 		
@@ -196,7 +211,7 @@ abstract class BaseSupermastersPeer {
 	
 	public static function getOMClass()
 	{
-		return SupermastersPeer::CLASS_DEFAULT;
+		return DomainPeer::CLASS_DEFAULT;
 	}
 
 	
@@ -210,7 +225,7 @@ abstract class BaseSupermastersPeer {
 			$criteria = clone $values; 		} else {
 			$criteria = $values->buildCriteria(); 		}
 
-		$criteria->remove(SupermastersPeer::ID); 
+		$criteria->remove(DomainPeer::ID); 
 
 				$criteria->setDbName(self::DATABASE_NAME);
 
@@ -237,8 +252,8 @@ abstract class BaseSupermastersPeer {
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; 
-			$comparison = $criteria->getComparison(SupermastersPeer::ID);
-			$selectCriteria->add(SupermastersPeer::ID, $criteria->remove(SupermastersPeer::ID), $comparison);
+			$comparison = $criteria->getComparison(DomainPeer::ID);
+			$selectCriteria->add(DomainPeer::ID, $criteria->remove(DomainPeer::ID), $comparison);
 
 		} else { 			$criteria = $values->buildCriteria(); 			$selectCriteria = $values->buildPkeyCriteria(); 		}
 
@@ -255,7 +270,7 @@ abstract class BaseSupermastersPeer {
 		}
 		$affectedRows = 0; 		try {
 									$con->begin();
-			$affectedRows += BasePeer::doDeleteAll(SupermastersPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(DomainPeer::TABLE_NAME, $con);
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -268,16 +283,16 @@ abstract class BaseSupermastersPeer {
 	 public static function doDelete($values, $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(SupermastersPeer::DATABASE_NAME);
+			$con = Propel::getConnection(DomainPeer::DATABASE_NAME);
 		}
 
 		if ($values instanceof Criteria) {
-			$criteria = clone $values; 		} elseif ($values instanceof Supermasters) {
+			$criteria = clone $values; 		} elseif ($values instanceof Domain) {
 
 			$criteria = $values->buildPkeyCriteria();
 		} else {
 						$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(SupermastersPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(DomainPeer::ID, (array) $values, Criteria::IN);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -296,13 +311,13 @@ abstract class BaseSupermastersPeer {
 	}
 
 	
-	public static function doValidate(Supermasters $obj, $cols = null)
+	public static function doValidate(Domain $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(SupermastersPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(SupermastersPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(DomainPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(DomainPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -318,11 +333,11 @@ abstract class BaseSupermastersPeer {
 
 		}
 
-		$res =  BasePeer::doValidate(SupermastersPeer::DATABASE_NAME, SupermastersPeer::TABLE_NAME, $columns);
+		$res =  BasePeer::doValidate(DomainPeer::DATABASE_NAME, DomainPeer::TABLE_NAME, $columns);
     if ($res !== true) {
         $request = sfContext::getInstance()->getRequest();
         foreach ($res as $failed) {
-            $col = SupermastersPeer::translateFieldname($failed->getColumn(), BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
+            $col = DomainPeer::translateFieldname($failed->getColumn(), BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
             $request->setError($col, $failed->getMessage());
         }
     }
@@ -337,12 +352,12 @@ abstract class BaseSupermastersPeer {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 
-		$criteria = new Criteria(SupermastersPeer::DATABASE_NAME);
+		$criteria = new Criteria(DomainPeer::DATABASE_NAME);
 
-		$criteria->add(SupermastersPeer::ID, $pk);
+		$criteria->add(DomainPeer::ID, $pk);
 
 
-		$v = SupermastersPeer::doSelect($criteria, $con);
+		$v = DomainPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -359,8 +374,8 @@ abstract class BaseSupermastersPeer {
 			$objs = array();
 		} else {
 			$criteria = new Criteria();
-			$criteria->add(SupermastersPeer::ID, $pks, Criteria::IN);
-			$objs = SupermastersPeer::doSelect($criteria, $con);
+			$criteria->add(DomainPeer::ID, $pks, Criteria::IN);
+			$objs = DomainPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
@@ -368,11 +383,11 @@ abstract class BaseSupermastersPeer {
 } 
 if (Propel::isInit()) {
 			try {
-		BaseSupermastersPeer::getMapBuilder();
+		BaseDomainPeer::getMapBuilder();
 	} catch (Exception $e) {
 		Propel::log('Could not initialize Peer: ' . $e->getMessage(), Propel::LOG_ERR);
 	}
 } else {
-			require_once 'lib/model/map/SupermastersMapBuilder.php';
-	Propel::registerMapBuilder('lib.model.map.SupermastersMapBuilder');
+			require_once 'lib/model/map/DomainMapBuilder.php';
+	Propel::registerMapBuilder('lib.model.map.DomainMapBuilder');
 }

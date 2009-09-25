@@ -7,6 +7,6 @@
  *
  * @package lib.model
  */ 
-class SupermasterPeer extends BaseSupermastersPeer
+class SuperMasterPeer extends BaseSuperMasterPeer
 {
 }
