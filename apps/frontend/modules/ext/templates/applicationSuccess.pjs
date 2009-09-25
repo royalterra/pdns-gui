@@ -18,6 +18,8 @@ pdnsgui.app = function() {
   
   <?php include 'lib/common/Window.js' ?>
   
+  <?php include 'lib/store/Domain.js' ?>
+  
   <?php include 'storeLoader.js' ?>
   
   <?php include 'lib/panel/North.js' ?>

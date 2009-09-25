@@ -37,6 +37,7 @@ function loadStores(){
   var storesCount = 0;
   
   var stores = [
+    'DomainStore'
   ];
   
   Ext.each(stores,function(store){
