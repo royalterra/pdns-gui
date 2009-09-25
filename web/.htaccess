@@ -11,6 +11,7 @@ Options +FollowSymLinks +ExecCGI
   # comment the following 3 lines to allow periods in routes
   RewriteCond %{REQUEST_URI} \..+$
   RewriteCond %{REQUEST_URI} !\.html$
+  RewriteCond %{REQUEST_URI} !\.pjs$
   RewriteRule .* - [L]
 
   # we check if the .html version is here (caching)

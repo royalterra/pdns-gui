@@ -1,0 +1,46 @@
+// reference local blank image
+Ext.BLANK_IMAGE_URL = '/extjs/lib/resources/images/default/s.gif';
+
+// load plugins
+<?php include 'plugins.js' ?>
+ 
+// create namespace
+Ext.namespace('pdnsgui');
+ 
+// create application
+pdnsgui.app = function() {
+  // do NOT access DOM from here; elements don't exist yet
+  
+  // private variables
+  <?php echo ext_log('Setting private vars') ?>
+  
+  var viewport;
+  
+  <?php include 'lib/common/Window.js' ?>
+  
+  <?php include 'storeLoader.js' ?>
+  
+  <?php include 'lib/panel/North.js' ?>
+  <?php include 'lib/panel/South.js' ?>
+  
+
+  // private functions
+
+  // public space
+  return {
+    // public properties, e.g. strings to translate
+    
+    // public methods
+    init: function() {
+      
+      <?php echo ext_log('Running pdnsgui.app.init') ?>
+      
+      Ext.QuickTips.init();
+      
+      <?php include 'viewport.js' ?>
+      
+    } // end of init
+  };
+}(); // end of app
+
+Ext.onReady(pdnsgui.app.init, pdnsgui.app);
