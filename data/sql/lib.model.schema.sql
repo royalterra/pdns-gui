@@ -65,5 +65,42 @@ CREATE TABLE `supermasters`
 	PRIMARY KEY (`id`)
 )Type=MyISAM;
 
+#-----------------------------------------------------------------------------
+#-- template
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `template`;
+
+
+CREATE TABLE `template`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255),
+	PRIMARY KEY (`id`)
+)Type=MyISAM;
+
+#-----------------------------------------------------------------------------
+#-- template_record
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `template_record`;
+
+
+CREATE TABLE `template_record`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`template_id` INTEGER,
+	`name` VARCHAR(255),
+	`type` VARCHAR(6),
+	`content` VARCHAR(255),
+	`ttl` INTEGER,
+	`prio` INTEGER,
+	PRIMARY KEY (`id`),
+	INDEX `template_record_FI_1` (`template_id`),
+	CONSTRAINT `template_record_FK_1`
+		FOREIGN KEY (`template_id`)
+		REFERENCES `template` (`id`)
+)Type=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

@@ -84,3 +84,43 @@ propel:
     account: 
       type: VARCHAR
       size: 40
+
+  template: 
+    _attributes:
+      idMethod: native
+      phpName: Template
+    id:
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    name:
+      type: VARCHAR
+      size: 255
+
+  template_record: 
+    _attributes: 
+      idMethod: native
+      phpName: TemplateRecord
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    template_id: 
+      type: INTEGER
+      foreignTable: template
+      foreignReference: id
+    name: 
+      type: VARCHAR
+      size: 255
+    type: 
+      type: VARCHAR
+      size: 6
+    content: 
+      type: VARCHAR
+      size: 255
+    ttl: 
+      type: INTEGER
+    prio: 
+      type: INTEGER
