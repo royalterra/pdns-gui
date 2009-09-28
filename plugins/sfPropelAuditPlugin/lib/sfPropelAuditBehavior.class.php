@@ -193,24 +193,12 @@ class sfPropelAuditBehavior
    */
   private function save($object, $object_key, $changes, $query, $type)
   {
-    $user = sfContext::getInstance()->getUser();
-    
     $audit = new Audit();
-    
-    if (SF_APP == 'control' || SF_APP == 'partner')
-      $user_type = 'P';
-    else if (SF_APP == 'supplier')
-      $user_type = 'S';
-    else
-      $user_type = 'U';
-    
     $audit->setRemoteIpAddress($this->getRemoteIP());
     $audit->setObject($object);
     $audit->setObjectKey($object_key);
     $audit->setObjectChanges($changes);
     $audit->setQuery($query);
-    $audit->setUserType($user_type);
-    $audit->setUserId($user->getId());
     $audit->setType($type);
     $audit->setCreatedAt(date($this->dateFormat));
     $audit->save();

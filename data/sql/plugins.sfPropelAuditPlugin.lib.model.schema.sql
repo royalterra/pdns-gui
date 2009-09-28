@@ -13,8 +13,6 @@ DROP TABLE IF EXISTS `audit`;
 CREATE TABLE `audit`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`user_type` CHAR(1),
-	`user_id` INTEGER,
 	`remote_ip_address` VARCHAR(255),
 	`object` VARCHAR(255),
 	`object_key` VARCHAR(255),
