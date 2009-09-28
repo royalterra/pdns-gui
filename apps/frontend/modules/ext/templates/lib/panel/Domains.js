@@ -1,5 +1,6 @@
 var Domains = new Ext.grid.GridPanel({
   title: 'Domains',
+  iconCls: 'icon-world',
   store: DomainStore,
   hideHeaders: true,
   disableSelection: true,
@@ -21,5 +22,16 @@ var Domains = new Ext.grid.GridPanel({
       
       var record = grid.getStore().getAt(rowIndex).data;
     }
-  }
+  },
+  tbar: [
+    {
+      xtype: 'tbfill'
+    },{
+      text: 'Add',
+      icon: '/images/add.gif',
+      handler: function(){
+        DomainWindow();
+      }
+    }
+  ]
 });
