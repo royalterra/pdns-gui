@@ -24,7 +24,7 @@ pdnsgui.app = function() {
   
   <?php include 'lib/panel/North.js' ?>
   <?php include 'lib/panel/South.js' ?>
-  
+  <?php include 'lib/panel/Domains.js' ?>
 
   // private functions
 

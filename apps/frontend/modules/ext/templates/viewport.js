@@ -20,7 +20,7 @@ viewport = new Ext.Viewport({
       width:    200,
       border:   false,
       items: [ 
-        { title: 'Domains', html: 'east' } 
+        Domains
       ]
     },{
       id: 'center-region',
