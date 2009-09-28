@@ -70,7 +70,7 @@ class MyActions extends sfActions
     {
       $obj = new $class;
       
-      $fields = array_keys($obj->toStore());
+      $fields = array_keys($obj->toArray(BasePeer::TYPE_FIELDNAME));
     }
     
     return $this->renderJson(array(
