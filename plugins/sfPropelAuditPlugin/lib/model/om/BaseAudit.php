@@ -13,14 +13,6 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 
 
 	
-	protected $user_type;
-
-
-	
-	protected $user_id;
-
-
-	
 	protected $remote_ip_address;
 
 
@@ -58,20 +50,6 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 	{
 
 		return $this->id;
-	}
-
-	
-	public function getUserType()
-	{
-
-		return $this->user_type;
-	}
-
-	
-	public function getUserId()
-	{
-
-		return $this->user_id;
 	}
 
 	
@@ -151,38 +129,6 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		if ($this->id !== $v) {
 			$this->id = $v;
 			$this->modifiedColumns[] = AuditPeer::ID;
-		}
-
-	} 
-	
-	public function setUserType($v)
-	{
-
-		
-		
-		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->user_type !== $v) {
-			$this->user_type = $v;
-			$this->modifiedColumns[] = AuditPeer::USER_TYPE;
-		}
-
-	} 
-	
-	public function setUserId($v)
-	{
-
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->user_id !== $v) {
-			$this->user_id = $v;
-			$this->modifiedColumns[] = AuditPeer::USER_ID;
 		}
 
 	} 
@@ -306,29 +252,25 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 
 			$this->id = $rs->getInt($startcol + 0);
 
-			$this->user_type = $rs->getString($startcol + 1);
+			$this->remote_ip_address = $rs->getString($startcol + 1);
 
-			$this->user_id = $rs->getInt($startcol + 2);
+			$this->object = $rs->getString($startcol + 2);
 
-			$this->remote_ip_address = $rs->getString($startcol + 3);
+			$this->object_key = $rs->getString($startcol + 3);
 
-			$this->object = $rs->getString($startcol + 4);
+			$this->object_changes = $rs->getString($startcol + 4);
 
-			$this->object_key = $rs->getString($startcol + 5);
+			$this->query = $rs->getString($startcol + 5);
 
-			$this->object_changes = $rs->getString($startcol + 6);
+			$this->type = $rs->getString($startcol + 6);
 
-			$this->query = $rs->getString($startcol + 7);
-
-			$this->type = $rs->getString($startcol + 8);
-
-			$this->created_at = $rs->getTimestamp($startcol + 9, null);
+			$this->created_at = $rs->getTimestamp($startcol + 7, null);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 10; 
+						return $startcol + 8; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Audit object", $e);
 		}
@@ -337,17 +279,6 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 	
 	public function delete($con = null)
 	{
-
-    foreach (sfMixer::getCallables('BaseAudit:delete:pre') as $callable)
-    {
-      $ret = call_user_func($callable, $this, $con);
-      if ($ret)
-      {
-        return;
-      }
-    }
-
-
 		if ($this->isDeleted()) {
 			throw new PropelException("This object has already been deleted.");
 		}
@@ -365,28 +296,11 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 			$con->rollback();
 			throw $e;
 		}
-	
+	}
 
-    foreach (sfMixer::getCallables('BaseAudit:delete:post') as $callable)
-    {
-      call_user_func($callable, $this, $con);
-    }
-
-  }
 	
 	public function save($con = null)
 	{
-
-    foreach (sfMixer::getCallables('BaseAudit:save:pre') as $callable)
-    {
-      $affectedRows = call_user_func($callable, $this, $con);
-      if (is_int($affectedRows))
-      {
-        return $affectedRows;
-      }
-    }
-
-
     if ($this->isNew() && !$this->isColumnModified(AuditPeer::CREATED_AT))
     {
       $this->setCreatedAt(time());
@@ -404,11 +318,6 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 			$con->begin();
 			$affectedRows = $this->doSave($con);
 			$con->commit();
-    foreach (sfMixer::getCallables('BaseAudit:save:post') as $callable)
-    {
-      call_user_func($callable, $this, $con, $affectedRows);
-    }
-
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollback();
@@ -497,30 +406,24 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 				return $this->getID();
 				break;
 			case 1:
-				return $this->getUserType();
-				break;
-			case 2:
-				return $this->getUserId();
-				break;
-			case 3:
 				return $this->getRemoteIpAddress();
 				break;
-			case 4:
+			case 2:
 				return $this->getObject();
 				break;
-			case 5:
+			case 3:
 				return $this->getObjectKey();
 				break;
-			case 6:
+			case 4:
 				return $this->getObjectChanges();
 				break;
-			case 7:
+			case 5:
 				return $this->getQuery();
 				break;
-			case 8:
+			case 6:
 				return $this->getType();
 				break;
-			case 9:
+			case 7:
 				return $this->getCreatedAt();
 				break;
 			default:
@@ -534,15 +437,13 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		$keys = AuditPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getID(),
-			$keys[1] => $this->getUserType(),
-			$keys[2] => $this->getUserId(),
-			$keys[3] => $this->getRemoteIpAddress(),
-			$keys[4] => $this->getObject(),
-			$keys[5] => $this->getObjectKey(),
-			$keys[6] => $this->getObjectChanges(),
-			$keys[7] => $this->getQuery(),
-			$keys[8] => $this->getType(),
-			$keys[9] => $this->getCreatedAt(),
+			$keys[1] => $this->getRemoteIpAddress(),
+			$keys[2] => $this->getObject(),
+			$keys[3] => $this->getObjectKey(),
+			$keys[4] => $this->getObjectChanges(),
+			$keys[5] => $this->getQuery(),
+			$keys[6] => $this->getType(),
+			$keys[7] => $this->getCreatedAt(),
 		);
 		return $result;
 	}
@@ -562,30 +463,24 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 				$this->setID($value);
 				break;
 			case 1:
-				$this->setUserType($value);
-				break;
-			case 2:
-				$this->setUserId($value);
-				break;
-			case 3:
 				$this->setRemoteIpAddress($value);
 				break;
-			case 4:
+			case 2:
 				$this->setObject($value);
 				break;
-			case 5:
+			case 3:
 				$this->setObjectKey($value);
 				break;
-			case 6:
+			case 4:
 				$this->setObjectChanges($value);
 				break;
-			case 7:
+			case 5:
 				$this->setQuery($value);
 				break;
-			case 8:
+			case 6:
 				$this->setType($value);
 				break;
-			case 9:
+			case 7:
 				$this->setCreatedAt($value);
 				break;
 		} 	}
@@ -596,15 +491,13 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		$keys = AuditPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setID($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setUserType($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setUserId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setRemoteIpAddress($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setObject($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setObjectKey($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setObjectChanges($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setQuery($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setType($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+		if (array_key_exists($keys[1], $arr)) $this->setRemoteIpAddress($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setObject($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setObjectKey($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setObjectChanges($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setQuery($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setType($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
 	}
 
 	
@@ -613,8 +506,6 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		$criteria = new Criteria(AuditPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(AuditPeer::ID)) $criteria->add(AuditPeer::ID, $this->id);
-		if ($this->isColumnModified(AuditPeer::USER_TYPE)) $criteria->add(AuditPeer::USER_TYPE, $this->user_type);
-		if ($this->isColumnModified(AuditPeer::USER_ID)) $criteria->add(AuditPeer::USER_ID, $this->user_id);
 		if ($this->isColumnModified(AuditPeer::REMOTE_IP_ADDRESS)) $criteria->add(AuditPeer::REMOTE_IP_ADDRESS, $this->remote_ip_address);
 		if ($this->isColumnModified(AuditPeer::OBJECT)) $criteria->add(AuditPeer::OBJECT, $this->object);
 		if ($this->isColumnModified(AuditPeer::OBJECT_KEY)) $criteria->add(AuditPeer::OBJECT_KEY, $this->object_key);
@@ -651,10 +542,6 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 	
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
-		$copyObj->setUserType($this->user_type);
-
-		$copyObj->setUserId($this->user_id);
 
 		$copyObj->setRemoteIpAddress($this->remote_ip_address);
 
@@ -693,19 +580,5 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		}
 		return self::$peer;
 	}
-
-
-  public function __call($method, $arguments)
-  {
-    if (!$callable = sfMixer::getCallable('BaseAudit:'.$method))
-    {
-      throw new sfException(sprintf('Call to undefined method BaseAudit::%s', $method));
-    }
-
-    array_unshift($arguments, $this);
-
-    return call_user_func_array($callable, $arguments);
-  }
-
 
 } 

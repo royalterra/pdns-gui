@@ -1,7 +1,7 @@
----
 propel: 
   _attributes: 
     package: lib.model
+  
   domains: 
     _attributes: 
       idMethod: native
@@ -32,6 +32,7 @@ propel:
     _uniques: 
       name_index: 
         - name
+  
   records: 
     _attributes: 
       idMethod: native
@@ -43,6 +44,8 @@ propel:
       primaryKey: true
     domain_id: 
       type: INTEGER
+      foreignTable: domains
+      foreignReference: id
     name: 
       type: VARCHAR
       size: 255
@@ -66,6 +69,7 @@ propel:
         - type
       domain_id: 
         - domain_id
+  
   supermasters:
     _attributes: 
       phpName: SuperMaster

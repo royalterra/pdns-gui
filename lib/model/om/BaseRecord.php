@@ -40,6 +40,9 @@ abstract class BaseRecord extends BaseObject  implements Persistent {
 	protected $change_date;
 
 	
+	protected $aDomain;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -130,6 +133,10 @@ abstract class BaseRecord extends BaseObject  implements Persistent {
 		if ($this->domain_id !== $v) {
 			$this->domain_id = $v;
 			$this->modifiedColumns[] = RecordPeer::DOMAIN_ID;
+		}
+
+		if ($this->aDomain !== null && $this->aDomain->getId() !== $v) {
+			$this->aDomain = null;
 		}
 
 	} 
@@ -311,6 +318,15 @@ abstract class BaseRecord extends BaseObject  implements Persistent {
 			$this->alreadyInSave = true;
 
 
+												
+			if ($this->aDomain !== null) {
+				if ($this->aDomain->isModified()) {
+					$affectedRows += $this->aDomain->save($con);
+				}
+				$this->setDomain($this->aDomain);
+			}
+
+
 						if ($this->isModified()) {
 				if ($this->isNew()) {
 					$pk = RecordPeer::doInsert($this, $con);
@@ -356,6 +372,14 @@ abstract class BaseRecord extends BaseObject  implements Persistent {
 			$retval = null;
 
 			$failureMap = array();
+
+
+												
+			if ($this->aDomain !== null) {
+				if (!$this->aDomain->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aDomain->getValidationFailures());
+				}
+			}
 
 
 			if (($retval = RecordPeer::doValidate($this, $columns)) !== true) {
@@ -558,6 +582,35 @@ abstract class BaseRecord extends BaseObject  implements Persistent {
 			self::$peer = new RecordPeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function setDomain($v)
+	{
+
+
+		if ($v === null) {
+			$this->setDomainId(NULL);
+		} else {
+			$this->setDomainId($v->getId());
+		}
+
+
+		$this->aDomain = $v;
+	}
+
+
+	
+	public function getDomain($con = null)
+	{
+		if ($this->aDomain === null && ($this->domain_id !== null)) {
+						include_once 'lib/model/om/BaseDomainPeer.php';
+
+			$this->aDomain = DomainPeer::retrieveByPK($this->domain_id, $con);
+
+			
+		}
+		return $this->aDomain;
 	}
 
 } 

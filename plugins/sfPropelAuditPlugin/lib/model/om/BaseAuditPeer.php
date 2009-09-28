@@ -13,7 +13,7 @@ abstract class BaseAuditPeer {
 	const CLASS_DEFAULT = 'plugins.sfPropelAuditPlugin.lib.model.Audit';
 
 	
-	const NUM_COLUMNS = 10;
+	const NUM_COLUMNS = 8;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -21,12 +21,6 @@ abstract class BaseAuditPeer {
 
 	
 	const ID = 'audit.ID';
-
-	
-	const USER_TYPE = 'audit.USER_TYPE';
-
-	
-	const USER_ID = 'audit.USER_ID';
 
 	
 	const REMOTE_IP_ADDRESS = 'audit.REMOTE_IP_ADDRESS';
@@ -55,18 +49,18 @@ abstract class BaseAuditPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('ID', 'UserType', 'UserId', 'RemoteIpAddress', 'Object', 'ObjectKey', 'ObjectChanges', 'Query', 'Type', 'CreatedAt', ),
-		BasePeer::TYPE_COLNAME => array (AuditPeer::ID, AuditPeer::USER_TYPE, AuditPeer::USER_ID, AuditPeer::REMOTE_IP_ADDRESS, AuditPeer::OBJECT, AuditPeer::OBJECT_KEY, AuditPeer::OBJECT_CHANGES, AuditPeer::QUERY, AuditPeer::TYPE, AuditPeer::CREATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_type', 'user_id', 'remote_ip_address', 'object', 'object_key', 'object_changes', 'query', 'type', 'created_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('ID', 'RemoteIpAddress', 'Object', 'ObjectKey', 'ObjectChanges', 'Query', 'Type', 'CreatedAt', ),
+		BasePeer::TYPE_COLNAME => array (AuditPeer::ID, AuditPeer::REMOTE_IP_ADDRESS, AuditPeer::OBJECT, AuditPeer::OBJECT_KEY, AuditPeer::OBJECT_CHANGES, AuditPeer::QUERY, AuditPeer::TYPE, AuditPeer::CREATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'remote_ip_address', 'object', 'object_key', 'object_changes', 'query', 'type', 'created_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'UserType' => 1, 'UserId' => 2, 'RemoteIpAddress' => 3, 'Object' => 4, 'ObjectKey' => 5, 'ObjectChanges' => 6, 'Query' => 7, 'Type' => 8, 'CreatedAt' => 9, ),
-		BasePeer::TYPE_COLNAME => array (AuditPeer::ID => 0, AuditPeer::USER_TYPE => 1, AuditPeer::USER_ID => 2, AuditPeer::REMOTE_IP_ADDRESS => 3, AuditPeer::OBJECT => 4, AuditPeer::OBJECT_KEY => 5, AuditPeer::OBJECT_CHANGES => 6, AuditPeer::QUERY => 7, AuditPeer::TYPE => 8, AuditPeer::CREATED_AT => 9, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_type' => 1, 'user_id' => 2, 'remote_ip_address' => 3, 'object' => 4, 'object_key' => 5, 'object_changes' => 6, 'query' => 7, 'type' => 8, 'created_at' => 9, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'RemoteIpAddress' => 1, 'Object' => 2, 'ObjectKey' => 3, 'ObjectChanges' => 4, 'Query' => 5, 'Type' => 6, 'CreatedAt' => 7, ),
+		BasePeer::TYPE_COLNAME => array (AuditPeer::ID => 0, AuditPeer::REMOTE_IP_ADDRESS => 1, AuditPeer::OBJECT => 2, AuditPeer::OBJECT_KEY => 3, AuditPeer::OBJECT_CHANGES => 4, AuditPeer::QUERY => 5, AuditPeer::TYPE => 6, AuditPeer::CREATED_AT => 7, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'remote_ip_address' => 1, 'object' => 2, 'object_key' => 3, 'object_changes' => 4, 'query' => 5, 'type' => 6, 'created_at' => 7, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	
@@ -121,10 +115,6 @@ abstract class BaseAuditPeer {
 	{
 
 		$criteria->addSelectColumn(AuditPeer::ID);
-
-		$criteria->addSelectColumn(AuditPeer::USER_TYPE);
-
-		$criteria->addSelectColumn(AuditPeer::USER_ID);
 
 		$criteria->addSelectColumn(AuditPeer::REMOTE_IP_ADDRESS);
 
@@ -188,13 +178,6 @@ abstract class BaseAuditPeer {
 	
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
-
-    foreach (sfMixer::getCallables('BaseAuditPeer:doSelectRS:doSelectRS') as $callable)
-    {
-      call_user_func($callable, 'BaseAuditPeer', $criteria, $con);
-    }
-
-
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -239,17 +222,6 @@ abstract class BaseAuditPeer {
 	
 	public static function doInsert($values, $con = null)
 	{
-
-    foreach (sfMixer::getCallables('BaseAuditPeer:doInsert:pre') as $callable)
-    {
-      $ret = call_user_func($callable, 'BaseAuditPeer', $values, $con);
-      if (false !== $ret)
-      {
-        return $ret;
-      }
-    }
-
-
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -271,29 +243,12 @@ abstract class BaseAuditPeer {
 			throw $e;
 		}
 
-		
-    foreach (sfMixer::getCallables('BaseAuditPeer:doInsert:post') as $callable)
-    {
-      call_user_func($callable, 'BaseAuditPeer', $values, $con, $pk);
-    }
-
-    return $pk;
+		return $pk;
 	}
 
 	
 	public static function doUpdate($values, $con = null)
 	{
-
-    foreach (sfMixer::getCallables('BaseAuditPeer:doUpdate:pre') as $callable)
-    {
-      $ret = call_user_func($callable, 'BaseAuditPeer', $values, $con);
-      if (false !== $ret)
-      {
-        return $ret;
-      }
-    }
-
-
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -309,16 +264,8 @@ abstract class BaseAuditPeer {
 
 				$criteria->setDbName(self::DATABASE_NAME);
 
-		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
-	
-
-    foreach (sfMixer::getCallables('BaseAuditPeer:doUpdate:post') as $callable)
-    {
-      call_user_func($callable, 'BaseAuditPeer', $values, $con, $ret);
-    }
-
-    return $ret;
-  }
+		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
+	}
 
 	
 	public static function doDeleteAll($con = null)

@@ -34,10 +34,6 @@ class AuditMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'ID', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('USER_TYPE', 'UserType', 'string', CreoleTypes::CHAR, false, 1);
-
-		$tMap->addColumn('USER_ID', 'UserId', 'int', CreoleTypes::INTEGER, false, null);
-
 		$tMap->addColumn('REMOTE_IP_ADDRESS', 'RemoteIpAddress', 'string', CreoleTypes::VARCHAR, false, 255);
 
 		$tMap->addColumn('OBJECT', 'Object', 'string', CreoleTypes::VARCHAR, false, 255);

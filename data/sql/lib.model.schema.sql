@@ -43,7 +43,10 @@ CREATE TABLE `records`
 	PRIMARY KEY (`id`),
 	KEY `rec_name_index`(`name`),
 	KEY `nametype_index`(`name`, `type`),
-	KEY `domain_id`(`domain_id`)
+	KEY `domain_id`(`domain_id`),
+	CONSTRAINT `records_FK_1`
+		FOREIGN KEY (`domain_id`)
+		REFERENCES `domains` (`id`)
 )Type=MyISAM;
 
 #-----------------------------------------------------------------------------

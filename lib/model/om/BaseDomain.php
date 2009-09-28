@@ -36,6 +36,12 @@ abstract class BaseDomain extends BaseObject  implements Persistent {
 	protected $account;
 
 	
+	protected $collRecords;
+
+	
+	protected $lastRecordCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -293,6 +299,14 @@ abstract class BaseDomain extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
+			if ($this->collRecords !== null) {
+				foreach($this->collRecords as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -333,6 +347,14 @@ abstract class BaseDomain extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collRecords !== null) {
+					foreach($this->collRecords as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 
 			$this->alreadyInValidation = false;
@@ -497,6 +519,15 @@ abstract class BaseDomain extends BaseObject  implements Persistent {
 		$copyObj->setAccount($this->account);
 
 
+		if ($deepCopy) {
+									$copyObj->setNew(false);
+
+			foreach($this->getRecords() as $relObj) {
+				$copyObj->addRecord($relObj->copy($deepCopy));
+			}
+
+		} 
+
 		$copyObj->setNew(true);
 
 		$copyObj->setId(NULL); 
@@ -518,6 +549,76 @@ abstract class BaseDomain extends BaseObject  implements Persistent {
 			self::$peer = new DomainPeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function initRecords()
+	{
+		if ($this->collRecords === null) {
+			$this->collRecords = array();
+		}
+	}
+
+	
+	public function getRecords($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseRecordPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRecords === null) {
+			if ($this->isNew()) {
+			   $this->collRecords = array();
+			} else {
+
+				$criteria->add(RecordPeer::DOMAIN_ID, $this->getId());
+
+				RecordPeer::addSelectColumns($criteria);
+				$this->collRecords = RecordPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(RecordPeer::DOMAIN_ID, $this->getId());
+
+				RecordPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRecordCriteria) || !$this->lastRecordCriteria->equals($criteria)) {
+					$this->collRecords = RecordPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRecordCriteria = $criteria;
+		return $this->collRecords;
+	}
+
+	
+	public function countRecords($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseRecordPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(RecordPeer::DOMAIN_ID, $this->getId());
+
+		return RecordPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addRecord(Record $l)
+	{
+		$this->collRecords[] = $l;
+		$l->setDomain($this);
 	}
 
 } 

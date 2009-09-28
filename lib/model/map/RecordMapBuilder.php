@@ -34,7 +34,7 @@ class RecordMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('DOMAIN_ID', 'DomainId', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addForeignKey('DOMAIN_ID', 'DomainId', 'int', CreoleTypes::INTEGER, 'domains', 'ID', false, null);
 
 		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
