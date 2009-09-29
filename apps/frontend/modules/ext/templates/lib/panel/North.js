@@ -21,7 +21,7 @@ var NorthRegion = new Ext.Panel({
   items: [
     {
       style: 'margin-left: 5px;',
-      html: '<img src="/images/logo.png" alt="PowerDNS GUI logo" />',
+      html: '<?php echo image_tag('logo.png') ?>',
       width: 200,
       height: 60
     },{
