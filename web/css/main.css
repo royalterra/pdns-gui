@@ -12,11 +12,15 @@ body
 }
 
 .icon-world {
-  background-image:url(/images/world.gif) !important;
+  background-image:url(../images/world.gif) !important;
 }
 
 .icon-cog {
-  background-image:url(/images/cog.gif) !important;
+  background-image:url(../images/cog.gif) !important;
+}
+
+.icon-add {
+  background-image:url(../images/add.gif) !important;
 }
 
 .x-grid3-col-delete{
