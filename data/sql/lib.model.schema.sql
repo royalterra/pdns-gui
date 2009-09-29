@@ -76,6 +76,7 @@ CREATE TABLE `template`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255),
+	`type` VARCHAR(45),
 	PRIMARY KEY (`id`)
 )Type=MyISAM;
 

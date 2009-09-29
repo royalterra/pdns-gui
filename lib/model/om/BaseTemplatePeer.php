@@ -13,7 +13,7 @@ abstract class BaseTemplatePeer {
 	const CLASS_DEFAULT = 'lib.model.Template';
 
 	
-	const NUM_COLUMNS = 2;
+	const NUM_COLUMNS = 3;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -26,23 +26,26 @@ abstract class BaseTemplatePeer {
 	const NAME = 'template.NAME';
 
 	
+	const TYPE = 'template.TYPE';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', ),
-		BasePeer::TYPE_COLNAME => array (TemplatePeer::ID, TemplatePeer::NAME, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', ),
-		BasePeer::TYPE_NUM => array (0, 1, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Type', ),
+		BasePeer::TYPE_COLNAME => array (TemplatePeer::ID, TemplatePeer::NAME, TemplatePeer::TYPE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'type', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, ),
-		BasePeer::TYPE_COLNAME => array (TemplatePeer::ID => 0, TemplatePeer::NAME => 1, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, ),
-		BasePeer::TYPE_NUM => array (0, 1, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Type' => 2, ),
+		BasePeer::TYPE_COLNAME => array (TemplatePeer::ID => 0, TemplatePeer::NAME => 1, TemplatePeer::TYPE => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'type' => 2, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	
@@ -99,6 +102,8 @@ abstract class BaseTemplatePeer {
 		$criteria->addSelectColumn(TemplatePeer::ID);
 
 		$criteria->addSelectColumn(TemplatePeer::NAME);
+
+		$criteria->addSelectColumn(TemplatePeer::TYPE);
 
 	}
 

@@ -15,6 +15,10 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 	
 	protected $name;
 
+
+	
+	protected $type;
+
 	
 	protected $collTemplateRecords;
 
@@ -39,6 +43,13 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 	{
 
 		return $this->name;
+	}
+
+	
+	public function getType()
+	{
+
+		return $this->type;
 	}
 
 	
@@ -74,6 +85,22 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setType($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->type !== $v) {
+			$this->type = $v;
+			$this->modifiedColumns[] = TemplatePeer::TYPE;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -82,11 +109,13 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 
 			$this->name = $rs->getString($startcol + 1);
 
+			$this->type = $rs->getString($startcol + 2);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 2; 
+						return $startcol + 3; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Template object", $e);
 		}
@@ -235,6 +264,9 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 			case 1:
 				return $this->getName();
 				break;
+			case 2:
+				return $this->getType();
+				break;
 			default:
 				return null;
 				break;
@@ -247,6 +279,7 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
+			$keys[2] => $this->getType(),
 		);
 		return $result;
 	}
@@ -268,6 +301,9 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 			case 1:
 				$this->setName($value);
 				break;
+			case 2:
+				$this->setType($value);
+				break;
 		} 	}
 
 	
@@ -277,6 +313,7 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setType($arr[$keys[2]]);
 	}
 
 	
@@ -286,6 +323,7 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 
 		if ($this->isColumnModified(TemplatePeer::ID)) $criteria->add(TemplatePeer::ID, $this->id);
 		if ($this->isColumnModified(TemplatePeer::NAME)) $criteria->add(TemplatePeer::NAME, $this->name);
+		if ($this->isColumnModified(TemplatePeer::TYPE)) $criteria->add(TemplatePeer::TYPE, $this->type);
 
 		return $criteria;
 	}
@@ -317,6 +355,8 @@ abstract class BaseTemplate extends BaseObject  implements Persistent {
 	{
 
 		$copyObj->setName($this->name);
+
+		$copyObj->setType($this->type);
 
 
 		if ($deepCopy) {

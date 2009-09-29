@@ -36,5 +36,7 @@ class TemplateMapBuilder {
 
 		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
+		$tMap->addColumn('TYPE', 'Type', 'string', CreoleTypes::VARCHAR, false, 45);
+
 	} 
 } 

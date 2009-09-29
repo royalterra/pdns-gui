@@ -84,7 +84,22 @@ function TemplateWindow(template)
       forceFit: true,
       deferEmptyText: false,
       emptyText: 'No records to display'
-    }
+    },
+    bbar: [
+      {
+        xtype: 'button',
+        text: 'Add record',
+        icon: '/images/add.gif',
+        handler: function(){
+          grid.store.add(new grid.store.recordType({
+            id: grid.store.getCount(),
+            name: '%DOMAIN%',
+            type: 'A',
+            ttl: 86400
+          }));
+        }
+      }
+    ]
   });
   
   grid.store.loadData({ records: [
@@ -120,7 +135,8 @@ function TemplateWindow(template)
       {
         xtype: 'textfield',
         fieldLabel: 'Name',
-        name: 'name'
+        name: 'name',
+        allowBlank: false
       },{
         xtype: 'combo',
         store: [["NATIVE","Native"],["MASTER","Master"],["SLAVE","Slave"]],
@@ -134,22 +150,10 @@ function TemplateWindow(template)
         triggerAction: 'all',
         forceSelection: true,
         editable: false,
+        allowBlank: false,
         emptyText: 'Please select...'
       },
-        grid,
-      {
-        xtype: 'button',
-        text: 'Add record',
-        icon: '/images/add.gif',
-        handler: function(){
-          grid.store.add(new grid.store.recordType({
-            id: grid.store.getCount(),
-            name: '%DOMAIN%',
-            type: 'A',
-            ttl: 86400
-          }));
-        }
-      }
+        grid
     ]
   });
   
@@ -158,6 +162,57 @@ function TemplateWindow(template)
     title: title,
     width: 450,
     items: form,
+    doSubmit: function(){
+      // remove all hidden fields
+      Ext.each(form.find('xtype','hidden'),function(hidden){
+        form.remove(hidden);
+      });
+      
+      form.doLayout();
+      
+      var i = 0;
+      grid.store.each(function(r){
+        form.add({
+          xtype: 'hidden',
+          name: 'record['+i+'][name]',
+          value: r.data.name
+        });
+        
+        form.add({
+          xtype: 'hidden',
+          name: 'record['+i+'][type]',
+          value: r.data.type
+        });
+        
+        form.add({
+          xtype: 'hidden',
+          name: 'record['+i+'][content]',
+          value: r.data.content
+        });
+        
+        form.add({
+          xtype: 'hidden',
+          name: 'record['+i+'][ttl]',
+          value: r.data.ttl
+        });
+        
+        form.add({
+          xtype: 'hidden',
+          name: 'record['+i+'][prio]',
+          value: r.data.prio
+        });
+        
+        i++;
+      });
+      
+      form.doLayout();
+      
+      form.form.submit({
+        success: function(){
+          
+        }
+      });
+    },
     buttons: [
       {
         text: 'Close',

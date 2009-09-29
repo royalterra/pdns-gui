@@ -97,6 +97,10 @@ propel:
     name:
       type: VARCHAR
       size: 255
+    type:
+      type: VARCHAR
+      size: 45
+
 
   template_record: 
     _attributes: 
