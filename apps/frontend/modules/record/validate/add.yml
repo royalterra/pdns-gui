@@ -1,8 +1,0 @@
-
-fields:
-  name:
-    required:
-      msg: Name field is required.
-
-
-
