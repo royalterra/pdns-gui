@@ -221,10 +221,10 @@ class domainActions extends MyActions
         {
           $record = new Record();
           $record->setDomainId($this->domain->getId());
-          $record->setName($data['name']);
-          $record->setType($data['type']);
         }
-
+        
+        $record->setName($data['name']);
+        $record->setType($data['type']);
         $record->setContent($data['content']);
         $record->setTtl($data['ttl']);
         

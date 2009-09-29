@@ -10,7 +10,7 @@ function TemplateWindow()
     enableTabScroll:true,
     layoutOnTabChange: true,
     plain: true,
-    height: 360
+    height: 358
   });
   
   if (TemplateStore.getCount() == 0)
@@ -37,8 +37,10 @@ function TemplateWindow()
       
       var errors = '';
       
-      Ext.each(Tabs.items.items[0], function(form)
+      Ext.each(Tabs.items.items[0].items.items[0], function(form)
       {
+        console.log(Tabs);
+        
         // remove all hidden fields
         Ext.each(form.find('xtype','hidden'),function(hidden){
           if (hidden.name != 'id')
@@ -49,7 +51,7 @@ function TemplateWindow()
         
         form.doLayout();
         
-        var grid = form.items.items[form.items.items.length-1].items.items[0];
+        var grid = Tabs.items.items[0].items.items[1].items.items[0];
         
         var i = 0;
         grid.store.each(function(r){
@@ -184,7 +186,6 @@ function emptyTemplate(template)
 function existingTemplate(template)
 { 
   var form = new Ext.form.FormPanel({
-    title: template.name,
     url: '<?php echo url_for('template/edit') ?>',
     border: false,
     labelWidth: 60,
@@ -215,14 +216,23 @@ function existingTemplate(template)
         editable: false,
         allowBlank: false,
         value: template.type
-      },{
-        layout: 'fit',
-        border: false,
-        items: new Ext.ux.RecordsGrid({records: template.records, defaultName: '%DOMAIN%'})
       }
     ]
   });
   
-  return form;
+  var template = new Ext.Panel({
+    title: template.name,
+    border: false,
+    items: [
+      form,
+      {
+        layout: 'fit',
+        border: false,
+        items: new Ext.ux.RecordsGrid({records: template.records, defaultName: '%DOMAIN%', border: false})
+      }
+    ]
+  });
+  
+  return template;
 }
 

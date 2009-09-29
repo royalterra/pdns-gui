@@ -121,10 +121,10 @@ class templateActions extends MyActions
         {
           $record = new TemplateRecord();
           $record->setTemplateId($template->getId());
-          $record->setName($data['name']);
-          $record->setType($data['type']);
         }
-
+        
+        $record->setName($data['name']);
+        $record->setType($data['type']);
         $record->setContent($data['content']);
         $record->setTtl($data['ttl']);
         
