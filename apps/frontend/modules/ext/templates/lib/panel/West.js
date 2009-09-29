@@ -49,13 +49,13 @@ var West = new Ext.grid.GridPanel({
   tbar: [
     {
       text: 'Settings',
-      icon: '/images/cog.gif',
+      icon: '<?php echo image_tag('cog.gif') ?>',
       menu: settingsMenu
     },{
       xtype: 'tbfill'
     },{
       text: 'Add domain',
-      icon: '/images/add.gif',
+      icon: '<?php echo image_tag('add.gif') ?>',
       handler: function(){
         AddDomainWindow();
       }
