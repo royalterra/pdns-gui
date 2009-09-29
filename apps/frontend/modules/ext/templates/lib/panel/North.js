@@ -29,6 +29,12 @@ var NorthRegion = new Ext.Panel({
       height: 60,
       bodyStyle: 'padding-top: 5px; padding-left: 15px;',
       items: messages
+    },{
+      xtype: 'button',
+      scale: 'medium',
+      text: 'Commit changes',
+      width: 120,
+      margins: '0 5 0 5'
     }
   ]
 });

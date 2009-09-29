@@ -10,3 +10,5 @@
 class Domain extends BaseDomain
 {
 }
+
+sfPropelBehavior::add('Domain', array('audit'));

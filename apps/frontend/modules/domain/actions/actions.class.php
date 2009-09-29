@@ -13,7 +13,6 @@ class domainActions extends MyActions
 
   /**
    * List
-   *
    */
   public function executeList()
   {
@@ -121,6 +120,36 @@ class domainActions extends MyActions
     }
     else
     {
+      $ids = array();
+      
+      foreach ($this->getRequestParameter('record') as $data)
+      {
+        if (!$record = RecordPeer::retrieveByPK($data['id']))
+        {
+          $record = new Record();
+          $record->setDomainId($this->domain->getId());
+          $record->setName($data['name']);
+          $record->setType($data['type']);
+        }
+
+        $record->setContent($data['content']);
+        $record->setTtl($data['ttl']);
+        
+        if ($data['type'] == 'MX')
+        {
+          $record->setPrio($data['prio']);
+        }
+        
+        $record->save();
+        
+        $ids[] = $record->getId();
+      }
+      
+      $c = new Criteria();
+      $c->add(RecordPeer::DOMAIN_ID, $this->domain->getId());
+      $c->add(RecordPeer::ID, $ids, Criteria::NOT_IN);
+      
+      RecordPeer::doDelete($c);
       
       return $this->renderJson(array("success"=>true,"info"=>"Domain updated."));
     }

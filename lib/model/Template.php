@@ -10,3 +10,5 @@
 class Template extends BaseTemplate
 {
 }
+
+sfPropelBehavior::add('Template', array('audit'));

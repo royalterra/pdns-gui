@@ -94,8 +94,6 @@ function DomainWindow(domain)
           
           win.close();
           
-          Ext.Msg.alert('Info',action.result.info);
-          
           DomainStore.load();
         },
         failure: function(form, action){

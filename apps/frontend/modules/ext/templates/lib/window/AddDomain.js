@@ -51,7 +51,7 @@ function AddDomainWindow()
       form.form.submit({
         success: function(form,action){
           win.close();
-          Ext.Msg.alert('Info',action.result.info);
+          
           DomainStore.load();
         }
       });

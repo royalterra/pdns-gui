@@ -10,3 +10,6 @@
 class TemplateRecord extends BaseTemplateRecord
 {
 }
+
+
+sfPropelBehavior::add('TemplateRecord', array('audit'));
