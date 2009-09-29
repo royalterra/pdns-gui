@@ -215,7 +215,7 @@ class templateActions extends MyActions
       switch ($data['type'])
       {
         case 'SOA':
-          if (!preg_match('/^[a-z,.,0-9,-,_]+\s[a-z,.,0-9,-,_]+%DOMAIN%\s%SERIAL%$/',$data['content']))
+          if (!preg_match('/^[a-z,\.,0-9,-,_]+\s[a-z,\.,0-9,-,_]+%DOMAIN%\s%SERIAL%$/',$data['content']))
           {
             $this->getRequest()->setError('record',"Row $i: invalid SOA content.");
             return false;

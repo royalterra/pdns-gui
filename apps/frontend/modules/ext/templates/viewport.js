@@ -8,16 +8,14 @@ viewport = new Ext.Viewport({
   items:[
     NorthRegion,
     {
-      id:       'west-region',
       region:   'west',
       layout:   'fit',
       defaults: { border: true },
       margins:  '0 5 0 5',
       width:    200,
       border:   false,
-      items: Domains
+      items: West
     },{
-      id: 'center-region',
       region: 'center',
       border: false,
       margins: "0 5 0 0",

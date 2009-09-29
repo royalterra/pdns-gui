@@ -7,7 +7,7 @@ var settingsMenu = new Ext.menu.Menu({
   ]
 });
 
-var Domains = new Ext.grid.GridPanel({
+var West = new Ext.grid.GridPanel({
   title: 'Domains',
   iconCls: 'icon-world',
   store: DomainStore,
@@ -43,7 +43,7 @@ var Domains = new Ext.grid.GridPanel({
       text: 'Add domain',
       icon: '/images/add.gif',
       handler: function(){
-        DomainWindow();
+        AddDomainWindow();
       }
     }
   ]
