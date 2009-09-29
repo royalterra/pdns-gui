@@ -1,0 +1,19 @@
+Template:
+  Default:
+    name: Default
+    type: MASTER
+
+TemplateRecord:
+  SOA:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         SOA
+    content:      ns5.dnsmadeeasy.com hostmaster.%DOMAIN% %SERIAL%
+    ttl:          86400
+
+  NS1:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         NS
+    content:      ns5.dnsmadeeasy.com
+    ttl:          86400
