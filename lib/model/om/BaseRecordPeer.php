@@ -178,6 +178,13 @@ abstract class BaseRecordPeer {
 	
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRecordPeer:doSelectRS:doSelectRS') as $callable)
+    {
+      call_user_func($callable, 'BaseRecordPeer', $criteria, $con);
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -239,6 +246,13 @@ abstract class BaseRecordPeer {
 	
 	public static function doSelectJoinDomain(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRecordPeer:doSelectJoin:doSelectJoin') as $callable)
+    {
+      call_user_func($callable, 'BaseRecordPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -314,6 +328,13 @@ abstract class BaseRecordPeer {
 	
 	public static function doSelectJoinAll(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRecordPeer:doSelectJoinAll:doSelectJoinAll') as $callable)
+    {
+      call_user_func($callable, 'BaseRecordPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -383,6 +404,17 @@ abstract class BaseRecordPeer {
 	
 	public static function doInsert($values, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRecordPeer:doInsert:pre') as $callable)
+    {
+      $ret = call_user_func($callable, 'BaseRecordPeer', $values, $con);
+      if (false !== $ret)
+      {
+        return $ret;
+      }
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -404,12 +436,29 @@ abstract class BaseRecordPeer {
 			throw $e;
 		}
 
-		return $pk;
+		
+    foreach (sfMixer::getCallables('BaseRecordPeer:doInsert:post') as $callable)
+    {
+      call_user_func($callable, 'BaseRecordPeer', $values, $con, $pk);
+    }
+
+    return $pk;
 	}
 
 	
 	public static function doUpdate($values, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRecordPeer:doUpdate:pre') as $callable)
+    {
+      $ret = call_user_func($callable, 'BaseRecordPeer', $values, $con);
+      if (false !== $ret)
+      {
+        return $ret;
+      }
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -425,8 +474,16 @@ abstract class BaseRecordPeer {
 
 				$criteria->setDbName(self::DATABASE_NAME);
 
-		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
-	}
+		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
+	
+
+    foreach (sfMixer::getCallables('BaseRecordPeer:doUpdate:post') as $callable)
+    {
+      call_user_func($callable, 'BaseRecordPeer', $values, $con, $ret);
+    }
+
+    return $ret;
+  }
 
 	
 	public static function doDeleteAll($con = null)

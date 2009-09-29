@@ -173,6 +173,13 @@ abstract class BaseTemplateRecordPeer {
 	
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseTemplateRecordPeer:doSelectRS:doSelectRS') as $callable)
+    {
+      call_user_func($callable, 'BaseTemplateRecordPeer', $criteria, $con);
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -234,6 +241,13 @@ abstract class BaseTemplateRecordPeer {
 	
 	public static function doSelectJoinTemplate(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseTemplateRecordPeer:doSelectJoin:doSelectJoin') as $callable)
+    {
+      call_user_func($callable, 'BaseTemplateRecordPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -309,6 +323,13 @@ abstract class BaseTemplateRecordPeer {
 	
 	public static function doSelectJoinAll(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseTemplateRecordPeer:doSelectJoinAll:doSelectJoinAll') as $callable)
+    {
+      call_user_func($callable, 'BaseTemplateRecordPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -378,6 +399,17 @@ abstract class BaseTemplateRecordPeer {
 	
 	public static function doInsert($values, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseTemplateRecordPeer:doInsert:pre') as $callable)
+    {
+      $ret = call_user_func($callable, 'BaseTemplateRecordPeer', $values, $con);
+      if (false !== $ret)
+      {
+        return $ret;
+      }
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -399,12 +431,29 @@ abstract class BaseTemplateRecordPeer {
 			throw $e;
 		}
 
-		return $pk;
+		
+    foreach (sfMixer::getCallables('BaseTemplateRecordPeer:doInsert:post') as $callable)
+    {
+      call_user_func($callable, 'BaseTemplateRecordPeer', $values, $con, $pk);
+    }
+
+    return $pk;
 	}
 
 	
 	public static function doUpdate($values, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseTemplateRecordPeer:doUpdate:pre') as $callable)
+    {
+      $ret = call_user_func($callable, 'BaseTemplateRecordPeer', $values, $con);
+      if (false !== $ret)
+      {
+        return $ret;
+      }
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -420,8 +469,16 @@ abstract class BaseTemplateRecordPeer {
 
 				$criteria->setDbName(self::DATABASE_NAME);
 
-		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
-	}
+		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
+	
+
+    foreach (sfMixer::getCallables('BaseTemplateRecordPeer:doUpdate:post') as $callable)
+    {
+      call_user_func($callable, 'BaseTemplateRecordPeer', $values, $con, $ret);
+    }
+
+    return $ret;
+  }
 
 	
 	public static function doDeleteAll($con = null)

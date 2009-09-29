@@ -158,6 +158,13 @@ abstract class BaseSuperMasterPeer {
 	
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseSuperMasterPeer:doSelectRS:doSelectRS') as $callable)
+    {
+      call_user_func($callable, 'BaseSuperMasterPeer', $criteria, $con);
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -202,6 +209,17 @@ abstract class BaseSuperMasterPeer {
 	
 	public static function doInsert($values, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseSuperMasterPeer:doInsert:pre') as $callable)
+    {
+      $ret = call_user_func($callable, 'BaseSuperMasterPeer', $values, $con);
+      if (false !== $ret)
+      {
+        return $ret;
+      }
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -223,12 +241,29 @@ abstract class BaseSuperMasterPeer {
 			throw $e;
 		}
 
-		return $pk;
+		
+    foreach (sfMixer::getCallables('BaseSuperMasterPeer:doInsert:post') as $callable)
+    {
+      call_user_func($callable, 'BaseSuperMasterPeer', $values, $con, $pk);
+    }
+
+    return $pk;
 	}
 
 	
 	public static function doUpdate($values, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseSuperMasterPeer:doUpdate:pre') as $callable)
+    {
+      $ret = call_user_func($callable, 'BaseSuperMasterPeer', $values, $con);
+      if (false !== $ret)
+      {
+        return $ret;
+      }
+    }
+
+
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
@@ -244,8 +279,16 @@ abstract class BaseSuperMasterPeer {
 
 				$criteria->setDbName(self::DATABASE_NAME);
 
-		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
-	}
+		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
+	
+
+    foreach (sfMixer::getCallables('BaseSuperMasterPeer:doUpdate:post') as $callable)
+    {
+      call_user_func($callable, 'BaseSuperMasterPeer', $values, $con, $ret);
+    }
+
+    return $ret;
+  }
 
 	
 	public static function doDeleteAll($con = null)
