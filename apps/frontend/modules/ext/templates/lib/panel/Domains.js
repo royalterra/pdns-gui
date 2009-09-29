@@ -1,3 +1,12 @@
+var settingsMenu = new Ext.menu.Menu({
+  items: [
+    {
+      text: 'Templates',
+      handler: function(){ TemplateWindow() }
+    }
+  ]
+});
+
 var Domains = new Ext.grid.GridPanel({
   title: 'Domains',
   iconCls: 'icon-world',
@@ -25,9 +34,13 @@ var Domains = new Ext.grid.GridPanel({
   },
   tbar: [
     {
+      text: 'Settings',
+      icon: '/images/cog.gif',
+      menu: settingsMenu
+    },{
       xtype: 'tbfill'
     },{
-      text: 'Add',
+      text: 'Add domain',
       icon: '/images/add.gif',
       handler: function(){
         DomainWindow();

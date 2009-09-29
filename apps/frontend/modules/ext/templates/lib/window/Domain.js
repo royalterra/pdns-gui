@@ -1,6 +1,6 @@
 function DomainWindow(domain)
 {
-  var win_id = get_win_id(alert);
+  var win_id = get_win_id(domain);
   if (!win_id) return;
   
   if (domain)
@@ -26,7 +26,7 @@ function DomainWindow(domain)
         handler: function() { win.doSubmit() }
       },{
         text: 'Close',
-        handler: function() { win.close(); }
+        handler: function() { win.close() }
       }
     ]
   });
