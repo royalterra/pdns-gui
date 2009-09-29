@@ -259,6 +259,12 @@ class templateActions extends MyActions
         }
       }
       
+      if (!$data['content'])
+      {
+          $this->getRequest()->setError('record',"Row $i: Content can't be left blank.");
+          return false;
+      }
+      
       if ($data['type'] == 'SOA') $SOA_count++;
       if ($data['type'] == 'NS') $NS_count++;
       

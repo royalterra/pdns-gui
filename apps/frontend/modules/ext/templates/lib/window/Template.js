@@ -49,7 +49,7 @@ function TemplateWindow()
         
         form.doLayout();
         
-        var grid = form.items.items[form.items.items.length-1];
+        var grid = form.items.items[form.items.items.length-1].items.items[0];
         
         var i = 0;
         grid.store.each(function(r){
@@ -174,8 +174,11 @@ function emptyTemplate(template)
         editable: false,
         allowBlank: false,
         emptyText: 'Please select...'
-      },
-        new Ext.ux.RecordsGrid()
+      },{
+        layout: 'fit',
+        border: false,
+        items: new Ext.ux.RecordsGrid({defaultName: '%DOMAIN%'})
+      }
     ]
   });
   
@@ -217,8 +220,11 @@ function existingTemplate(template)
         editable: false,
         allowBlank: false,
         value: template.type
-      },
-        new Ext.ux.RecordsGrid({records: template.records})
+      },{
+        layout: 'fit',
+        border: false,
+        items: new Ext.ux.RecordsGrid({records: template.records, defaultName: '%DOMAIN%'})
+      }
     ]
   });
   

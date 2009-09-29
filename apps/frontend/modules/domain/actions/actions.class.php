@@ -21,7 +21,18 @@ class domainActions extends MyActions
     
     foreach (DomainPeer::doSelect(new Criteria()) as $domain)
     {
-      $this->output[] = $domain->toArray(BasePeer::TYPE_FIELDNAME);
+      $data = $domain->toArray(BasePeer::TYPE_FIELDNAME);
+      
+      $records = array();
+      
+      foreach ($domain->getRecords() as $record)
+      {
+        $records[] = $record->toArray(BasePeer::TYPE_FIELDNAME);
+      }
+      
+      $data['records'] = $records;
+      
+      $this->output[] = $data;
     }
     
     if ($this->isAjax())
@@ -37,6 +48,7 @@ class domainActions extends MyActions
   {
     if ($this->isGET())
     {
+      return $this->renderJson(array("success"=>false,"info"=>"POST only."));
     }
     else
     {
@@ -97,4 +109,139 @@ class domainActions extends MyActions
     
     return true;
   }
+  
+  /**
+   * Edit
+   */
+  public function executeEdit()
+  {
+    if ($this->isGET())
+    {
+      return $this->renderJson(array("success"=>false,"info"=>"POST only."));
+    }
+    else
+    {
+      
+      return $this->renderJson(array("success"=>true,"info"=>"Domain updated."));
+    }
+  }
+  
+  public function validateEdit()
+  {
+    if ($this->isPOST())
+    {
+      if (!$this->domain = DomainPeer::retrieveByPK($this->getRequestParameter('id')))
+      {
+        $this->getRequest()->setError('id','Invalid domain id.');
+        return false;
+      }
+      
+      if (!is_array($this->getRequestParameter('record')))
+      {
+        $this->getRequest()->setError('record','record[] needs to be an array.');
+        return false;
+      }
+      
+      $i = 1;
+    
+      $SOA_count = 0;
+      $NS_count = 0;
+      
+      foreach ($this->getRequestParameter('record') as $data)
+      {
+        
+        if (!isset($data['name']) || !isset($data['type']) || !isset($data['content']) 
+          || !isset($data['ttl']))
+        {
+          $this->getRequest()->setError('record',"Row $i: some data is missing.");
+          return false;
+        }
+        
+        if (!$data['name'])
+        {
+          $this->getRequest()->setError('record',"Row $i: name can't be left blank.");
+          return false;
+        }
+        
+        if (!in_array($data['type'],array("SOA","NS","MX","A","CNAME","TXT")))
+        {
+          $this->getRequest()->setError('record',"Row $i: invalid record type.");
+          return false;
+        }
+        
+        switch ($data['type'])
+        {
+          case 'SOA':
+            if (!preg_match('/^[a-z,\.,0-9,-,_]+\s[a-z,\.,0-9,-,_]+'.$this->domain->getName().'\s[0-9]+$/',$data['content']))
+            {
+              $this->getRequest()->setError('record',"Row $i: invalid SOA content.");
+              return false;
+            }
+            break;
+          case 'NS':
+            if (!preg_match('/^[a-z,.,0-9,-,_]+$/',$data['content']))
+            {
+              $this->getRequest()->setError('record',"Row $i: invalid NS content.");
+              return false;
+            }
+            break;
+        }
+        
+        if (!preg_match('/^[0-9]+$/',$data['ttl']))
+        {
+          $this->getRequest()->setError('record',"Row $i: TTL has to be a number.");
+          return false;
+        }
+        
+        if ($data['ttl'] < 5 || $data['ttl'] > 86400)
+        {
+          $this->getRequest()->setError('record',"Row $i: TTL has to be in a range of 5-86400.");
+          return false;
+        }
+        
+        
+        if ($data['type'] == 'MX')
+        {
+          
+          if (!preg_match('/^[0-9]+$/',$data['prio']))
+          {
+            $this->getRequest()->setError('record',"Row $i: Prio has to be a number.");
+            return false;
+          }
+          
+          if ($data['prio'] < 0 || $data['prio'] > 100)
+          {
+            $this->getRequest()->setError('record',"Row $i: Prio has to be in a range of 0-100.");
+            return false;
+          }
+        }
+        
+        if (!$data['content'])
+        {
+            $this->getRequest()->setError('record',"Row $i: Content can't be left blank.");
+            return false;
+        }
+        
+        if ($data['type'] == 'SOA') $SOA_count++;
+        if ($data['type'] == 'NS') $NS_count++;
+        
+        $i++;
+      }
+      
+      if ($SOA_count !== 1)
+      {
+        $this->getRequest()->setError('record',"Only one SOA record allowed.");
+        return false;
+      }
+      
+      if ($NS_count < 1 || $NS_count > 10)
+      {
+        $this->getRequest()->setError('record',"Number of NS records should be in a range of 1-10.");
+        return false;
+      }
+    }
+    
+    return true;
+  }
+  
 }

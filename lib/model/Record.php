@@ -10,3 +10,5 @@
 class Record extends BaseRecord
 {
 }
+
+sfPropelBehavior::add('Record', array('audit'));

@@ -95,7 +95,7 @@ TemplateRecord:
     content:      192.168.0.1
     ttl:          86400
 
-  A1:
+  A2:
     template_id:  Default
     name:         www.%DOMAIN%
     type:         A

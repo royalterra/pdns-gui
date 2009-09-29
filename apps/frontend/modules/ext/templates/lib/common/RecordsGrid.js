@@ -7,19 +7,16 @@ Ext.ux.RecordsGrid = function(cfg){
   {
     cfg.records = [
       { 
-        id: 0, 
         name: '%DOMAIN%', 
         type: 'SOA',
         content: 'master.dns hostmaster.%DOMAIN% %SERIAL%',
         ttl: 86400
       },{
-        id: 1, 
         name: '%DOMAIN%', 
         type: 'NS',
         content: 'master.dns',
         ttl: 86400
       },{
-        id: 2, 
         name: '%DOMAIN%', 
         type: 'MX',
         content: 'mail.server',
@@ -28,15 +25,16 @@ Ext.ux.RecordsGrid = function(cfg){
       }
     ];
   }
+  
+  console.log(cfg.records);
 
   var defaultCfg = {
     store: new Ext.data.JsonStore({
-      id: 'id',
       fields : [ 'id','name','type','content','ttl','prio' ],
       root: 'records',
       data: cfg
     }),
-    height: 245,
+    height: 260,
     enableHdMenu: false,
     enableColumnResize: false,
     enableColumnMove: false,
@@ -131,11 +129,12 @@ Ext.ux.RecordsGrid = function(cfg){
         icon: '/images/add.gif',
         handler: function(){
           grid.store.add(new grid.store.recordType({
-            id: '_' + grid.store.getCount(),
-            name: '%DOMAIN%',
+            name: cfg.defaultName,
             type: 'A',
             ttl: 86400
           }));
+          
+          grid.getView().focusRow(grid.store.getCount() - 1);
         }
       }
     ]

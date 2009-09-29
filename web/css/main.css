@@ -24,3 +24,7 @@ body
   padding: 0px;
   padding-top: 2px;
 }
+
+.x-grid3-col-domain{
+  cursor: pointer;
+}

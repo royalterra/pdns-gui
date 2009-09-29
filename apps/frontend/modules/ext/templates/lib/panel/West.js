@@ -15,6 +15,7 @@ var West = new Ext.grid.GridPanel({
   disableSelection: true,
   columns: [
     {
+      id: 'domain',
       dataIndex: 'name',
       width: 180
     }
@@ -29,7 +30,12 @@ var West = new Ext.grid.GridPanel({
       
       var columnId = grid.getColumnModel().getColumnId(columnIndex);
       
-      var record = grid.getStore().getAt(rowIndex).data;
+      if (columnId == 'domain')
+      {
+        var record = grid.getStore().getAt(rowIndex).data;
+        
+        DomainWindow(record);
+      }
     }
   },
   tbar: [

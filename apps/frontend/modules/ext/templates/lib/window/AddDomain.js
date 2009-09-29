@@ -3,6 +3,28 @@ function AddDomainWindow()
   var win_id = get_win_id();
   if (!win_id) return;
   
+  var templatesCombo = new Ext.form.ComboBox({
+    store: TemplateStore,
+    fieldLabel: 'Template',
+    width: 170,
+    displayField: 'name',
+    valueField: 'id',
+    name: 'template_id',
+    hiddenName: 'template_id',
+    mode: 'local',
+    triggerAction: 'all',
+    forceSelection: true,
+    editable: false,
+    emptyText: 'Please select...'
+  });
+  
+  if (TemplateStore.getCount() > 0)
+  {
+    var template = TemplateStore.getAt(0);
+    
+    templatesCombo.setValue(template.data.id);
+  }
+  
   var form = new Ext.form.FormPanel({
     bodyStyle: 'padding: 10px;',
     border: false,
@@ -16,21 +38,8 @@ function AddDomainWindow()
         fieldLabel: 'Name',
         width: 170,
         name: 'name'
-      },{
-        xtype: 'combo',
-        store: TemplateStore,
-        fieldLabel: 'Template',
-        width: 170,
-        displayField: 'name',
-        valueField: 'id',
-        name: 'template_id',
-        hiddenName: 'template_id',
-        mode: 'local',
-        triggerAction: 'all',
-        forceSelection: true,
-        editable: false,
-        emptyText: 'Please select...'
-      }
+      },
+        templatesCombo
     ]
   });
   
@@ -43,6 +52,7 @@ function AddDomainWindow()
         success: function(form,action){
           win.close();
           Ext.Msg.alert('Info',action.result.info);
+          DomainStore.load();
         }
       });
     },
