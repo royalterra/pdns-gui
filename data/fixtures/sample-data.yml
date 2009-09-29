@@ -17,3 +17,87 @@ TemplateRecord:
     type:         NS
     content:      ns5.dnsmadeeasy.com
     ttl:          86400
+
+  NS2:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         NS
+    content:      ns6.dnsmadeeasy.com
+    ttl:          86400
+
+  NS3:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         NS
+    content:      ns7.dnsmadeeasy.com
+    ttl:          86400
+
+  MX1:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         MX
+    content:      aspmx.l.google.com
+    ttl:          86400
+    prio:         0
+
+  MX2:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         MX
+    content:      alt1.aspmx.l.google.com
+    ttl:          86400
+    prio:         10
+
+  MX3:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         MX
+    content:      alt2.aspmx.l.google.com
+    ttl:          86400
+    prio:         10
+
+  MX4:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         MX
+    content:      aspmx2.googlemail.com
+    ttl:          86400
+    prio:         20
+
+  MX5:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         MX
+    content:      aspmx3.googlemail.com
+    ttl:          86400
+    prio:         20
+
+  MX6:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         MX
+    content:      aspmx4.googlemail.com
+    ttl:          86400
+    prio:         20
+
+  MX7:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         MX
+    content:      aspmx5.googlemail.com
+    ttl:          86400
+    prio:         20
+
+  A1:
+    template_id:  Default
+    name:         %DOMAIN%
+    type:         A
+    content:      192.168.0.1
+    ttl:          86400
+
+  A1:
+    template_id:  Default
+    name:         www.%DOMAIN%
+    type:         A
+    content:      192.168.0.1
+    ttl:          86400
