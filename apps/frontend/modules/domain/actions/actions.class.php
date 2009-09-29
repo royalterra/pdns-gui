@@ -21,6 +21,7 @@ class domainActions extends MyActions
     $c->add(AuditPeer::TYPE, 'ADD', Criteria::NOT_EQUAL);
     $c->add(AuditPeer::OBJECT, 'Record');
     $c->addGroupByColumn(AuditPeer::DOMAIN_ID);
+    $c->add(AuditPeer::CREATED_AT, date("Y-m-d H:i:s",MyTools::getLastCommit()), Criteria::GREATER_THAN);
     
     foreach (AuditPeer::doSelect($c) as $audit)
     {
