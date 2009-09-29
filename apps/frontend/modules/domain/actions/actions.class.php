@@ -10,6 +10,77 @@
  */
 class domainActions extends MyActions
 {
+  /**
+   * Commits all changes to zone records (updates SOA serial)
+   */
+  public function executeCommit()
+  {
+    $commited = '';
+    
+    $c = new Criteria();
+    $c->add(AuditPeer::TYPE, 'ADD', Criteria::NOT_EQUAL);
+    $c->add(AuditPeer::OBJECT, 'Record');
+    $c->addGroupByColumn(AuditPeer::DOMAIN_ID);
+    
+    foreach (AuditPeer::doSelect($c) as $audit)
+    {
+      $domain = DomainPeer::retrieveByPK($audit->getDomainId());
+      
+      $commited.= $domain->getName()."<br/>";
+      
+      // get SOA record
+      $c = new Criteria();
+      $c->add(RecordPeer::DOMAIN_ID, $domain->getId());
+      $c->add(RecordPeer::TYPE, 'SOA');
+      
+      $SOA = RecordPeer::doSelectOne($c);
+      
+      $temp = explode(" ",$SOA->getContent());
+      
+      $serial = $temp[2];
+      
+      $date = substr($serial,0,8);
+      $id = substr($serial,8);
+      
+      // today ?
+      if ($date == date("Ymd"))
+      {
+        if ($id >= 99)
+        {
+          
+          return $this->renderJson(array("success"=>false,"info"=>"Doamin ".$domain->getName()." serial: $serial"));
+          return false;
+        }
+        
+        $id++;
+        
+        if (strlen($id) == 1) $id = "0".$id;
+        
+        $serial = $date.$id;
+        
+      }
+      else
+      {
+        $serial = date("Ymd")."01";
+      }
+      
+      $SOA->setContent(implode(" ",array($temp[0],$temp[1],$serial)));
+      $SOA->save();
+    }
+    
+    if ($commited)
+    {
+      file_put_contents(SF_ROOT_DIR.'/log/last_commit.log',time());
+      
+      $info = "Commited changes to the following domains:<br/>".$commited;
+    }
+    else
+    {
+      $info = "No changes to commit.";
+    }
+    
+    return $this->renderJson(array("success"=>true,"info"=>$info));
+  }
 
   /**
    * List
@@ -47,6 +118,7 @@ class domainActions extends MyActions
       {
         $domain_needs_commit = true;
       }
+      
       
       $data['needs_commit'] = $domain_needs_commit;
       $data['records'] = $records;

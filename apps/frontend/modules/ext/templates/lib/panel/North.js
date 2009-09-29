@@ -34,7 +34,21 @@ var NorthRegion = new Ext.Panel({
       scale: 'medium',
       text: 'Commit changes',
       width: 120,
-      margins: '0 5 0 5'
+      margins: '0 5 0 5',
+      handler: function(){
+        Ext.Ajax.request({
+          url: '<?php echo url_for('domain/commit') ?>',
+          success: function(action){
+            
+            var info = Ext.decode(action.responseText).info;
+            
+            Ext.Msg.alert('Error',info);
+            
+            DomainStore.load();
+          }
+        });
+
+      }
     }
   ]
 });

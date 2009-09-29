@@ -26,8 +26,6 @@ Ext.ux.RecordsGrid = function(cfg){
     ];
   }
   
-  console.log(cfg.records);
-
   var defaultCfg = {
     store: new Ext.data.JsonStore({
       fields : [ 'id','name','type','content','ttl','prio','needs_commit' ],

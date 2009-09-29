@@ -46,8 +46,6 @@ function DomainWindow(domain)
       var i = 0;
       grid.store.each(function(r){
         
-        console.log(r);
-        
         form.add({
           xtype: 'hidden',
           name: 'record['+i+'][id]',

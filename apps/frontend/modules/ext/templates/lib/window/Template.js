@@ -54,8 +54,6 @@ function TemplateWindow()
         var i = 0;
         grid.store.each(function(r){
           
-          console.log(r);
-          
           form.add({
             xtype: 'hidden',
             name: 'record['+i+'][id]',
@@ -114,9 +112,6 @@ function TemplateWindow()
           failure: function(form, action){
             
             form_count++;
-            
-            console.log(action);
-            console.log(form);
             
             errors+= 'Template: ' + form.title + '<br/>';
             errors+= action.result.errors.record;
