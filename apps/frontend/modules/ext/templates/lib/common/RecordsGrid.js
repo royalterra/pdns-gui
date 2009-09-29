@@ -137,7 +137,7 @@ Ext.ux.RecordsGrid = function(cfg){
         width: 24,
         fixed: true,
         renderer: function(v){
-          return '<?php echo image_tag('big.gif') ?>';
+          return '<?php echo image_tag('bin.gif') ?>';
         }
       }
     ],
@@ -164,7 +164,7 @@ Ext.ux.RecordsGrid = function(cfg){
       {
         xtype: 'button',
         text: 'Add record',
-        icon: '<?php echo image_tag('add.gif') ?>',
+        iconCls: 'icon-add',
         handler: function(){
           grid.store.add(new grid.store.recordType({
             name: cfg.defaultName,
