@@ -25,6 +25,10 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 
 
 	
+	protected $domain_id;
+
+
+	
 	protected $object_changes;
 
 
@@ -71,6 +75,13 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 	{
 
 		return $this->object_key;
+	}
+
+	
+	public function getDomainId()
+	{
+
+		return $this->domain_id;
 	}
 
 	
@@ -181,6 +192,22 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setDomainId($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->domain_id !== $v) {
+			$this->domain_id = $v;
+			$this->modifiedColumns[] = AuditPeer::DOMAIN_ID;
+		}
+
+	} 
+	
 	public function setObjectChanges($v)
 	{
 
@@ -258,19 +285,21 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 
 			$this->object_key = $rs->getString($startcol + 3);
 
-			$this->object_changes = $rs->getString($startcol + 4);
+			$this->domain_id = $rs->getInt($startcol + 4);
 
-			$this->query = $rs->getString($startcol + 5);
+			$this->object_changes = $rs->getString($startcol + 5);
 
-			$this->type = $rs->getString($startcol + 6);
+			$this->query = $rs->getString($startcol + 6);
 
-			$this->created_at = $rs->getTimestamp($startcol + 7, null);
+			$this->type = $rs->getString($startcol + 7);
+
+			$this->created_at = $rs->getTimestamp($startcol + 8, null);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 8; 
+						return $startcol + 9; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Audit object", $e);
 		}
@@ -448,15 +477,18 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 				return $this->getObjectKey();
 				break;
 			case 4:
-				return $this->getObjectChanges();
+				return $this->getDomainId();
 				break;
 			case 5:
-				return $this->getQuery();
+				return $this->getObjectChanges();
 				break;
 			case 6:
-				return $this->getType();
+				return $this->getQuery();
 				break;
 			case 7:
+				return $this->getType();
+				break;
+			case 8:
 				return $this->getCreatedAt();
 				break;
 			default:
@@ -473,10 +505,11 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 			$keys[1] => $this->getRemoteIpAddress(),
 			$keys[2] => $this->getObject(),
 			$keys[3] => $this->getObjectKey(),
-			$keys[4] => $this->getObjectChanges(),
-			$keys[5] => $this->getQuery(),
-			$keys[6] => $this->getType(),
-			$keys[7] => $this->getCreatedAt(),
+			$keys[4] => $this->getDomainId(),
+			$keys[5] => $this->getObjectChanges(),
+			$keys[6] => $this->getQuery(),
+			$keys[7] => $this->getType(),
+			$keys[8] => $this->getCreatedAt(),
 		);
 		return $result;
 	}
@@ -505,15 +538,18 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 				$this->setObjectKey($value);
 				break;
 			case 4:
-				$this->setObjectChanges($value);
+				$this->setDomainId($value);
 				break;
 			case 5:
-				$this->setQuery($value);
+				$this->setObjectChanges($value);
 				break;
 			case 6:
-				$this->setType($value);
+				$this->setQuery($value);
 				break;
 			case 7:
+				$this->setType($value);
+				break;
+			case 8:
 				$this->setCreatedAt($value);
 				break;
 		} 	}
@@ -527,10 +563,11 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setRemoteIpAddress($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setObject($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setObjectKey($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setObjectChanges($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setQuery($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setType($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
+		if (array_key_exists($keys[4], $arr)) $this->setDomainId($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setObjectChanges($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setQuery($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setType($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
 	}
 
 	
@@ -542,6 +579,7 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(AuditPeer::REMOTE_IP_ADDRESS)) $criteria->add(AuditPeer::REMOTE_IP_ADDRESS, $this->remote_ip_address);
 		if ($this->isColumnModified(AuditPeer::OBJECT)) $criteria->add(AuditPeer::OBJECT, $this->object);
 		if ($this->isColumnModified(AuditPeer::OBJECT_KEY)) $criteria->add(AuditPeer::OBJECT_KEY, $this->object_key);
+		if ($this->isColumnModified(AuditPeer::DOMAIN_ID)) $criteria->add(AuditPeer::DOMAIN_ID, $this->domain_id);
 		if ($this->isColumnModified(AuditPeer::OBJECT_CHANGES)) $criteria->add(AuditPeer::OBJECT_CHANGES, $this->object_changes);
 		if ($this->isColumnModified(AuditPeer::QUERY)) $criteria->add(AuditPeer::QUERY, $this->query);
 		if ($this->isColumnModified(AuditPeer::TYPE)) $criteria->add(AuditPeer::TYPE, $this->type);
@@ -581,6 +619,8 @@ abstract class BaseAudit extends BaseObject  implements Persistent {
 		$copyObj->setObject($this->object);
 
 		$copyObj->setObjectKey($this->object_key);
+
+		$copyObj->setDomainId($this->domain_id);
 
 		$copyObj->setObjectChanges($this->object_changes);
 

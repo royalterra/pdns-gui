@@ -30,7 +30,7 @@ Ext.ux.RecordsGrid = function(cfg){
 
   var defaultCfg = {
     store: new Ext.data.JsonStore({
-      fields : [ 'id','name','type','content','ttl','prio' ],
+      fields : [ 'id','name','type','content','ttl','prio','needs_commit' ],
       root: 'records',
       data: cfg
     }),
@@ -45,7 +45,15 @@ Ext.ux.RecordsGrid = function(cfg){
         dataIndex: 'name',
         editor: new Ext.form.TextField({
           allowBlank: false
-        })
+        }),
+        renderer: function(v, meta, r){
+          if (r.data.needs_commit)
+          {
+            meta.attr = 'style="font-weight: bold;"';
+          }
+          
+          return v;
+        }
       },{
         header: 'Type',
         dataIndex: 'type',
@@ -68,13 +76,29 @@ Ext.ux.RecordsGrid = function(cfg){
           triggerAction: 'all',
           forceSelection: true,
           editable: false
-        })
+        }),
+        renderer: function(v, meta, r){
+          if (r.data.needs_commit)
+          {
+            meta.attr = 'style="font-weight: bold;"';
+          }
+          
+          return v;
+        }
       },{
         header: 'Content',
         dataIndex: 'content',
         editor: new Ext.form.TextField({
           allowBlank: false
-        })
+        }),
+        renderer: function(v, meta, r){
+          if (r.data.needs_commit)
+          {
+            meta.attr = 'style="font-weight: bold;"';
+          }
+          
+          return v;
+        }
       },{
         header: 'TTL',
         dataIndex: 'ttl',
@@ -83,7 +107,15 @@ Ext.ux.RecordsGrid = function(cfg){
         editor: new Ext.form.TextField({
           allowBlank: false,
           maskRe: /^[0-9]$/
-        })
+        }),
+        renderer: function(v, meta, r){
+          if (r.data.needs_commit)
+          {
+            meta.attr = 'style="font-weight: bold;"';
+          }
+          
+          return v;
+        }
       },{
         header: 'Prio',
         dataIndex: 'prio',
@@ -91,7 +123,15 @@ Ext.ux.RecordsGrid = function(cfg){
         fixed: true,
         editor: new Ext.form.TextField({
           maskRe: /^[0-9]$/
-        })
+        }),
+        renderer: function(v, meta, r){
+          if (r.data.needs_commit)
+          {
+            meta.attr = 'style="font-weight: bold;"';
+          }
+          
+          return v;
+        }
       },{
         id: 'delete',
         header: '',

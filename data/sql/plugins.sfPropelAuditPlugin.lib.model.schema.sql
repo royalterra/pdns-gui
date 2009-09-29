@@ -16,6 +16,7 @@ CREATE TABLE `audit`
 	`remote_ip_address` VARCHAR(255),
 	`object` VARCHAR(255),
 	`object_key` VARCHAR(255),
+	`domain_id` INTEGER,
 	`object_changes` TEXT,
 	`query` TEXT,
 	`type` VARCHAR(255),

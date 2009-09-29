@@ -40,6 +40,8 @@ class AuditMapBuilder {
 
 		$tMap->addColumn('OBJECT_KEY', 'ObjectKey', 'string', CreoleTypes::VARCHAR, false, 255);
 
+		$tMap->addColumn('DOMAIN_ID', 'DomainId', 'int', CreoleTypes::INTEGER, false, null);
+
 		$tMap->addColumn('OBJECT_CHANGES', 'ObjectChanges', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('QUERY', 'Query', 'string', CreoleTypes::LONGVARCHAR, false, null);

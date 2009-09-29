@@ -86,8 +86,15 @@ class sfPropelAuditBehavior
       }
     }
     
+    $domain_id = 0;
+    
+    if ($class == 'Record')
+    {
+      $domain_id = $values->getDomainId();
+    }
+    
     $this->save($class, $values->getPrimaryKey(), 
-      serialize($changes), $this->getLastQuery($con), self::TYPE_UPDATE);
+      serialize($changes), $this->getLastQuery($con), self::TYPE_UPDATE, $domain_id);
     
     return true;
   }
@@ -157,8 +164,15 @@ class sfPropelAuditBehavior
       $key = $values->getPrimaryKey();
     }
     
+    $domain_id = 0;
+    
+    if (get_class($values) == 'Record')
+    {
+      $domain_id = $values->getDomainId();
+    }
+    
     $this->save(get_class($values), $key, 
-      serialize($changes), $this->getLastQuery($con), self::TYPE_ADD);
+      serialize($changes), $this->getLastQuery($con), self::TYPE_ADD, $domain_id);
   }
 
   /**
@@ -175,8 +189,14 @@ class sfPropelAuditBehavior
       return false;
     }
     
+    $domain_id = 0;
+    if (get_class($object) == 'Record')
+    {
+      $domain_id = $object->getDomainId();
+    }
+    
     $this->save(get_class($object), $object->getPrimaryKey(), null, 
-      $this->getLastQuery($con), self::TYPE_DELETE);
+      $this->getLastQuery($con), self::TYPE_DELETE, $domain_id);
   }
 
   /**
@@ -191,12 +211,13 @@ class sfPropelAuditBehavior
    *               TYPE_ADD, TYPE_UPDATE, TYPE_DELETE, or TYPE_SELECT
    * @return void
    */
-  private function save($object, $object_key, $changes, $query, $type)
+  private function save($object, $object_key, $changes, $query, $type, $domain_id = 0)
   {
     $audit = new Audit();
     $audit->setRemoteIpAddress($this->getRemoteIP());
     $audit->setObject($object);
     $audit->setObjectKey($object_key);
+    $audit->setDomainId($domain_id);
     $audit->setObjectChanges($changes);
     $audit->setQuery($query);
     $audit->setType($type);

@@ -7,6 +7,7 @@ propel:
     remote_ip_address:  varchar(255)
     object:             varchar(255)
     object_key:         varchar(255)
+    domain_id:          integer
     object_changes:     longvarchar
     query:              longvarchar
     type:               varchar(255)

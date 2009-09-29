@@ -17,7 +17,15 @@ var West = new Ext.grid.GridPanel({
     {
       id: 'domain',
       dataIndex: 'name',
-      width: 180
+      width: 180,
+      renderer: function(v, meta, r){
+        if (r.data.needs_commit)
+        {
+          meta.attr = 'style="font-weight: bold;"';
+        }
+        
+        return v;
+      }
     }
   ],
   viewConfig:{

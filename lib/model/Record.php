@@ -9,6 +9,16 @@
  */ 
 class Record extends BaseRecord
 {
+  public function needsCommit()
+  {
+    $c = new Criteria();
+    $c->add(AuditPeer::OBJECT, 'Record');
+    $c->add(AuditPeer::TYPE, 'UPDATE');
+    $c->add(AuditPeer::OBJECT_KEY, $this->getId());
+    $c->add(AuditPeer::CREATED_AT, date("Y-m-d H:i:s",MyTools::getLastCommit()), Criteria::GREATER_THAN);
+    
+    return AuditPeer::doCount($c);
+  }
 }
 
 sfPropelBehavior::add('Record', array('audit'));

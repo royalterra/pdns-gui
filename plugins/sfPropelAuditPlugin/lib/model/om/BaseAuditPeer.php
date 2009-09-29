@@ -13,7 +13,7 @@ abstract class BaseAuditPeer {
 	const CLASS_DEFAULT = 'plugins.sfPropelAuditPlugin.lib.model.Audit';
 
 	
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 9;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -30,6 +30,9 @@ abstract class BaseAuditPeer {
 
 	
 	const OBJECT_KEY = 'audit.OBJECT_KEY';
+
+	
+	const DOMAIN_ID = 'audit.DOMAIN_ID';
 
 	
 	const OBJECT_CHANGES = 'audit.OBJECT_CHANGES';
@@ -49,18 +52,18 @@ abstract class BaseAuditPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('ID', 'RemoteIpAddress', 'Object', 'ObjectKey', 'ObjectChanges', 'Query', 'Type', 'CreatedAt', ),
-		BasePeer::TYPE_COLNAME => array (AuditPeer::ID, AuditPeer::REMOTE_IP_ADDRESS, AuditPeer::OBJECT, AuditPeer::OBJECT_KEY, AuditPeer::OBJECT_CHANGES, AuditPeer::QUERY, AuditPeer::TYPE, AuditPeer::CREATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'remote_ip_address', 'object', 'object_key', 'object_changes', 'query', 'type', 'created_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('ID', 'RemoteIpAddress', 'Object', 'ObjectKey', 'DomainId', 'ObjectChanges', 'Query', 'Type', 'CreatedAt', ),
+		BasePeer::TYPE_COLNAME => array (AuditPeer::ID, AuditPeer::REMOTE_IP_ADDRESS, AuditPeer::OBJECT, AuditPeer::OBJECT_KEY, AuditPeer::DOMAIN_ID, AuditPeer::OBJECT_CHANGES, AuditPeer::QUERY, AuditPeer::TYPE, AuditPeer::CREATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'remote_ip_address', 'object', 'object_key', 'domain_id', 'object_changes', 'query', 'type', 'created_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'RemoteIpAddress' => 1, 'Object' => 2, 'ObjectKey' => 3, 'ObjectChanges' => 4, 'Query' => 5, 'Type' => 6, 'CreatedAt' => 7, ),
-		BasePeer::TYPE_COLNAME => array (AuditPeer::ID => 0, AuditPeer::REMOTE_IP_ADDRESS => 1, AuditPeer::OBJECT => 2, AuditPeer::OBJECT_KEY => 3, AuditPeer::OBJECT_CHANGES => 4, AuditPeer::QUERY => 5, AuditPeer::TYPE => 6, AuditPeer::CREATED_AT => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'remote_ip_address' => 1, 'object' => 2, 'object_key' => 3, 'object_changes' => 4, 'query' => 5, 'type' => 6, 'created_at' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'RemoteIpAddress' => 1, 'Object' => 2, 'ObjectKey' => 3, 'DomainId' => 4, 'ObjectChanges' => 5, 'Query' => 6, 'Type' => 7, 'CreatedAt' => 8, ),
+		BasePeer::TYPE_COLNAME => array (AuditPeer::ID => 0, AuditPeer::REMOTE_IP_ADDRESS => 1, AuditPeer::OBJECT => 2, AuditPeer::OBJECT_KEY => 3, AuditPeer::DOMAIN_ID => 4, AuditPeer::OBJECT_CHANGES => 5, AuditPeer::QUERY => 6, AuditPeer::TYPE => 7, AuditPeer::CREATED_AT => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'remote_ip_address' => 1, 'object' => 2, 'object_key' => 3, 'domain_id' => 4, 'object_changes' => 5, 'query' => 6, 'type' => 7, 'created_at' => 8, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	
@@ -121,6 +124,8 @@ abstract class BaseAuditPeer {
 		$criteria->addSelectColumn(AuditPeer::OBJECT);
 
 		$criteria->addSelectColumn(AuditPeer::OBJECT_KEY);
+
+		$criteria->addSelectColumn(AuditPeer::DOMAIN_ID);
 
 		$criteria->addSelectColumn(AuditPeer::OBJECT_CHANGES);
 

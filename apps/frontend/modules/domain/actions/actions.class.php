@@ -24,11 +24,31 @@ class domainActions extends MyActions
       
       $records = array();
       
+      $domain_needs_commit = false;
+      
       foreach ($domain->getRecords() as $record)
       {
-        $records[] = $record->toArray(BasePeer::TYPE_FIELDNAME);
+        $record_data = $record->toArray(BasePeer::TYPE_FIELDNAME);
+        
+        $record_data['needs_commit'] = $record->needsCommit();
+        
+        if ($record_data['needs_commit']) $domain_needs_commit = true;
+        
+        $records[] = $record_data;
       }
       
+      // check for deleted records
+      $c = new Criteria();
+      $c->add(AuditPeer::TYPE, 'DELETE');
+      $c->add(AuditPeer::OBJECT, 'Record');
+      $c->add(AuditPeer::DOMAIN_ID, $domain->getId());
+      
+      if (AuditPeer::doCount($c))
+      {
+        $domain_needs_commit = true;
+      }
+      
+      $data['needs_commit'] = $domain_needs_commit;
       $data['records'] = $records;
       
       $this->output[] = $data;
@@ -149,7 +169,10 @@ class domainActions extends MyActions
       $c->add(RecordPeer::DOMAIN_ID, $this->domain->getId());
       $c->add(RecordPeer::ID, $ids, Criteria::NOT_IN);
       
-      RecordPeer::doDelete($c);
+      foreach (RecordPeer::doSelect($c) as $record)
+      {
+        $record->delete();
+      }
       
       return $this->renderJson(array("success"=>true,"info"=>"Domain updated."));
     }
