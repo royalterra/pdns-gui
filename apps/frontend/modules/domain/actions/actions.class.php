@@ -114,6 +114,7 @@ class domainActions extends MyActions
       $c->add(AuditPeer::TYPE, 'DELETE');
       $c->add(AuditPeer::OBJECT, 'Record');
       $c->add(AuditPeer::DOMAIN_ID, $domain->getId());
+      $c->add(AuditPeer::CREATED_AT, date("Y-m-d H:i:s",MyTools::getLastCommit()), Criteria::GREATER_THAN);
       
       if (AuditPeer::doCount($c))
       {
