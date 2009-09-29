@@ -1,142 +1,164 @@
-function TemplateWindow(template)
+function TemplateWindow()
 {
-  var win_id = get_win_id(template);
+  var win_id = get_win_id();
   if (!win_id) return;
   
-  if (template)
+  var Tabs = new Ext.TabPanel({
+    activeTab: 0,
+    border: false,
+    deferredRender: false,
+    enableTabScroll:true,
+    layoutOnTabChange: true,
+    plain: true,
+    height: 360
+  });
+  
+  if (TemplateStore.getCount() == 0)
   {
-    var title = 'Edit tempalte';
-    var url = '<?php echo url_for('template/edit') ?>';
+    Tabs.add(emptyTemplate());
   }
   else
   {
-    var title = 'Add tempalte';
-    var url = '<?php echo url_for('template/add') ?>';
+    TemplateStore.each(function(r){
+      Tabs.add(existingTemplate(r.data));
+    });
   }
   
-  var grid = new Ext.grid.EditorGridPanel({
-    store: new Ext.data.JsonStore({
-      id: 'id',
-      fields : [ 'id','name','type','content','ttl','prio' ],
-      root: 'records'
-    }),
-    height: 200,
-    enableHdMenu: false,
-    enableColumnResize: false,
-    enableColumnMove: false,
-    clicksToEdit: 1,
-    columns: [
+  Tabs.doLayout();
+  
+  var win = new Ext.ux.Window({
+    id: win_id,
+    title: 'Templates',
+    width: 450,
+    items: Tabs,
+    doSubmit: function(){
+      
+      var form_count = 0;
+      
+      var errors = '';
+      
+      Ext.each(Tabs.items.items[0], function(form)
       {
-        header: 'Name',
-        dataIndex: 'name',
-        editor: new Ext.form.TextField({
-          allowBlank: false
-        })
-      },{
-        header: 'Type',
-        dataIndex: 'type',
-        width: 50,
-        fixed: true,
-        editor: new Ext.form.ComboBox({
-          store: [
-            ["SOA","SOA"],
-            ["NS","NS"],
-            ["MX","MX"],
-            ["A","A"],
-            ["CNAME","CNAME"]
-          ],
-          displayField: 'field2',
-          valueField: 'field1',
-          width: 120,
-          name: 'type',
-          hiddenName: 'type',
-          mode: 'local',
-          triggerAction: 'all',
-          forceSelection: true,
-          editable: false
-        })
-      },{
-        header: 'Content',
-        dataIndex: 'content',
-        editor: new Ext.form.TextField({
-          allowBlank: false
-        })
-      },{
-        header: 'TTL',
-        dataIndex: 'ttl',
-        width: 50,
-        fixed: true,
-        editor: new Ext.form.TextField({
-          allowBlank: false,
-          maskRe: /^[0-9]$/
-        })
-      },{
-        header: 'Prio',
-        dataIndex: 'prio',
-        width: 40,
-        fixed: true,
-        editor: new Ext.form.TextField({
-          maskRe: /^[0-9]$/
-        })
-      }
-    ],
-    viewConfig:{
-      forceFit: true,
-      deferEmptyText: false,
-      emptyText: 'No records to display'
+        // remove all hidden fields
+        Ext.each(form.find('xtype','hidden'),function(hidden){
+          if (hidden.name != 'id')
+          {
+            form.remove(hidden);
+          }
+        });
+        
+        form.doLayout();
+        
+        var grid = form.items.items[form.items.items.length-1];
+        
+        var i = 0;
+        grid.store.each(function(r){
+          
+          console.log(r);
+          
+          form.add({
+            xtype: 'hidden',
+            name: 'record['+i+'][id]',
+            value: r.data.id
+          });
+          
+          form.add({
+            xtype: 'hidden',
+            name: 'record['+i+'][name]',
+            value: r.data.name
+          });
+          
+          form.add({
+            xtype: 'hidden',
+            name: 'record['+i+'][type]',
+            value: r.data.type
+          });
+          
+          form.add({
+            xtype: 'hidden',
+            name: 'record['+i+'][content]',
+            value: r.data.content
+          });
+          
+          form.add({
+            xtype: 'hidden',
+            name: 'record['+i+'][ttl]',
+            value: r.data.ttl
+          });
+          
+          form.add({
+            xtype: 'hidden',
+            name: 'record['+i+'][prio]',
+            value: r.data.prio
+          });
+          
+          i++;
+        });
+        
+        form.doLayout();
+        
+        form.form.submit({
+          success: function(form, action){
+            
+            form_count++;
+            
+            if (form_count == Tabs.items.items.length)
+            {
+              win.close();
+              
+              Ext.Msg.alert('Info',action.result.info);
+              
+              TemplateStore.load();
+            }
+          },
+          failure: function(form, action){
+            
+            form_count++;
+            
+            console.log(action);
+            console.log(form);
+            
+            errors+= 'Template: ' + form.title + '<br/>';
+            errors+= action.result.errors.record;
+            
+            if (form_count == Tabs.items.items.length)
+            {
+              Ext.Msg.alert('Error',errors);
+            }
+          }
+        });
+      });
+      
     },
-    bbar: [
+    buttons: [
       {
-        xtype: 'button',
-        text: 'Add record',
-        icon: '/images/add.gif',
-        handler: function(){
-          grid.store.add(new grid.store.recordType({
-            id: grid.store.getCount(),
-            name: '%DOMAIN%',
-            type: 'A',
-            ttl: 86400
-          }));
-        }
+        text: 'Close',
+        handler: function() { win.close() }
+      },{
+        text: 'Submit',
+        handler: function() { win.doSubmit() }
       }
     ]
   });
   
-  grid.store.loadData({ records: [
-    { 
-      id: 0, 
-      name: '%DOMAIN%', 
-      type: 'SOA',
-      content: 'master.dns hostmaster.%DOMAIN% %SERIAL%',
-      ttl: 86400
-    },{
-      id: 1, 
-      name: '%DOMAIN%', 
-      type: 'NS',
-      content: 'master.dns',
-      ttl: 86400
-    },{
-      id: 2, 
-      name: '%DOMAIN%', 
-      type: 'MX',
-      content: 'mail.server',
-      ttl: 86400,
-      prio: 0
-    }
-  ]});
-  
+  win.show();
+}
+
+function emptyTemplate(template)
+{ 
   var form = new Ext.form.FormPanel({
-    url: url,
+    title: 'Default',
+    url: '<?php echo url_for('template/add') ?>',
     border: false,
     labelWidth: 60,
     bodyStyle: 'padding: 10px;',
-    height: 300,
     items: [
       {
         xtype: 'textfield',
         fieldLabel: 'Name',
         name: 'name',
-        allowBlank: false
+        allowBlank: false,
+        value: 'Default'
       },{
         xtype: 'combo',
         store: [["NATIVE","Native"],["MASTER","Master"],["SLAVE","Slave"]],
@@ -153,76 +175,53 @@ function TemplateWindow(template)
         allowBlank: false,
         emptyText: 'Please select...'
       },
-        grid
+        new Ext.ux.RecordsGrid()
     ]
   });
   
-  var win = new Ext.ux.Window({
-    id: win_id,
-    title: title,
-    width: 450,
-    items: form,
-    doSubmit: function(){
-      // remove all hidden fields
-      Ext.each(form.find('xtype','hidden'),function(hidden){
-        form.remove(hidden);
-      });
-      
-      form.doLayout();
-      
-      var i = 0;
-      grid.store.each(function(r){
-        form.add({
-          xtype: 'hidden',
-          name: 'record['+i+'][name]',
-          value: r.data.name
-        });
-        
-        form.add({
-          xtype: 'hidden',
-          name: 'record['+i+'][type]',
-          value: r.data.type
-        });
-        
-        form.add({
-          xtype: 'hidden',
-          name: 'record['+i+'][content]',
-          value: r.data.content
-        });
-        
-        form.add({
-          xtype: 'hidden',
-          name: 'record['+i+'][ttl]',
-          value: r.data.ttl
-        });
-        
-        form.add({
-          xtype: 'hidden',
-          name: 'record['+i+'][prio]',
-          value: r.data.prio
-        });
-        
-        i++;
-      });
-      
-      form.doLayout();
-      
-      form.form.submit({
-        success: function(){
-          
-        }
-      });
-    },
-    buttons: [
-      {
-        text: 'Close',
-        handler: function() { win.close() }
-      },{
-        text: 'Submit',
-        handler: function() { win.doSubmit() }
-      }
-    ]
-  });
-  
-  win.show();
+  return form;
 }
+
+
+function existingTemplate(template)
+{ 
+  var form = new Ext.form.FormPanel({
+    title: template.name,
+    url: '<?php echo url_for('template/edit') ?>',
+    border: false,
+    labelWidth: 60,
+    bodyStyle: 'padding: 10px;',
+    items: [
+      {
+        xtype: 'hidden',
+        name: 'id',
+        value: template.id
+      },{
+        xtype: 'textfield',
+        fieldLabel: 'Name',
+        name: 'name',
+        allowBlank: false,
+        value: template.name
+      },{
+        xtype: 'combo',
+        store: [["NATIVE","Native"],["MASTER","Master"],["SLAVE","Slave"]],
+        fieldLabel: 'Type',
+        displayField: 'field2',
+        valueField: 'field1',
+        width: 120,
+        name: 'type',
+        hiddenName: 'type',
+        mode: 'local',
+        triggerAction: 'all',
+        forceSelection: true,
+        editable: false,
+        allowBlank: false,
+        value: template.type
+      },
+        new Ext.ux.RecordsGrid({records: template.records})
+    ]
+  });
+  
+  return form;
+}
+

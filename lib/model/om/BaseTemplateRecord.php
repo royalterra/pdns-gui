@@ -33,7 +33,7 @@ abstract class BaseTemplateRecord extends BaseObject  implements Persistent {
 
 
 	
-	protected $prio;
+	protected $prio = 0;
 
 	
 	protected $aTemplate;
@@ -203,7 +203,7 @@ abstract class BaseTemplateRecord extends BaseObject  implements Persistent {
 			$v = (int) $v;
 		}
 
-		if ($this->prio !== $v) {
+		if ($this->prio !== $v || $v === 0) {
 			$this->prio = $v;
 			$this->modifiedColumns[] = TemplateRecordPeer::PRIO;
 		}

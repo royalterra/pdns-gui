@@ -17,6 +17,7 @@ pdnsgui.app = function() {
   var viewport;
   
   <?php include 'lib/common/Window.js' ?>
+  <?php include 'lib/common/RecordsGrid.js' ?>
   
   <?php include 'lib/store/Domain.js' ?>
   <?php include 'lib/store/Template.js' ?>

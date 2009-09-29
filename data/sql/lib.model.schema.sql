@@ -95,7 +95,7 @@ CREATE TABLE `template_record`
 	`type` VARCHAR(6),
 	`content` VARCHAR(255),
 	`ttl` INTEGER,
-	`prio` INTEGER,
+	`prio` INTEGER default null,
 	PRIMARY KEY (`id`),
 	INDEX `template_record_FI_1` (`template_id`),
 	CONSTRAINT `template_record_FK_1`

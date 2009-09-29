@@ -101,7 +101,6 @@ propel:
       type: VARCHAR
       size: 45
 
-
   template_record: 
     _attributes: 
       idMethod: native
@@ -128,3 +127,4 @@ propel:
       type: INTEGER
     prio: 
       type: INTEGER
+      default: NULL

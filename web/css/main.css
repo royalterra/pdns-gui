@@ -18,3 +18,9 @@ body
 .icon-cog {
   background-image:url(/images/cog.gif) !important;
 }
+
+.x-grid3-col-delete{
+  cursor: pointer;
+  padding: 0px;
+  padding-top: 2px;
+}
