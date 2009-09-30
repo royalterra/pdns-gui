@@ -90,7 +90,10 @@ class domainActions extends MyActions
   {
     $this->output = array();
     
-    foreach (DomainPeer::doSelect(new Criteria()) as $domain)
+    $c = new Criteria();
+    $c->addAscendingOrderByColumn(DomainPeer::NAME);
+    
+    foreach (DomainPeer::doSelect($c) as $domain)
     {
       $data = $domain->toArray(BasePeer::TYPE_FIELDNAME);
       
