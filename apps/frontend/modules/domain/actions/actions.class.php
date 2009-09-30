@@ -60,11 +60,6 @@ class domainActions extends MyActions
     {
       $domain = DomainPeer::retrieveByPK($audit->getDomainId());
       
-      if ($audit->getCreatedAt() == $domain->getCreatedAt())
-      {
-        continue;
-      }
-      
       $commited.= $domain->getName()."<br/>";
       
       // get SOA record
