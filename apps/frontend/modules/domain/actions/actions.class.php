@@ -18,7 +18,6 @@ class domainActions extends MyActions
     $commited = '';
     
     $c = new Criteria();
-    $c->add(AuditPeer::TYPE, 'ADD', Criteria::NOT_EQUAL);
     $c->add(AuditPeer::OBJECT, 'Record');
     $c->addGroupByColumn(AuditPeer::DOMAIN_ID);
     $c->add(AuditPeer::CREATED_AT, date("Y-m-d H:i:s",MyTools::getLastCommit()), Criteria::GREATER_THAN);
@@ -26,6 +25,11 @@ class domainActions extends MyActions
     foreach (AuditPeer::doSelect($c) as $audit)
     {
       $domain = DomainPeer::retrieveByPK($audit->getDomainId());
+      
+      if ($audit->getCreatedAt() == $domain->getCreatedAt())
+      {
+        continue;
+      }
       
       $commited.= $domain->getName()."<br/>";
       
