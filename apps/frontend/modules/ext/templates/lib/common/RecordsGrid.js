@@ -57,24 +57,7 @@ Ext.ux.RecordsGrid = function(cfg){
         dataIndex: 'type',
         width: 50,
         fixed: true,
-        editor: new Ext.form.ComboBox({
-          store: [
-            ["SOA","SOA"],
-            ["NS","NS"],
-            ["MX","MX"],
-            ["A","A"],
-            ["CNAME","CNAME"]
-          ],
-          displayField: 'field2',
-          valueField: 'field1',
-          width: 120,
-          name: 'type',
-          hiddenName: 'type',
-          mode: 'local',
-          triggerAction: 'all',
-          forceSelection: true,
-          editable: false
-        }),
+        editor: new Ext.ux.TypeCombo(),
         renderer: function(v, meta, r){
           if (r.data.needs_commit)
           {

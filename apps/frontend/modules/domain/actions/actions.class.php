@@ -11,6 +11,40 @@
 class domainActions extends MyActions
 {
   /**
+   * Search and replace
+   */
+  public function executeReplace()
+  {
+    $c = new Criteria();
+    $c->add(RecordPeer::TYPE, $this->getRequestParameter('search_type'));
+    $c->add(RecordPeer::CONTENT, $this->getRequestParameter('search_content'));
+    
+    $replaced = '';
+    
+    foreach (RecordPeer::doSelect($c) as $record)
+    {
+      $replaced.= $record->getDomain()->getName()." ".$record->getType()." ".$record->getContent().' => ';
+      $replaced.= $this->getRequestParameter('replace_type')." ";
+      $replaced.= $this->getRequestParameter('replace_content')."<br/>";
+      
+      $record->setType($this->getRequestParameter('replace_type'));
+      $record->setContent($this->getRequestParameter('replace_content'));
+      $record->save();
+    }
+    
+    if ($replaced)
+    {
+      $info = "The following records has been replaced:<br/>".$replaced;
+    }
+    else
+    {
+      $info = "No replacements made.";
+    }
+    
+    return $this->renderJson(array("success"=>true,"info"=>$info));
+  }
+  
+  /**
    * Commits all changes to zone records (updates SOA serial)
    */
   public function executeCommit()

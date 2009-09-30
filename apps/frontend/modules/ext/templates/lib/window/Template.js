@@ -39,8 +39,6 @@ function TemplateWindow()
       
       Ext.each(Tabs.items.items[0].items.items[0], function(form)
       {
-        console.log(Tabs);
-        
         // remove all hidden fields
         Ext.each(form.find('xtype','hidden'),function(hidden){
           if (hidden.name != 'id')

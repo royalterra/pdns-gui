@@ -9,6 +9,15 @@ var messages = new Ext.Panel({
   autoScroll: true
 });
 
+var toolsMenu = new Ext.menu.Menu({
+  items: [
+    {
+      text: 'Search and replace',
+      handler: function(){ ReplaceWindow() }
+    }
+  ]
+});
+
 var NorthRegion = new Ext.Panel({
   region:'north',
   border: false,
@@ -29,6 +38,11 @@ var NorthRegion = new Ext.Panel({
       height: 60,
       bodyStyle: 'padding-top: 5px; padding-left: 15px;',
       items: messages
+    },{
+      xtype: 'button',
+      text: 'Tools',
+      menu: toolsMenu,
+      margins: '0 5 0 5'
     },{
       xtype: 'button',
       scale: 'medium',
