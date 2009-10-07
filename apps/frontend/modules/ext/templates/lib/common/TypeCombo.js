@@ -9,7 +9,8 @@ Ext.ux.TypeCombo = function(cfg){
       ["NS","NS"],
       ["MX","MX"],
       ["A","A"],
-      ["CNAME","CNAME"]
+      ["CNAME","CNAME"],
+      ["TXT","TXT"]
     ],
     displayField: 'field2',
     valueField: 'field1',
