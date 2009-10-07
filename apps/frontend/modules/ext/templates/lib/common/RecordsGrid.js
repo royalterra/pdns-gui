@@ -10,17 +10,17 @@ Ext.ux.RecordsGrid = function(cfg){
         name: '%DOMAIN%', 
         type: 'SOA',
         content: 'master.dns hostmaster.%DOMAIN% %SERIAL%',
-        ttl: 86400
+        ttl: <?php echo sfConfig::get('app_default_ttl') ?>
       },{
         name: '%DOMAIN%', 
         type: 'NS',
         content: 'master.dns',
-        ttl: 86400
+        ttl: <?php echo sfConfig::get('app_default_ttl') ?>
       },{
         name: '%DOMAIN%', 
         type: 'MX',
         content: 'mail.server',
-        ttl: 86400,
+        ttl: <?php echo sfConfig::get('app_default_ttl') ?>,
         prio: 0
       }
     ];
@@ -152,7 +152,7 @@ Ext.ux.RecordsGrid = function(cfg){
           grid.store.add(new grid.store.recordType({
             name: cfg.defaultName,
             type: 'A',
-            ttl: 86400
+            ttl: <?php echo sfConfig::get('app_default_ttl') ?>
           }));
           
           grid.getView().focusRow(grid.store.getCount() - 1);
