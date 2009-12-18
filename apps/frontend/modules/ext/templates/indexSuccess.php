@@ -1,4 +1,8 @@
-<?php echo javascript_include_tag('/js/ext/loading.pjs') ?>
+<?php if (SF_ENVIRONMENT == 'dev') : ?>
+  <?php echo javascript_include_tag('/frontend_dev.php/js/ext/loading.pjs') ?>
+<?php else : ?>
+  <?php echo javascript_include_tag('/js/ext/loading.pjs') ?>
+<?php endif ?>
 
 <script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Loading CSS';</script>
 
