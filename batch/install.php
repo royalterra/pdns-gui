@@ -1,6 +1,8 @@
 <?php
 error_reporting(E_ALL);
 
+define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/..'));
+
 if (!function_exists('mysql_connect'))
 {
   echo "Error: MySQL module not loaded?\n";
@@ -39,7 +41,53 @@ if (!@mysql_select_db($db_name))
   exit(1);
 }
 
+str_replace_in_file(
+  '/^      dsn:.*$/m',
+  "      dsn: mysql://$db_user:$db_pass@$db_host/$db_name",
+  SF_ROOT_DIR.'/config/databases.yml'
+);
 
+str_replace_in_file(
+  '/^propel\.database\.createUrl  =.*$/m',
+  "propel.database.createUrl  = mysql://$db_user:$db_pass@$db_host/",
+  SF_ROOT_DIR.'/config/propel.ini'
+);
+
+str_replace_in_file(
+  '/^propel\.database\.url        =.*$/m',
+  "propel.database.url        = mysql://$db_user:$db_pass@$db_host/$db_name",
+  SF_ROOT_DIR.'/config/propel.ini'
+);
+
+passthru(SF_ROOT_DIR.'/symfony propel-insert-sql');
+passthru('php '.SF_ROOT_DIR.'/batch/load_data.php');
+passthru(SF_ROOT_DIR.'/symfony fix-perms');
+
+echo "\n\n\n\nDatabase initialized...\n\n";
+
+echo "\nNow you need to edit your PowerDNS config file\n";
+echo "(most likely /etc/powerdns/pdns.d/pdns.local)\n";
+echo "to set correct DB connection details\n\n";
+
+echo "Also add the following to your apache configuration:\n\n";
+
+$SF_ROOT_DIR = SF_ROOT_DIR;
+
+$apache_conf=<<<EOD
+<VirtualHost *:80>
+
+  DocumentRoot $SF_ROOT_DIR/web
+
+  DirectoryIndex index.php
+
+  <Directory $SF_ROOT_DIR/web>
+    AllowOverride All
+  </Directory>
+
+</VirtualHost>
+EOD;
+
+echo $apache_conf."\n\n";
 
 /**
  * Interactively prompts for input without echoing to the terminal.
@@ -72,5 +120,29 @@ function prompt_silent($prompt = "Enter Password:") {
   }
 }
 
+function str_replace_in_file($search,$replace,$file)
+{
+  if (!$content = @file_get_contents($file))
+  {
+    echo "Error: failed to read $file.\n";
+    exit(1);
+  }
+  
+  $count = 0;
+  
+  $content = preg_replace($search,$replace,$content,-1,&$count);
+  
+  if (!$count)
+  {
+    echo "Error: failed to configure DB connection string in $file.\n";
+    exit(1);
+  }
+  
+  if (!@file_put_contents($file,$content))
+  {
+    echo "Error: failed to read $file.\n";
+    exit(1);
+  }
+}
 
 ?>
