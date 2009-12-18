@@ -1,3 +1,8 @@
+Setting:
+  LastCommit:
+    name: 'last_commit'
+    value: 0
+
 Template:
   Default:
     name: Default
