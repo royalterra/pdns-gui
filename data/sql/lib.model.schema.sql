@@ -103,5 +103,19 @@ CREATE TABLE `template_record`
 		REFERENCES `template` (`id`)
 )Type=MyISAM;
 
+#-----------------------------------------------------------------------------
+#-- setting
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `setting`;
+
+
+CREATE TABLE `setting`
+(
+	`name` VARCHAR(255)  NOT NULL,
+	`value` VARCHAR(255),
+	PRIMARY KEY (`name`)
+)Type=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
