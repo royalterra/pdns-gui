@@ -7,7 +7,7 @@ function TemplateWindow()
     activeTab: 0,
     border: false,
     deferredRender: false,
-    enableTabScroll:true,
+    enableTabScroll: true,
     layoutOnTabChange: true,
     plain: true,
     height: 358
@@ -15,7 +15,7 @@ function TemplateWindow()
   
   if (TemplateStore.getCount() == 0)
   {
-    Tabs.add(emptyTemplate());
+    Tabs.add(emptyTemplate('Default'));
   }
   else
   {
@@ -37,91 +37,96 @@ function TemplateWindow()
       
       var errors = '';
       
-      Ext.each(Tabs.items.items[0].items.items[0], function(form)
+      Ext.each(Tabs.items.items,function(tab)
       {
-        // remove all hidden fields
-        Ext.each(form.find('xtype','hidden'),function(hidden){
-          if (hidden.name != 'id')
-          {
-            form.remove(hidden);
-          }
-        });
         
-        form.doLayout();
-        
-        var grid = Tabs.items.items[0].items.items[1].items.items[0];
-        
-        var i = 0;
-        grid.store.each(function(r){
-          
-          form.add({
-            xtype: 'hidden',
-            name: 'record['+i+'][id]',
-            value: r.data.id
-          });
-          
-          form.add({
-            xtype: 'hidden',
-            name: 'record['+i+'][name]',
-            value: r.data.name
-          });
-          
-          form.add({
-            xtype: 'hidden',
-            name: 'record['+i+'][type]',
-            value: r.data.type
-          });
-          
-          form.add({
-            xtype: 'hidden',
-            name: 'record['+i+'][content]',
-            value: r.data.content
-          });
-          
-          form.add({
-            xtype: 'hidden',
-            name: 'record['+i+'][ttl]',
-            value: r.data.ttl
-          });
-          
-          form.add({
-            xtype: 'hidden',
-            name: 'record['+i+'][prio]',
-            value: r.data.prio
-          });
-          
-          i++;
-        });
-        
-        form.doLayout();
-        
-        form.form.submit({
-          success: function(form, action){
-            
-            form_count++;
-            
-            if (form_count == Tabs.items.items.length)
+        Ext.each(tab.items.items[0], function(form)
+        {
+          // remove all hidden fields
+          Ext.each(form.find('xtype','hidden'),function(hidden){
+            if (hidden.name != 'id')
             {
-              win.close();
-              
-              Ext.Msg.alert('Info',action.result.info);
-              
-              TemplateStore.load();
+              form.remove(hidden);
             }
-          },
-          failure: function(form, action){
+          });
+          
+          form.doLayout();
+          
+          var grid = tab.items.items[1].items.items[0];
+          
+          var i = 0;
+          grid.store.each(function(r){
             
-            form_count++;
+            form.add({
+              xtype: 'hidden',
+              name: 'record['+i+'][id]',
+              value: r.data.id
+            });
             
-            errors+= 'Template: ' + form.title + '<br/>';
-            errors+= action.result.errors.record;
+            form.add({
+              xtype: 'hidden',
+              name: 'record['+i+'][name]',
+              value: r.data.name
+            });
             
-            if (form_count == Tabs.items.items.length)
-            {
-              Ext.Msg.alert('Error',errors);
+            form.add({
+              xtype: 'hidden',
+              name: 'record['+i+'][type]',
+              value: r.data.type
+            });
+            
+            form.add({
+              xtype: 'hidden',
+              name: 'record['+i+'][content]',
+              value: r.data.content
+            });
+            
+            form.add({
+              xtype: 'hidden',
+              name: 'record['+i+'][ttl]',
+              value: r.data.ttl
+            });
+            
+            form.add({
+              xtype: 'hidden',
+              name: 'record['+i+'][prio]',
+              value: r.data.prio
+            });
+            
+            i++;
+          });
+          
+          form.doLayout();
+          
+          form.form.submit({
+            success: function(form, action){
+              
+              form_count++;
+              
+              if (form_count == Tabs.items.items.length)
+              {
+                win.close();
+                
+                Ext.Msg.alert('Info',action.result.info);
+                
+                TemplateStore.load();
+              }
+            },
+            failure: function(form, action){
+              
+              form_count++;
+              
+              errors+= 'Template: ' + form.title + '<br/>';
+              errors+= action.result.errors.record;
+              
+              if (form_count == Tabs.items.items.length)
+              {
+                Ext.Msg.alert('Error',errors);
+              }
             }
-          }
+          });
         });
+      
       });
       
     },
@@ -133,7 +138,9 @@ function TemplateWindow()
         text: 'Add template',
         iconCls: 'icon-add',
         handler: function() {
-          Tabs.add(emptyTemplate());
+          var grid = emptyTemplate('Default ' + Tabs.items.length);
+          Tabs.add(grid);
+          Tabs.activate(grid);
         }
       },{
         text: 'Save',
@@ -145,10 +152,9 @@ function TemplateWindow()
   win.show();
 }
 
-function emptyTemplate(template)
+function emptyTemplate(name)
 { 
   var form = new Ext.form.FormPanel({
-    title: 'Default',
     url: '<?php echo url_for('template/add') ?>',
     border: false,
     labelWidth: 60,
@@ -159,7 +165,7 @@ function emptyTemplate(template)
         fieldLabel: 'Name',
         name: 'name',
         allowBlank: false,
-        value: 'Default'
+        value: name
       },{
         xtype: 'combo',
         store: [["NATIVE","Native"],["MASTER","Master"],["SLAVE","Slave"]],
@@ -174,8 +180,17 @@ function emptyTemplate(template)
         forceSelection: true,
         editable: false,
         allowBlank: false,
-        emptyText: 'Please select...'
-      },{
+        value: 'MASTER'
+      }
+    ]
+  });
+  
+  var template = new Ext.Panel({
+    title: name,
+    border: false,
+    items: [
+      form,
+      {
         layout: 'fit',
         border: false,
         items: new Ext.ux.RecordsGrid({defaultName: '%DOMAIN%'})
@@ -183,7 +198,7 @@ function emptyTemplate(template)
     ]
   });
   
-  return form;
+  return template;
 }
 
 
