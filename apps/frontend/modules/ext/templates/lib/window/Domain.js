@@ -29,6 +29,7 @@ function DomainWindow(domain)
     id: win_id,
     title: domain.name + ' ('+domain.type+')',
     width: 450,
+    resizable: true,
     items: form,
     doSubmit: function(){
       // remove all hidden fields
@@ -103,7 +104,7 @@ function DomainWindow(domain)
     },
     buttons: [
       {
-        text: 'Submit',
+        text: 'Save',
         handler: function() { win.doSubmit() }
       },{
         text: 'Close',
@@ -113,4 +114,10 @@ function DomainWindow(domain)
   });
   
   win.show();
+  
+  win.addListener('resize',function(win,width,height){
+    form.items.items[1].items.items[0].setHeight(height-72);
+  });
+  
+  
 }
