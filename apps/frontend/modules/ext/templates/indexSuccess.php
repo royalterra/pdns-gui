@@ -1,3 +1,11 @@
+<h1>PowerDNS GUI</h1>
+
+<p>
+Web based GUI which aids in administering domains and records for the PowerDNS name server software with MySQL backend.
+</p>
+
+<p>Copyright &copy; 2009 - <?php echo link_to('Level 7 Systems Ltd.','http://level7systems.co.uk') ?></p>
+
 <?php if (SF_ENVIRONMENT == 'dev') : ?>
   <?php echo javascript_include_tag('/frontend_dev.php/js/ext/loading.pjs') ?>
 <?php else : ?>
