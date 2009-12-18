@@ -2,7 +2,8 @@ var settingsMenu = new Ext.menu.Menu({
   items: [
     {
       text: 'Templates',
-      handler: function(){ TemplateWindow() }
+      handler: function(){ TemplateWindow() },
+      iconCls: 'icon-brick'
     }
   ]
 });

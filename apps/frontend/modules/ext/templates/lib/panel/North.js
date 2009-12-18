@@ -13,7 +13,8 @@ var toolsMenu = new Ext.menu.Menu({
   items: [
     {
       text: 'Search and replace',
-      handler: function(){ ReplaceWindow() }
+      handler: function(){ ReplaceWindow() },
+      iconCls: 'icon-find'
     }
   ]
 });
@@ -42,12 +43,16 @@ var NorthRegion = new Ext.Panel({
       xtype: 'button',
       text: 'Tools',
       menu: toolsMenu,
-      margins: '0 5 0 5'
+      width: 90,
+      iconCls: 'icon-wrench',
+      scale: 'medium',
+      margins: '0 5 0 35'
     },{
       xtype: 'button',
       scale: 'medium',
+      iconCls: 'icon-server_connect',
       text: 'Commit changes',
-      width: 120,
+      width: 140,
       margins: '0 5 0 5',
       handler: function(){
         Ext.Ajax.request({

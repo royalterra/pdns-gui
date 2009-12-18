@@ -130,7 +130,13 @@ function TemplateWindow()
         text: 'Close',
         handler: function() { win.close() }
       },{
-        text: 'Submit',
+        text: 'Add template',
+        iconCls: 'icon-add',
+        handler: function() {
+          Tabs.add(emptyTemplate());
+        }
+      },{
+        text: 'Save',
         handler: function() { win.doSubmit() }
       }
     ]
