@@ -16,14 +16,7 @@ class MyTools
    */
   public static function getLastCommit()
   {
-    if (!$time = @file_get_contents(SF_ROOT_DIR.'/log/last_commit.log'))
-    {
-      $time = 0;
-      
-      file_put_contents(SF_ROOT_DIR.'/log/last_commit.log',$time);
-    }
-    
-    return $time;
+    return SettingPeer::getValue('last_commit',0);
   }
   
   /**
@@ -82,8 +75,7 @@ class MyTools
     
     if ($commited)
     {
-      file_put_contents(SF_ROOT_DIR.'/log/last_commit.log',time());
-      
+      SettingPeer::setValue('last_commit',time());
     }
     
     return $commited;

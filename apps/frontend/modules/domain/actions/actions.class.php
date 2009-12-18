@@ -53,7 +53,7 @@ class domainActions extends MyActions
     
     if ($commited)
     {
-      $info = "Commited changes to the following domains:<br/>".implode("<br/>",$commited);
+      $info = "Commited changes for the following domains:<br/>".implode("<br/>",$commited);
     }
     else
     {
