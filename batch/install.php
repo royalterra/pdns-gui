@@ -69,7 +69,7 @@ echo "\nNow you need to edit your PowerDNS config file\n";
 echo "(most likely /etc/powerdns/pdns.d/pdns.local)\n";
 echo "to set correct DB connection details\n\n";
 
-echo "Also add the following to your apache configuration:\n\n";
+echo "Add the following to your Apache configuration:\n\n";
 
 $SF_ROOT_DIR = SF_ROOT_DIR;
 
@@ -87,8 +87,9 @@ $apache_conf=<<<EOD
 </VirtualHost>
 EOD;
 
-echo $apache_conf."\n\n";
+echo "------------------------------\n".$apache_conf."\n------------------------------\n\n";
 
+echo "\n\nAnd make sure 'mod_rewrite' is enabled.\n\n";
 /**
  * Interactively prompts for input without echoing to the terminal.
  * Requires a bash shell or Windows and won't work with
