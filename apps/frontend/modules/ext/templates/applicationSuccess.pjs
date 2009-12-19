@@ -1,5 +1,5 @@
 // reference local blank image
-Ext.BLANK_IMAGE_URL = '/extjs/lib/resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = 'extjs/lib/resources/images/default/s.gif';
 
 // load plugins
 <?php include 'plugins.js' ?>
