@@ -75,15 +75,12 @@ class sfPropelAuditBehavior
         continue;
       }
       
-      if ($values->isColumnModified($column)) 
-      {
-        $column_phpname = call_user_func(
-          array($peer_class, 'translateFieldName'), $column, 
-          BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
-        
-        $method = 'get'.sfInflector::camelize($column_phpname);
-        $changes[$column_phpname] = $values->$method();
-      }
+      $column_phpname = call_user_func(
+        array($peer_class, 'translateFieldName'), $column, 
+        BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
+      
+      $method = 'get'.sfInflector::camelize($column_phpname);
+      $changes[$column_phpname] = $values->$method();
     }
     
     $domain_id = 0;
