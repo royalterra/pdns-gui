@@ -31,6 +31,10 @@ body
   background-image:url(../images/find.gif) !important;
 }
 
+.icon-book_open {
+  background-image:url(../images/book_open.gif) !important;
+}
+
 .icon-server_connect {
   background-image:url(../images/server_connect.gif) !important;
 }

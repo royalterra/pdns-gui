@@ -15,6 +15,10 @@ var toolsMenu = new Ext.menu.Menu({
       text: 'Search and replace',
       handler: function(){ ReplaceWindow() },
       iconCls: 'icon-find'
+    },{
+      text: 'History',
+      handler: function(){ HistoryWindow() },
+      iconCls: 'icon-book_open'
     }
   ]
 });

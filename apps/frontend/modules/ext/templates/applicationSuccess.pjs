@@ -19,6 +19,7 @@ pdnsgui.app = function() {
   <?php include 'lib/common/Window.js' ?>
   <?php include 'lib/common/RecordsGrid.js' ?>
   <?php include 'lib/common/TypeCombo.js' ?>
+  <?php include 'lib/common/SearchField.js' ?>
   
   <?php include 'lib/store/Domain.js' ?>
   <?php include 'lib/store/Template.js' ?>
@@ -34,6 +35,7 @@ pdnsgui.app = function() {
   <?php include 'lib/window/Domain.js' ?>
   <?php include 'lib/window/Template.js' ?>
   <?php include 'lib/window/Replace.js' ?>
+  <?php include 'lib/window/History.js' ?>
 
   // private functions
 

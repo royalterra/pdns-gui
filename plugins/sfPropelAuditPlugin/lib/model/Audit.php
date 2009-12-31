@@ -9,25 +9,19 @@
  */ 
 class Audit extends BaseAudit
 {
-  public function getUser()
+  public function toStore()
   {
-    switch ($this->getUserType())
-    {
-      case 'U':
-        $user = UserPeer::retrieveByPK($this->getUserId());
-        break;
-      case 'P':
-        $user = PartnerUserPeer::retrieveByPK($this->getUserId());
-        break;
-      case 'S':
-        $user = SupplierUserPeer::retrieveByPK($this->getUserId());
-        break;
-      default:
-        $user = new User();
-        $user->setFirstName('Anonymous');
-    }
-    
-    return $user;
+    return array(
+      "id"          => $this->getId(),
+      "ip_address"  => $this->getRemoteIpAddress(),
+      "object"      => $this->getObject(),
+      "object_key"  => $this->getObjectKey(),
+      "domain_id"   => $this->getDomainId(),
+      "add_key"     => $this->getType()."-".$this->getObject()."-".$this->getObjectKey(),
+      "changes"     => unserialize($this->getObjectChanges()),
+      "type"        => $this->getType(),
+      "created_at"  => $this->getCreatedAt()
+    );
   }
   
 }
