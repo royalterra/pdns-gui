@@ -43,6 +43,10 @@ body
   background-image:url(../images/wrench.gif) !important;
 }
 
+.icon-bin {
+  background-image:url(../images/bin.gif) !important;
+}
+
 .x-grid3-col-delete{
   cursor: pointer;
   padding: 0px;

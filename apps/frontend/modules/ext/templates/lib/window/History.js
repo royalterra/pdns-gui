@@ -26,13 +26,13 @@ function HistoryWindow()
         renderer: function(v){
           switch (v){
             case 'ADD':
-              return '<img src="/images/add.gif" ext:qtip="Added" />'
+              return '<div style="width: 16px; height: 16px;" class="icon-add" ext:qtip="Added" />'
               break;
             case 'UPDATE':
-              return '<img src="/images/cog.gif" ext:qtip="Updated" />'
+              return '<div style="width: 16px; height: 16px;" class="icon-cog" ext:qtip="Updated" />'
               break;
             case 'DELETE':
-              return '<img src="/images/bin.gif" ext:qtip="Deleted" />'
+              return '<div style="width: 16px; height: 16px;" class="icon-bin" ext:qtip="Deleted" />'
               break;
             default:
               return '?';
@@ -83,12 +83,27 @@ function HistoryWindow()
               {
                 var parent = grid.store.getAt(key).data;
                 
-                return parent.changes.Name + ' <b>' + parent.changes.Type + '</b> ' + parent.changes.Ttl;
+                if (parent.changes.Type == 'SOA')
+                {
+                  return '<b>' + parent.changes.Type + '</b> ' + parent.changes.Content + ' ' + parent.changes.Ttl;
+                }
+                else
+                {
+                
+                  return parent.changes.Name + ' <b>' + parent.changes.Type + '</b> ' + parent.changes.Content + ' ' + parent.changes.Ttl;
+                }
               }
             }
             else
             {
-              return v.Name + ' <b>' + v.Type + '</b> ' + v.Content + ' ' + v.Ttl;
+              if (v.Type == 'SOA')
+              {
+                return '<b>' + v.Type + '</b> ' + v.Content + ' ' + v.Ttl;
+              }
+              else
+              {
+                return v.Name + ' <b>' + v.Type + '</b> ' + v.Content + ' ' + v.Ttl;
+              }
             }
           }
 				}
