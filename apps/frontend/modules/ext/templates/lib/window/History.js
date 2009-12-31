@@ -39,73 +39,47 @@ function HistoryWindow()
           }
         }
 			},{
-				header: 'Domain',
+				header: 'Name',
         menuDisabled: true,
         width: 120,
         fixed: true,
-				dataIndex: 'domain_id',
-				renderer: function(v,meta,r){
-          return DomainStore.getById(v).data.name;
+				dataIndex: 'changes',
+				renderer: function(v){
+          return v.Name;
 				}
 			},{
-				header: 'Data',
+				header: 'Type',
+        menuDisabled: true,
+        width: 50,
+        fixed: true,
+				dataIndex: 'changes',
+				renderer: function(v){
+          return v.Type;
+				}
+			},{
+				header: 'Content',
         menuDisabled: true,
 				dataIndex: 'changes',
-				renderer: function(v,meta,r){
-          if (r.data.type == 'DELETE')
-          {
-						r = r.data;
-						var key = grid.store.find('add_key','ADD-' + r.object + '-' + r.object_key);
-						
-						if (key == -1)
-						{
-							return 'Not found';
-						}
-						else
-						{
-							var parent = grid.store.getAt(key).data;
-							
-							return parent.changes.Name + ' <b>' + parent.changes.Type + '</b>';
-						}
-          }
-          else
-          {
-            if (!v.Name || !v.Type)
-            {
-              r = r.data;
-              var key = grid.store.find('add_key','ADD-' + r.object + '-' + r.object_key);
-              
-              if (key == -1)
-              {
-                return 'Not found';
-              }
-              else
-              {
-                var parent = grid.store.getAt(key).data;
-                
-                if (parent.changes.Type == 'SOA')
-                {
-                  return '<b>' + parent.changes.Type + '</b> ' + parent.changes.Content + ' ' + parent.changes.Ttl;
-                }
-                else
-                {
-                
-                  return parent.changes.Name + ' <b>' + parent.changes.Type + '</b> ' + parent.changes.Content + ' ' + parent.changes.Ttl;
-                }
-              }
-            }
-            else
-            {
-              if (v.Type == 'SOA')
-              {
-                return '<b>' + v.Type + '</b> ' + v.Content + ' ' + v.Ttl;
-              }
-              else
-              {
-                return v.Name + ' <b>' + v.Type + '</b> ' + v.Content + ' ' + v.Ttl;
-              }
-            }
-          }
+				renderer: function(v){
+          return v.Content;
+				}
+			},{
+				header: 'TTL',
+        width: 40,
+        fixed: true,
+        menuDisabled: true,
+				dataIndex: 'changes',
+				renderer: function(v){
+          return v.Ttl;
+				}
+			},{
+				header: 'Prio',
+        width: 30,
+        fixed: true,
+        menuDisabled: true,
+				dataIndex: 'changes',
+				renderer: function(v){
+          return v.Prio;
 				}
 			}
 		],

@@ -37,17 +37,7 @@ class extActions extends MyActions
     
     if ($search = $this->getRequestParameter('search'))
     {
-      $c_search = new Criteria();
-      $c_search->add(DomainPeer::NAME, "%$search%", Criteria::LIKE);
-      
-      $search_ids = array();
-      
-      foreach (DomainPeer::doSelect($c_search) as $domain)
-      {
-        $search_ids[] = $domain->getId();
-      }
-      
-      $c->add(AuditPeer::DOMAIN_ID, $search_ids, Criteria::IN);
+      $c->add(AuditPeer::OBJECT_CHANGES, "%$search%", Criteria::LIKE);
     }
     
     foreach (AuditPeer::doSelect($c) as $audit)

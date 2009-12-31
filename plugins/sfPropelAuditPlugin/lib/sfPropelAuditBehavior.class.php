@@ -187,12 +187,55 @@ class sfPropelAuditBehavior
     }
     
     $domain_id = 0;
+    
+    $changes = array();
+    
     if (get_class($object) == 'Record')
     {
+      $peer_class = 'RecordPeer';
+      
       $domain_id = $object->getDomainId();
+      
+      $classMapBuilder = 'RecordMapBuilder';
+      
+      if (!$classPath = sfCore::getClassPath($classMapBuilder)) 
+      {
+        throw new sfException(
+          sprintf('Unable to find path for class "%s".', $classMapBuilder));
+      }
+      
+      require_once ($classPath);
+      
+      $map = new $classMapBuilder();
+      $map->doBuild();
+      $tableMap = $map->getDatabaseMap()->getTable(
+        constant($peer_class.'::TABLE_NAME'));
+      
+      foreach (call_user_func(
+        array($peer_class, 'getFieldNames'), BasePeer::TYPE_COLNAME) as $column) 
+      {
+        // do not keep track of changes for fields that are primary keys
+        // or for the field 'updated_at'
+        if ($tableMap->getColumn($column)->getColumnName() == 'UPDATED_AT')
+        {
+          continue;
+        }
+        
+        if ($tableMap->getColumn($column)->isPrimaryKey())
+        {
+          continue;
+        }
+        
+        $column_phpname = call_user_func(
+          array($peer_class, 'translateFieldName'), $column, 
+          BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
+        
+        $method = 'get'.sfInflector::camelize($column_phpname);
+        $changes[$column_phpname] = $object->$method();
+      }
     }
     
-    $this->save(get_class($object), $object->getPrimaryKey(), null, 
+    $this->save(get_class($object), $object->getPrimaryKey(), serialize($changes),
       $this->getLastQuery($con), self::TYPE_DELETE, $domain_id);
   }
 

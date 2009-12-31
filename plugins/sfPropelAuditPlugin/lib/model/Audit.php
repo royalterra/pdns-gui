@@ -17,7 +17,6 @@ class Audit extends BaseAudit
       "object"      => $this->getObject(),
       "object_key"  => $this->getObjectKey(),
       "domain_id"   => $this->getDomainId(),
-      "add_key"     => $this->getType()."-".$this->getObject()."-".$this->getObjectKey(),
       "changes"     => unserialize($this->getObjectChanges()),
       "type"        => $this->getType(),
       "created_at"  => $this->getCreatedAt()
