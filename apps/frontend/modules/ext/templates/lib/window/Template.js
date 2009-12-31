@@ -6,9 +6,7 @@ function TemplateWindow()
   var Tabs = new Ext.TabPanel({
     activeTab: 0,
     border: false,
-    deferredRender: false,
     enableTabScroll: true,
-    layoutOnTabChange: true,
     plain: true,
     height: 358
   });
