@@ -83,7 +83,6 @@ class MyTools
         {
           foreach ($also_notify as $host)
           {
-            echo "sudo /usr/bin/pdns_control notify-host $domain $host<br/>";
             exec("sudo /usr/bin/pdns_control notify-host $domain $host");
           }
         }
