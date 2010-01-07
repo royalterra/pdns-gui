@@ -76,6 +76,19 @@ class MyTools
     if ($commited)
     {
       SettingPeer::setValue('last_commit',time());
+      
+      if ($also_notify = sfConfig::get('app_default_also-notify'))
+      {
+        foreach ($commited as $domain)
+        {
+          foreach ($also_notify as $host)
+          {
+            echo "sudo /usr/bin/pdns_control notify-host $domain $host<br/>";
+            exec("sudo /usr/bin/pdns_control notify-host $domain $host");
+          }
+        }
+      }
+      
     }
     
     return $commited;
