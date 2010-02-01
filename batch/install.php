@@ -11,7 +11,15 @@ if (!function_exists('mysql_connect'))
 
 $fp = fopen('php://stdin', 'r');
 
-echo "\nThis script will install PowerDNS GUI on this server\n\nPress ENTER to continue Ctrl-C to abort...\n";
+echo "\nThis script will install PowerDNS GUI on this server\n\n";
+echo "*************** W A R N I N G !!! ******************\n";
+echo "*                                                  *\n";
+echo "*   All existing data in Powerdns MySQL database   *\n";
+echo "*               WILL BE LOST.                      *\n";
+echo "*       Make a backup copy before proceeding.      *\n";
+echo "*                                                  *\n";
+echo "****************************************************\n\n";
+echo "Press ENTER to continue Ctrl-C to abort...\n";
 
 fgets($fp, 1024);
 
