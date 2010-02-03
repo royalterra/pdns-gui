@@ -113,7 +113,7 @@ DROP TABLE IF EXISTS `setting`;
 CREATE TABLE `setting`
 (
 	`name` VARCHAR(255)  NOT NULL,
-	`value` VARCHAR(255),
+	`value` TEXT,
 	PRIMARY KEY (`name`)
 )Type=MyISAM;
 

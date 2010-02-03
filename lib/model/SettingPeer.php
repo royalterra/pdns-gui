@@ -46,6 +46,7 @@ class SettingPeer extends BaseSettingPeer
     
     if (!$setting = SettingPeer::doSelectOne($c))
     {
+      $setting = new Setting();
       $setting->setName($name);
     }
     

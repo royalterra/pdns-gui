@@ -71,6 +71,16 @@ passthru(SF_ROOT_DIR.'/symfony propel-insert-sql');
 passthru('php '.SF_ROOT_DIR.'/batch/load_data.php');
 passthru(SF_ROOT_DIR.'/symfony fix-perms');
 
+if (!@mysql_query("ALTER TABLE `$db_name`.`domains` ENGINE = InnoDB"))
+{
+  echo "\nError: ".mysql_error()."\n\n";
+}
+
+if (!@mysql_query("ALTER TABLE `$db_name`.`records` ENGINE = InnoDB"))
+{
+  echo "\nError: ".mysql_error()."\n\n";
+}
+
 echo "\n\n\n\nDatabase initialized...\n\n";
 
 echo "\nNow you need to edit your PowerDNS config file\n";

@@ -20,5 +20,9 @@ then
   exit 0
 fi
 
+./symfony propel-build-model
+./symfony propel-build-sql
 ./symfony propel-insert-sql
+./symfony cc
+
 php batch/load_data.php

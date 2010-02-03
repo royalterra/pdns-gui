@@ -129,12 +129,11 @@ propel:
       type: INTEGER
       default: NULL
 
-  setting: 
+  setting:
     name:
       required: true
       primaryKey: true
       type: VARCHAR
       size: 255
     value:
-      type: VARCHAR
-      size: 255
+      type: LONGVARCHAR
