@@ -8,6 +8,8 @@ var RecordTypeStore = new Ext.data.JsonStore({
   listeners: {
     load: function(store){
       
+      RecordTypeStoreActive.removeAll();
+      
       store.each(function(r){
         
         if (r.data.state == 1)

@@ -38,6 +38,22 @@ class templateActions extends MyActions
     else
     {
       
+      $record_type = array();
+      
+      foreach ($this->getRequestParameter('record_type') as $type => $state)
+      {
+        if ($state)
+        {
+          $record_type[$type] = 1;
+        }
+        else
+        {
+          $record_type[$type] = 0;
+        }
+      }
+      
+      SettingPeer::setValue('record_type',serialize($record_type));
+      
       return $this->renderJson(array("success"=>true,"info"=>"Record types updated."));
     }
   }
