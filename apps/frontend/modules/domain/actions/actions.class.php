@@ -272,7 +272,7 @@ class domainActions extends MyActions
           return false;
         }
         
-        if (!in_array($data['type'],array("SOA","NS","MX","A","CNAME","TXT")))
+        if (!array_key_exists($data['type'],sfConfig::get('app_record_type',array())))
         {
           $this->getRequest()->setError('record',"Row $i: invalid record type.");
           return false;

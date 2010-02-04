@@ -19,6 +19,10 @@ var toolsMenu = new Ext.menu.Menu({
       text: 'History',
       handler: function(){ HistoryWindow() },
       iconCls: 'icon-book_open'
+    },{
+      text: 'Settings',
+      handler: function(){ RecordTypeWindow() },
+      iconCls: 'icon-cog'
     }
   ]
 });

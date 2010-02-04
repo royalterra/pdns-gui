@@ -4,16 +4,9 @@ Ext.ux.TypeCombo = function(cfg){
   if (!cfg) var cfg = {};
 
   var defaultCfg = {
-    store: [
-      ["SOA","SOA"],
-      ["NS","NS"],
-      ["MX","MX"],
-      ["A","A"],
-      ["CNAME","CNAME"],
-      ["TXT","TXT"]
-    ],
-    displayField: 'field2',
-    valueField: 'field1',
+    store: RecordTypeStoreActive,
+    displayField: 'id',
+    valueField: 'id',
     width: 120,
     name: 'type',
     hiddenName: 'type',

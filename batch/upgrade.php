@@ -77,6 +77,7 @@ if (!SettingPeer::getValue('record_type'))
     "MX" => 1,
     "NAPTR" => 1,
     "NS" => 1,
+    "NSEC" => 0,
     "PTR" => 1,
     "RP" => 0,
     "RRSIG" => 0,

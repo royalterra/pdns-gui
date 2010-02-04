@@ -38,7 +38,8 @@ function loadStores(){
   
   var stores = [
     'DomainStore',
-    'TemplateStore'
+    'TemplateStore',
+    'RecordTypeStore'
   ];
   
   Ext.each(stores,function(store){

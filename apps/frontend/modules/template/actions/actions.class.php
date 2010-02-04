@@ -10,10 +10,55 @@
  */
 class templateActions extends MyActions
 {
+  
+  /**
+   * Record Type
+   */
+  public function executeRecordtype()
+  {
+    if (!$this->isPOST())
+    {
+      $output = array();
+      
+      if (!$record_type = SettingPeer::getValue('record_type'))
+      {
+        return $this->renderJson(array("success"=>false));
+      }
+      
+      foreach (unserialize($record_type) as $type => $state)
+      {
+        $output[] = array(
+          "id"  => $type,
+          "state" => $state
+        );
+      }
+      
+      return $this->renderStore("RecordType",$output);
+    }
+    else
+    {
+      
+      return $this->renderJson(array("success"=>true,"info"=>"Record types updated."));
+    }
+  }
+  
+  public function validateRecordtype()
+  {
+    if ($this->isPOST())
+    {
+      if (array_keys(sfConfig::get('app_record_type',array())) != array_keys($this->getRequestParameter('record_type')))
+      {
+        $this->getRequest()->setError('record_type[A]','Invalid record type');
+        return false;
+      }
+    }
+    
+    return true;
+  }
+  
 
   /**
    * List
-   *
    */
   public function executeList()
   {
@@ -206,7 +251,7 @@ class templateActions extends MyActions
         return false;
       }
       
-      if (!in_array($data['type'],array("SOA","NS","MX","A","CNAME","TXT")))
+      if (!array_key_exists($data['type'],sfConfig::get('app_record_type',array())))
       {
         $this->getRequest()->setError('record',"Row $i: invalid record type.");
         return false;
