@@ -353,4 +353,29 @@ class domainActions extends MyActions
     return true;
   }
   
+
+  /**
+   * Delete
+   */
+  public function executeDelete()
+  {
+    $c = new Criteria();
+    $c->add(RecordPeer::DOMAIN_ID, $this->domain->getId());
+    
+    RecordPeer::doDelete($c);
+    $this->domain->delete();
+    
+    return $this->renderJson(array("success"=>true,"info"=>"Domain deleted."));
+  }
+  
+  public function validateDelete()
+  {
+    if (!$this->domain = DomainPeer::retrieveByPK($this->getRequestParameter('id')))
+    {
+      $this->getRequest()->setError('id','Invalid domain id');
+      return false;
+    }
+    
+    return true;
+  }
 }

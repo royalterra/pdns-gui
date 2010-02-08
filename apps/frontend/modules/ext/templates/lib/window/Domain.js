@@ -110,7 +110,60 @@ function DomainWindow(domain)
         text: 'Close',
         handler: function() { win.close() }
       }
-    ]
+    ],
+    tools: [{
+      id: 'gear',
+      handler: function(e,el){
+        var menu = new Ext.menu.Menu({
+          items: [
+            {
+              text: 'Delete',
+              iconCls: 'icon-bin',
+              handler: function(){
+                
+                // Show a dialog using config options:
+                Ext.Msg.show({
+                  title:'Confirm',
+                  closable: false,
+                  msg: 'Are you sure you want to delete this domain.',
+                  buttons: Ext.Msg.YESNO,
+                  icon: Ext.MessageBox.QUESTION,
+                  fn: function(button){
+                    <?php echo ext_log("'Pressed button: ' + button") ?>
+                    if (button == 'yes')
+                    {
+                      Ext.Ajax.request({
+                        url: '<?php echo url_for('domain/delete') ?>',
+                        success: function(r){
+                          var response = Ext.decode(r.responseText);
+                          
+                          if (response.success)
+                          {
+                            win.close()
+                            DomainStore.reload();
+                          }
+                          else
+                          {
+                            Ext.Msg.alert('Error',"Operation failed");
+                          }
+                        },
+                        failure: function(){
+                          Ext.Msg.alert('Error','Request failed.');
+                        },
+                        params: { id: domain.id }
+                      });
+                    }
+                  }
+                });
+                
+              }
+            }
+          ]
+        });
+        
+        menu.showAt(e.xy);
+      }
+    }]
   });
   
   win.show();
