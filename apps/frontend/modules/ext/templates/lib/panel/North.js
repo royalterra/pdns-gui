@@ -69,9 +69,9 @@ var NorthRegion = new Ext.Panel({
             
             var info = Ext.decode(action.responseText).info;
             
-            Ext.Msg.alert('Error',info);
+            Ext.Msg.alert('Info',info);
             
-            DomainStore.load();
+            DomainStore.reload();
           }
         });
 
