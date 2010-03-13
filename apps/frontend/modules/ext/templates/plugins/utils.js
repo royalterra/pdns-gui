@@ -80,3 +80,22 @@ Ext.ux.collapsedPanelTitlePlugin = function ()
     }
   };
 };
+
+Ext.Ajax.on('requestcomplete', function( oConn, oResp, oOpts ) {
+  var res = Ext.decode(oResp.responseText);
+
+  if (res.sfException)
+  {
+    Ext.Msg.alert('Error', res.sfException);
+  }
+});
+
+Ext.Ajax.on('requestexception', function( oConn, oResp, oOpts ) {
+  var res = Ext.decode(oResp.responseText);
+
+  if (res.sfException)
+  {
+    Ext.Msg.alert('Error', res.sfException);
+  }
+});
+
