@@ -3,37 +3,17 @@ Ext.ux.RecordsGrid = function(cfg){
 
   if (!cfg) var cfg = {};
   
-  if (!cfg.records)
-  {
-    cfg.records = [
-      { 
-        name: '%DOMAIN%', 
-        type: 'SOA',
-        content: 'master.dns hostmaster.%DOMAIN% %SERIAL%',
-        ttl: <?php echo sfConfig::get('app_default_ttl') ?>
-      },{
-        name: '%DOMAIN%', 
-        type: 'NS',
-        content: 'master.dns',
-        ttl: <?php echo sfConfig::get('app_default_ttl') ?>
-      },{
-        name: '%DOMAIN%', 
-        type: 'MX',
-        content: 'mail.server',
-        ttl: <?php echo sfConfig::get('app_default_ttl') ?>,
-        prio: 0
-      }
-    ];
-  }
-  
   var defaultCfg = {
     border: false,
     store: new Ext.data.JsonStore({
+      url: '<?php echo url_for('domain/listrecords') ?>',
+      baseParams: { id: cfg.domain_id },
       fields : [ 'id','name','type','content','ttl','prio','needs_commit' ],
-      root: 'records',
-      data: cfg
+      root: 'Record',
+      autoLoad: true
     }),
     height: 260,
+    loadMask: true,
     enableHdMenu: false,
     enableColumnResize: false,
     enableColumnMove: false,
@@ -141,7 +121,7 @@ Ext.ux.RecordsGrid = function(cfg){
     },
     viewConfig:{
       forceFit: true,
-      deferEmptyText: false,
+      deferEmptyText: true,
       emptyText: 'No records to display'
     },
     bbar: [

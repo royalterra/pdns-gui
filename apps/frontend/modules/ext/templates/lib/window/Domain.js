@@ -17,9 +17,9 @@ function DomainWindow(domain)
         layout: 'fit',
         border: false,
         items: new Ext.ux.RecordsGrid({
-          records: domain.records, 
           defaultName: domain.name,
-          border: false
+          border: false,
+          domain_id: domain.id
         })
       }
     ]
