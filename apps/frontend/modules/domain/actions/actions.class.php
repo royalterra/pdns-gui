@@ -75,13 +75,8 @@ class domainActions extends MyActions
     
     foreach (DomainPeer::doSelect($c) as $domain)
     {
-      $data = $domain->toArray(BasePeer::TYPE_FIELDNAME);
-      
-      $records = array();
-      
-      $domain_needs_commit = false;
-      
-      foreach ($domain->getRecords() as $record)
+      /*
+      foreach ($domain->getRecords($c1) as $record)
       {
         $record_data = $record->toArray(BasePeer::TYPE_FIELDNAME);
         
@@ -91,22 +86,10 @@ class domainActions extends MyActions
         
         $records[] = $record_data;
       }
-      
-      // check for deleted records
-      $c = new Criteria();
-      $c->add(AuditPeer::TYPE, 'DELETE');
-      $c->add(AuditPeer::OBJECT, 'Record');
-      $c->add(AuditPeer::DOMAIN_ID, $domain->getId());
-      $c->add(AuditPeer::CREATED_AT, date("Y-m-d H:i:s",MyTools::getLastCommit()), Criteria::GREATER_THAN);
-      
-      if (AuditPeer::doCount($c))
-      {
-        $domain_needs_commit = true;
-      }
-      
-      
-      $data['needs_commit'] = $domain_needs_commit;
-      $data['records'] = $records;
+      */
+      $data = $domain->toArray(BasePeer::TYPE_FIELDNAME);
+      $data['needs_commit'] = $domain->needsComit();
+      $data['records'] = array();
       
       $this->output[] = $data;
     }
@@ -114,6 +97,32 @@ class domainActions extends MyActions
     if ($this->isAjax())
     {
       return $this->renderStore('Domain',$this->output);
+    }
+  }
+  
+  /**
+   * List records
+   */
+  public function executeListrecords()
+  {
+    $domain = DomainPeer::retrieveByPK($this->getRequestParameter('id'));
+    
+    $this->forward404Unless($domain);
+    
+    $output = array();
+    
+    foreach ($domain->getRecords() as $record)
+    {
+      $record_data = $record->toArray(BasePeer::TYPE_FIELDNAME);
+      
+      $record_data['needs_commit'] = $record->needsCommit();
+      
+      $output[] = $record_data;
+    }
+    
+    if ($this->isAjax())
+    {
+      return $this->renderJson(array('Record'=>$output));
     }
   }
   
