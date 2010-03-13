@@ -24,6 +24,21 @@ class Domain extends BaseDomain
     
     return $audit->getCreatedAt();
   }
+  
+  public function needsComit()
+  { 
+    $connection = Propel::getConnection();
+    
+    $sql = sprintf("SELECT COUNT(%s) AS count FROM %s WHERE %s = 'Record' AND %s = %d AND %s > '%d'"
+    ,AuditPeer::ID, AuditPeer::TABLE_NAME, AuditPeer::OBJECT, AuditPeer::DOMAIN_ID, $this->getId(),
+    AuditPeer::CREATED_AT,date("Y-m-d H:i:s",MyTools::getLastCommit()));
+    
+    $statement = $connection->prepareStatement($sql);
+    $resultset = $statement->executeQuery();
+    
+    $resultset->next();
+    return $resultset->getInt('count');
+  }
 }
 
 sfPropelBehavior::add('Domain', array('audit'));

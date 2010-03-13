@@ -11,13 +11,24 @@ class Record extends BaseRecord
 {
   public function needsCommit()
   {
-    $c = new Criteria();
-    $c->add(AuditPeer::OBJECT, 'Record');
-    $c->add(AuditPeer::OBJECT_KEY, $this->getId());
-    $c->add(AuditPeer::DOMAIN_ID, $this->getDomainId());
-    $c->add(AuditPeer::CREATED_AT, date("Y-m-d H:i:s",MyTools::getLastCommit()), Criteria::GREATER_THAN);
+    $connection = Propel::getConnection();
     
-    return AuditPeer::doCount($c);
+    $sql = sprintf("SELECT COUNT(%s) AS count FROM %s 
+      WHERE %s = 'Record' 
+      AND %s = %d 
+      AND %s = %d 
+      AND %s > '%d'",
+    AuditPeer::ID, AuditPeer::TABLE_NAME,
+    AuditPeer::OBJECT,
+    AuditPeer::OBJECT_KEY, $this->getId(),
+    AuditPeer::DOMAIN_ID, $this->getDomainId(),
+    AuditPeer::CREATED_AT, date("Y-m-d H:i:s",MyTools::getLastCommit()));
+    
+    $statement = $connection->prepareStatement($sql);
+    $resultset = $statement->executeQuery();
+    
+    $resultset->next();
+    return $resultset->getInt('count');
   }
 }
 
