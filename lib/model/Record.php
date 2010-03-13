@@ -17,7 +17,7 @@ class Record extends BaseRecord
       WHERE %s = 'Record' 
       AND %s = %d 
       AND %s = %d 
-      AND %s > '%d'",
+      AND %s > '%s'",
     AuditPeer::ID, AuditPeer::TABLE_NAME,
     AuditPeer::OBJECT,
     AuditPeer::OBJECT_KEY, $this->getId(),

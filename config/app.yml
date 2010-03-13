@@ -1,7 +1,7 @@
 all:
   default:
-    also-notify: [ 63.219.151.12, 64.246.42.203, 208.94.147.135 ]
-    ttl: 120
+    also-notify: [ ]
+    ttl: 3600
 
   record:
     type:

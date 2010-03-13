@@ -191,7 +191,10 @@ function emptyTemplate(name)
       {
         layout: 'fit',
         border: false,
-        items: new Ext.ux.RecordsGrid({defaultName: '%DOMAIN%'})
+        items: new Ext.ux.RecordsGrid({
+          defaultName: '%DOMAIN%',
+          template: true
+        })
       }
     ]
   });
@@ -245,7 +248,12 @@ function existingTemplate(template)
       {
         layout: 'fit',
         border: false,
-        items: new Ext.ux.RecordsGrid({records: template.records, defaultName: '%DOMAIN%', border: false})
+        items: new Ext.ux.RecordsGrid({
+          records: template.records, 
+          defaultName: '%DOMAIN%', 
+          border: false,
+          template: true
+        })
       }
     ]
   });

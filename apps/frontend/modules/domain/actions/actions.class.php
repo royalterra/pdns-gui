@@ -75,18 +75,6 @@ class domainActions extends MyActions
     
     foreach (DomainPeer::doSelect($c) as $domain)
     {
-      /*
-      foreach ($domain->getRecords($c1) as $record)
-      {
-        $record_data = $record->toArray(BasePeer::TYPE_FIELDNAME);
-        
-        $record_data['needs_commit'] = $record->needsCommit();
-        
-        if ($record_data['needs_commit']) $domain_needs_commit = true;
-        
-        $records[] = $record_data;
-      }
-      */
       $data = $domain->toArray(BasePeer::TYPE_FIELDNAME);
       $data['needs_commit'] = $domain->needsComit();
       $data['records'] = array();
@@ -290,7 +278,7 @@ class domainActions extends MyActions
         switch ($data['type'])
         {
           case 'SOA':
-            if (!preg_match('/^[a-z,\.,0-9,-,_]+\s[a-z,\.,0-9,-,_]+'.$this->domain->getName().'\s[0-9]+$/',$data['content']))
+            if (!preg_match('/^[a-z,\.,0-9,-,_]+\s[a-z,\.,0-9,-,_]+\s[0-9,\s]+/',$data['content']))
             {
               $this->getRequest()->setError('record',"Row $i: invalid SOA content.");
               return false;
@@ -327,9 +315,9 @@ class domainActions extends MyActions
             return false;
           }
           
-          if ($data['prio'] < 0 || $data['prio'] > 100)
+          if ($data['prio'] < 0 || $data['prio'] > 1000)
           {
-            $this->getRequest()->setError('record',"Row $i: Prio has to be in a range of 0-100.");
+            $this->getRequest()->setError('record',"Row $i: Prio has to be in a range of 0-1000.");
             return false;
           }
         }

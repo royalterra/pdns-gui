@@ -276,7 +276,7 @@ class templateActions extends MyActions
       switch ($data['type'])
       {
         case 'SOA':
-          if (!preg_match('/^[a-z,\.,0-9,-,_]+\s[a-z,\.,0-9,-,_]+%DOMAIN%\s%SERIAL%$/',$data['content']))
+          if (!preg_match('/^[a-z,\.,0-9,-,_]+\s[a-z,\.,0-9,-,_]+\s%SERIAL%/',$data['content']))
           {
             $this->getRequest()->setError('record',"Row $i: invalid SOA content.");
             return false;
@@ -313,9 +313,9 @@ class templateActions extends MyActions
           return false;
         }
         
-        if ($data['prio'] < 0 || $data['prio'] > 100)
+        if ($data['prio'] < 0 || $data['prio'] > 1000)
         {
-          $this->getRequest()->setError('record',"Row $i: Prio has to be in a range of 0-100.");
+          $this->getRequest()->setError('record',"Row $i: Prio has to be in a range of 0-1000.");
           return false;
         }
       }

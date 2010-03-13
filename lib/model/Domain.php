@@ -29,7 +29,7 @@ class Domain extends BaseDomain
   { 
     $connection = Propel::getConnection();
     
-    $sql = sprintf("SELECT COUNT(%s) AS count FROM %s WHERE %s = 'Record' AND %s = %d AND %s > '%d'"
+    $sql = sprintf("SELECT COUNT(%s) AS count FROM %s WHERE %s = 'Record' AND %s = %d AND %s > '%s'"
     ,AuditPeer::ID, AuditPeer::TABLE_NAME, AuditPeer::OBJECT, AuditPeer::DOMAIN_ID, $this->getId(),
     AuditPeer::CREATED_AT,date("Y-m-d H:i:s",MyTools::getLastCommit()));
     
