@@ -11,6 +11,24 @@ class extActions extends MyActions
    */
   public function executeIndex()
   {
+    $this->errors = array();
+    
+    if (!function_exists('json_encode'))
+    {
+      $this->errors[] = 'PHP JSON support missing - see <a href="http://uk3.php.net/manual/en/book.json.php" target="_blank">http://uk3.php.net/manual/en/book.json.php</a>';
+    }
+    
+    if (!in_array('mod_rewrite',apache_get_modules()))
+    {
+      $this->errors[] = 'Apache mod_rewrite module missing';
+    }
+    
+    if ($this->errors)
+    {
+      $this->setTemplate('missing-mods');
+      return sfView::SUCCESS;
+    }
+    
     sfConfig::set('sf_web_debug', false);
     
     $this->noAjax();
