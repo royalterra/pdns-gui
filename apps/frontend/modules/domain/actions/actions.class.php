@@ -272,6 +272,12 @@ class domainActions extends MyActions
           return false;
         }
         
+        if (!preg_match('/^[a-z]{1}[a-z0-9\.\-]+[a-z0-9]{1}$/',$data['name']) || strlen($data['name']) > 63)
+        {
+          $this->getRequest()->setError('record',"Row $i: invalid name (only letters, digits and hyphen allowed).");
+          return false;
+        }
+        
         if (!array_key_exists($data['type'],sfConfig::get('app_record_type',array())))
         {
           $this->getRequest()->setError('record',"Row $i: invalid record type.");
