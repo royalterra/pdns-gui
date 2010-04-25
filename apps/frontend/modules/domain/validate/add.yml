@@ -6,7 +6,7 @@ fields:
     sfRegexValidator:
       match:        Yes
       match_error:  Only letters, numbers, dots, underscore and dash allowed
-      pattern:      /^[0-9,a-z,\.,\-,_]+$/i
+      pattern:      /^[a-z0-9\.\-_]+$/i
 
 
 
