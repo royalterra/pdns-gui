@@ -97,9 +97,12 @@ class domainActions extends MyActions
     
     $this->forward404Unless($domain);
     
+    $c = new Criteria();
+    $c->addDescendingOrderByColumn(RecordPeer::TYPE);
+    
     $output = array();
     
-    foreach ($domain->getRecords() as $record)
+    foreach ($domain->getRecords($c) as $record)
     {
       $record_data = $record->toArray(BasePeer::TYPE_FIELDNAME);
       
