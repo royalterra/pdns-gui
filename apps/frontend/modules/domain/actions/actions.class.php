@@ -278,14 +278,14 @@ class domainActions extends MyActions
         switch ($data['type'])
         {
           case 'SOA':
-            if (!preg_match('/^[a-z,\.,0-9,-,_]+\s[a-z,\.,0-9,-,_]+\s[0-9,\s]+/',$data['content']))
+            if (!preg_match('/^[a-z0-9\.\-_]+\s[a-z0-9\.\-_]+\s[0-9\s]+/',$data['content']))
             {
               $this->getRequest()->setError('record',"Row $i: invalid SOA content.");
               return false;
             }
             break;
           case 'NS':
-            if (!preg_match('/^[a-z,.,0-9,-,_]+$/',$data['content']))
+            if (!preg_match('/^[a-z0-9\.\-_]+$/',$data['content']))
             {
               $this->getRequest()->setError('record',"Row $i: invalid NS content.");
               return false;
