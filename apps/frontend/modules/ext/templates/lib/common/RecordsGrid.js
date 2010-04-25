@@ -51,7 +51,6 @@ Ext.ux.RecordsGrid = function(cfg){
     height: 260,
     loadMask: true,
     enableHdMenu: false,
-    enableColumnResize: false,
     enableColumnMove: false,
     clicksToEdit: 1,
     columns: [
