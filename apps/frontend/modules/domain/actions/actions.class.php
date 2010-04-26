@@ -99,6 +99,7 @@ class domainActions extends MyActions
     
     $c = new Criteria();
     $c->addDescendingOrderByColumn(RecordPeer::TYPE);
+    $c->addAscendingOrderByColumn(RecordPeer::NAME);
     
     $output = array();
     
