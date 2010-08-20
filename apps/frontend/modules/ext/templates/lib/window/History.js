@@ -3,14 +3,17 @@ function HistoryWindow()
   var win_id = get_win_id();
   if (!win_id) return;
   
+  var auditStore = new Ext.data.JsonStore({
+    url: '<?php echo url_for('ext/audit') ?>',
+    autoLoad: true,
+    baseParams: { start: 0, limit: 20 }
+  });
+  
   var grid = new Ext.grid.GridPanel({
-		height: 400,
+		height: 532,
 		border: false,
     loadMask: true,
-		store: new Ext.data.JsonStore({
-  		url: '<?php echo url_for('ext/audit') ?>',
-			autoLoad: true
-		}),
+		store: auditStore,
 		columns: [
 			{
 				header: 'Timestamp',
@@ -84,8 +87,16 @@ function HistoryWindow()
 			}
 		],
     viewConfig: {
-      forceFit: true
-		}
+      forceFit: true,
+      scrollOffset: 1,
+      emptyText: 'No items to display.'
+		},
+    bbar: new Ext.PagingToolbar({
+      store: auditStore,
+      displayInfo: true,
+      displayMsg: 'Displaying items {0} - {1} of {2}',
+      emptyMsg: 'No items to display.'
+    })
   });
 	
   var win = new Ext.ux.Window({
@@ -93,26 +104,19 @@ function HistoryWindow()
     title: 'History',
     width: 650,
     items: grid,
-    resizable: true,
+    resizable: false,
     buttons: [
-            new Ext.app.SearchField({
-          store: grid.store,
-          width: 140
+      new Ext.app.SearchField({
+        store: auditStore,
+        width: 140
       }),{
         style: 'margin-left: 140px;',
         text: 'Close',
         handler: function() { win.close() }
       }
-      
-
     ]
   });
   
   win.show();
-  /*
-  win.addListener('resize',function(win,width,height){
-    form.items.items[1].items.items[0].setHeight(height-72);
-  });
-  */
   
 }

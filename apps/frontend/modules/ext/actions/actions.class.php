@@ -58,15 +58,11 @@ class extActions extends MyActions
       $c->add(AuditPeer::OBJECT_CHANGES, "%$search%", Criteria::LIKE);
     }
     
-    foreach (AuditPeer::doSelect($c) as $audit)
-    {
-      $this->output[] = $audit->toStore();
-    }
+    $pager = new MyPager('Audit');
+    $pager->setCriteria($c);
+    $pager->init();
     
-    if ($this->isAjax())
-    {
-      return $this->renderStore('Audit',$this->output);
-    }
+    return $this->renderJson($pager->toStore(true));
   }
   
   /**
