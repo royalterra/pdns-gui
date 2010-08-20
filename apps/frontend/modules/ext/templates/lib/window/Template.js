@@ -114,8 +114,17 @@ function TemplateWindow()
               
               form_count++;
               
-              errors+= 'Template: ' + form.title + '<br/>';
-              errors+= action.result.errors.record;
+              if (form.url.match(/edit$/))
+              {
+                var template_name = form.items.items[1].getValue();
+              }
+              else
+              {
+                var template_name = form.items.items[0].getValue();
+              }
+              
+              errors+= 'Template: <b>' + template_name + '</b><br/>';
+              errors+= action.result.errors.record + '<br/>';
               
               if (form_count == Tabs.items.items.length)
               {
@@ -130,11 +139,9 @@ function TemplateWindow()
     },
     buttons: [
       {
-        text: 'Close',
-        handler: function() { win.close() }
-      },{
         text: 'Add template',
         iconCls: 'icon-add',
+        style: 'margin-right: 150px;',
         handler: function() {
           var grid = emptyTemplate('Default ' + Tabs.items.length);
           Tabs.add(grid);
@@ -143,6 +150,9 @@ function TemplateWindow()
       },{
         text: 'Save',
         handler: function() { win.doSubmit() }
+      },{
+        text: 'Close',
+        handler: function() { win.close() }
       }
     ]
   });
