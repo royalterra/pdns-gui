@@ -213,7 +213,7 @@ class domainActions extends MyActions
         $record->setContent($data['content']);
         $record->setTtl($data['ttl']);
         
-        if ($data['type'] == 'MX')
+        if ($data['type'] == 'MX' || $data['type'] == 'SRV')
         {
           $record->setPrio($data['prio']);
         }
@@ -273,9 +273,9 @@ class domainActions extends MyActions
           return false;
         }
         
-        if (!preg_match('/^[a-z]{1}[a-z0-9\.\-]+[a-z0-9]{1}$/',$data['name']) || strlen($data['name']) > 63)
+        if (!preg_match('/^[a-z\_]{1}[a-z0-9\.\-\_]+[a-z0-9]{1}$/',$data['name']) || strlen($data['name']) > 63)
         {
-          $this->getRequest()->setError('record',"Row $i: invalid name (only letters, digits and hyphen allowed).");
+          $this->getRequest()->setError('record',"Row $i: invalid name (only letters, digits, underscore and hyphen allowed).");
           return false;
         }
         
@@ -316,7 +316,7 @@ class domainActions extends MyActions
         }
         
         
-        if ($data['type'] == 'MX')
+        if ($data['type'] == 'MX' || $data['type'] == 'SRV')
         {
           
           if (!preg_match('/^[0-9]+$/',$data['prio']))
@@ -334,8 +334,8 @@ class domainActions extends MyActions
         
         if (!$data['content'])
         {
-            $this->getRequest()->setError('record',"Row $i: Content can't be left blank.");
-            return false;
+          $this->getRequest()->setError('record',"Row $i: Content can't be left blank.");
+          return false;
         }
         
         if ($data['type'] == 'SOA') $SOA_count++;
