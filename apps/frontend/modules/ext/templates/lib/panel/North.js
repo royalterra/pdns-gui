@@ -67,11 +67,18 @@ var NorthRegion = new Ext.Panel({
           url: '<?php echo url_for('domain/commit') ?>',
           success: function(action){
             
-            var info = Ext.decode(action.responseText).info;
+            var res = Ext.decode(action.responseText);
             
-            Ext.Msg.alert('Info',info);
-            
-            DomainStore.reload();
+            if (res.success)
+            {
+              Ext.Msg.info('Info',res.info);
+              
+              DomainStore.reload();
+            }
+            else
+            {
+              Ext.Msg.showRequestErrors(res);
+            }
           }
         });
 

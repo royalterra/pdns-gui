@@ -49,11 +49,9 @@ class domainActions extends MyActions
    */
   public function executeCommit()
   {
-    $commited = MyTools::commit();
-    
-    if ($commited)
+    if ($this->commited)
     {
-      $info = "Commited changes for the following domains:<br/>".implode("<br/>",$commited);
+      $info = "Commited changes for the following domains:<br/>".implode("<br/>",$this->commited);
     }
     else
     {
@@ -61,6 +59,20 @@ class domainActions extends MyActions
     }
     
     return $this->renderJson(array("success"=>true,"info"=>$info));
+  }
+  
+  public function validateCommit()
+  {
+    $this->commited = MyTools::commit();
+    
+    if (!is_array($this->commited))
+    {
+      $this->getRequest()->setError('commit',$this->commited);
+      
+      return false;
+    }
+    
+    return true;
   }
 
   /**

@@ -99,3 +99,58 @@ Ext.Ajax.on('requestexception', function( oConn, oResp, oOpts ) {
   }
 });
 
+Ext.Msg.info = function(title,msg,minWidth){
+  
+  if (!minWidth) minWidth = 300;
+  
+  Ext.Msg.show({
+    title: title,
+    msg: msg,
+    buttons: Ext.Msg.OK,
+    icon: Ext.MessageBox.INFO,
+    minWidth: minWidth
+  });
+}
+
+Ext.Msg.warning = function(title,msg,minWidth){
+  
+  if (!minWidth) minWidth = 300;
+  
+  Ext.Msg.show({
+    title: title,
+    msg: msg,
+    buttons: Ext.Msg.OK,
+    icon: Ext.MessageBox.WARNING,
+    minWidth: minWidth
+  });
+}
+
+Ext.Msg.error = function(title,msg,minWidth){
+  
+  if (!minWidth) minWidth = 300;
+  
+  Ext.Msg.show({
+    title: title,
+    msg: msg,
+    buttons: Ext.Msg.OK,
+    icon: Ext.MessageBox.ERROR,
+    minWidth: minWidth
+  });
+}
+
+Ext.Msg.showRequestErrors = function(r){
+  var errors = '';
+  
+  for (error in r.errors)
+  {
+    errors+= r.errors[error] + '<br/>';
+  }
+  
+  Ext.Msg.show({
+    title: 'Error',
+    msg: errors,
+    buttons: Ext.Msg.OK,
+    icon: Ext.MessageBox.WARNING,
+    minWidth: 400
+  });
+}
