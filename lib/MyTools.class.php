@@ -22,10 +22,25 @@ class MyTools
   /**
    * Commits changes (increases serial by 1)
    * 
-   * @return array
+   * @return Array on success, string on error
    */
   public static function commit()
   {
+    // do some checks first
+    $pdns_version = trim(shell_exec("sudo /usr/bin/pdns_control version 2>&1"));
+    
+    if (!preg_match('/^[0-9,\.]+$/',$pdns_version))
+    {
+      if (preg_match('/\[sudo\] password/',$pdns_version))
+      {
+        return "Unable to run 'sudo /usr/bin/pdns_control'. Is it defined in sudoers file?";
+      }
+      else
+      {
+        return $pdns_version;
+      }
+    }
+    
     $commited = array();
     
     $c = new Criteria();
@@ -87,7 +102,6 @@ class MyTools
           }
         }
       }
-      
     }
     
     return $commited;
