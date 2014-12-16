@@ -285,9 +285,9 @@ class domainActions extends MyActions
           return false;
         }
         
-        if (!preg_match('/^[a-z\_]{1}[a-z0-9\.\-\_]+[a-z0-9]{1}$/',$data['name']) || strlen($data['name']) > 63)
+        if (!preg_match('/^[a-z0-9]{1}[a-z0-9\.\-]+[a-z0-9]{1}$/',$data['name']) || strlen($data['name']) > 63)
         {
-          $this->getRequest()->setError('record',"Row $i: invalid name (only letters, digits, underscore and hyphen allowed).");
+          $this->getRequest()->setError('record',"Row $i: invalid name (only letters, digits and hyphen allowed).");
           return false;
         }
         
@@ -300,14 +300,14 @@ class domainActions extends MyActions
         switch ($data['type'])
         {
           case 'SOA':
-            if (!preg_match('/^[a-z0-9\.\-_]+\s[a-z0-9\.\-_]+\s[0-9\s]+/',$data['content']))
+            if (!preg_match('/^[a-z0-9\.\-]+\s[a-z0-9\.\-]+\s[0-9\s]+/',$data['content']))
             {
               $this->getRequest()->setError('record',"Row $i: invalid SOA content.");
               return false;
             }
             break;
           case 'NS':
-            if (!preg_match('/^[a-z0-9\.\-_]+$/',$data['content']))
+            if (!preg_match('/^[a-z0-9\.\-]+$/',$data['content']))
             {
               $this->getRequest()->setError('record',"Row $i: invalid NS content.");
               return false;
