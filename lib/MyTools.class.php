@@ -91,6 +91,8 @@ class MyTools
     if ($commited)
     {
       SettingPeer::setValue('last_commit',time());
+
+      sleep(2);
       
       if ($also_notify = sfConfig::get('app_default_also-notify'))
       {
