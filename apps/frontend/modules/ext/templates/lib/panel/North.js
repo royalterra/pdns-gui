@@ -63,9 +63,14 @@ var NorthRegion = new Ext.Panel({
       width: 140,
       margins: '0 5 0 5',
       handler: function(){
+        
+        var waitWin = Ext.Msg.wait('Please wait...','Info');
+        
         Ext.Ajax.request({
           url: '<?php echo url_for('domain/commit') ?>',
           success: function(action){
+            
+            waitWin.hide();
             
             var res = Ext.decode(action.responseText);
             
@@ -81,7 +86,6 @@ var NorthRegion = new Ext.Panel({
             }
           }
         });
-
       }
     }
   ]
