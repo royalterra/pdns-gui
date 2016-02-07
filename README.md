@@ -18,3 +18,5 @@ If you want to upgrade existing PowerDNS GUI installation follow this instructio
 Demo
 
 http://www.powerdns-gui.org/
+
+To upgrade existing installation of PowerDNS GUI: * copy config/database.yml to /tmp/database.yml * overwrite your existing pdns-gui.x.x directory with the latest version from github copy /tmp/database.yml to config/database.yml * run `./batch/upgrade.sh' script
